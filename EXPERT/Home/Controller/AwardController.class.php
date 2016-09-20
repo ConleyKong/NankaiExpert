@@ -56,6 +56,14 @@ class AwardController extends Controller {
 	        $result = $award->field('id,name,level,time,comment,birthday,person_name,grade_name,academichonor_name,col_name')->where($param)->page($pageNum,$itemsNum)->order('award.id')->select();
             $totalNum = $award->where($param)->count();
             $result[0]['totalNum'] = $totalNum;
+            //审计日志
+            $audit['name'] = session('username');
+            $audit['ip'] = getIp();
+            $audit['module'] = '获奖列表';
+            $audit['time'] = date('y-m-d h:i:s',time());
+            $audit['result'] = '成功';
+            $audit['descr'] = '查询所有字段';
+            M('audit')->add($audit);
             $this->ajaxReturn($result,'json');
 	    }
     }
@@ -91,7 +99,7 @@ class AwardController extends Controller {
             }
             if ($query['college_id']){
                 $string .= $string ? ' AND ('.$query['college_id'].')' : '('.$query['college_id'].')';
-                unset($query['college_id']);
+//                unset($query['college_id']);
             }
             if ($string)
                 $query['_string'] = $string;
@@ -105,21 +113,31 @@ class AwardController extends Controller {
             unset($query['person_startTime']);
             unset($query['person_endTime']);
             if ($type == 'all'){
+                $audit['descr'] = '导出所有。';
                 $result = $award->field($field)->where($query)->order('award.id')->select();
             }
             else if ($type == 'current'){
+                $audit['descr'] = '导出当前。';
                 $result = $award->field($field)->where($query)->page($pageNum,$itemsNum)->order('award.id')->select();
             }
             else
                 return '未知错误';
-            $titleMap = array('name'=>'奖励名称','level'=>'奖励级别','time'=>'获奖时间','comment'=>'备注','person_name'=>'姓名','birthday'=>'出生日期','grade_name'=>'职称','academichonor_name'=>'学术荣誉','col_name'=>'学院');
+            $titleMap = array('person_name'=>'姓名','birthday'=>'出生日期','col_name'=>'学院','grade_name'=>'职称','academichonor_name'=>'学术荣誉','name'=>'奖励名称','level'=>'奖励级别','time'=>'获奖时间','comment'=>'备注');
             $field = split(',', $field); 
             $excelTitle = array();
             foreach ($field as $value) {
                 array_push($excelTitle, $titleMap[$value]);
             }
-            $filename = '获奖信息';
-            exportExcel($filename, $excelTitle, $result);
+            $filename = '奖励信息';
+
+            exportExcel($filename, $field, $result, $excelTitle);
+            $audit['name'] = session('username');
+            $audit['ip'] = getIp();
+            $audit['module'] = '奖励列表';
+            $audit['time'] = date('y-m-d h:i:s',time());
+            $audit['result'] = '成功';
+            $audit['descr'] = '导出奖励列表信息';
+            M('audit')->add($audit);
         }
     }
 
