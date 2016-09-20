@@ -1,0 +1,78 @@
+<extend name="EXPERT/Templates/nav.html"/>
+<block name="content">
+  <div class="container" ng-app="home" ng-controller="homeController as vm">
+    <div class="col-md-8">
+      <div class="panel panel-info">
+        <div class="panel-heading">
+          <h3 class="panel-title">项目统计</h3>
+        </div>
+        <div class="panel-body">
+          <div id="c1" class="col-md-12" style="height:300px;"></div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="panel panel-info">
+        <!-- <div class="panel-heading">
+          <h3 class="panel-title">项目统计</h3>
+        </div> -->
+        <!-- <div class="panel-body">
+          <div id="c2" class="col-md-12" style="height:300px;"></div>
+        </div> -->
+        <table class="table table-bordered table-striped" style="border-bottom:1px #bce8f1 solid">
+          <thead>
+            <tr>
+              <th>项目类型</th>
+              <th>项目总数</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="item in vm.projectType" ng-if="$index<5">
+              <td ng-bind="item.type_name"></td>
+              <td ng-bind="item.typecount"></td>
+            </tr>
+          </tbody>
+        </table>
+        <table class="table table-bordered table-striped">
+          <thead>
+            <tr>
+              <th>资助编号</th>
+              <th>项目总数</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="item in vm.projectSupport" ng-if="$index<3">
+              <td ng-bind="item.support_no"></td>
+              <td ng-bind="item.supportcount"></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="col-md-12">
+      <div class="panel panel-info">
+        <div class="panel-heading">
+          <h3 class="panel-title">近五年项目启动、完成情况统计</h3>
+        </div>
+        <div class="panel-body">
+          <div id="c3" class="col-md-12" style="height:400px;"></div>
+        </div>
+      </div>
+    </div>
+    <!-- <div class="col-md-6">
+      <div class="panel panel-info">
+        <div class="panel-heading">
+          <h3 class="panel-title">获奖统计</h3>
+        </div>
+        <div class="panel-body">
+          <div id="c4" class="col-md-12" style="height:300px;"></div>
+        </div>
+      </div>
+    </div> -->
+  </div>
+</block>
+<block name="js">
+  <script type="text/javascript" src="__CDN__/echarts/2.2.7/echarts-all.js"></script>
+  <script type="text/javascript" src="__PUBLIC__/js/echarts.js"></script>
+  <script type="text/javascript" src="__PUBLIC__/js/home.controller.js"></script>
+</block>

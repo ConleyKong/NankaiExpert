@@ -1,0 +1,208 @@
+[ 2016-07-24T14:03:21+08:00 ] ::1 /Index/login
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000688s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001210s ]
+SQL: SHOW COLUMNS FROM `user` [ RunTime:0.0657s ]
+SQL: SELECT * FROM `user`  [ RunTime:0.0010s ]
+SQL: SHOW COLUMNS FROM `audit` [ RunTime:0.0753s ]
+SQL: INSERT INTO `audit` (`name`,`ip`,`module`,`time`,`result`) VALUES ('ff','::1','登录','16-07-24 02:03:21','成功') [ RunTime:0.0519s ]
+
+[ 2016-07-24T14:21:41+08:00 ] ::1 /Index/login
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000715s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001297s ]
+SQL: SHOW COLUMNS FROM `user` [ RunTime:0.0045s ]
+SQL: SELECT * FROM `user`  [ RunTime:0.0006s ]
+SQL: SHOW COLUMNS FROM `audit` [ RunTime:0.0033s ]
+SQL: INSERT INTO `audit` (`name`,`ip`,`module`,`time`,`result`) VALUES ('ff','::1','登录','16-07-24 02:21:41','成功') [ RunTime:0.0608s ]
+
+[ 2016-07-24T15:11:34+08:00 ] ::1 /Public/jquery/2.1.1/jquery.min.map
+ERR: 无法加载控制器:Public
+
+[ 2016-07-24T15:11:34+08:00 ] ::1 /Public/angular.js/1.3.0/angular.min.js.map
+ERR: 无法加载控制器:Public
+
+[ 2016-07-24T15:17:05+08:00 ] ::1 /Public/jquery/2.1.1/jquery.min.map
+ERR: 无法加载控制器:Public
+
+[ 2016-07-24T15:17:05+08:00 ] ::1 /Public/angular.js/1.3.0/angular.min.js.map
+ERR: 无法加载控制器:Public
+
+[ 2016-07-24T15:28:38+08:00 ] ::1 /Public/jquery/2.1.1/jquery.min.map
+ERR: 无法加载控制器:Public
+
+[ 2016-07-24T15:28:38+08:00 ] ::1 /Public/angular.js/1.3.0/angular.min.js.map
+ERR: 无法加载控制器:Public
+
+[ 2016-07-24T16:14:18+08:00 ] ::1 /Public/jquery/2.1.1/jquery.min.map
+ERR: 无法加载控制器:Public
+
+[ 2016-07-24T16:14:18+08:00 ] ::1 /Public/angular.js/1.3.0/angular.min.js.map
+ERR: 无法加载控制器:Public
+
+[ 2016-07-24T16:14:38+08:00 ] ::1 /Public/angular.js/1.3.0/angular.min.js.map
+ERR: 无法加载控制器:Public
+
+[ 2016-07-24T16:14:38+08:00 ] ::1 /Public/jquery/2.1.1/jquery.min.map
+ERR: 无法加载控制器:Public
+
+[ 2016-07-24T16:18:07+08:00 ] ::1 /Public/jquery/2.1.1/jquery.min.map
+ERR: 无法加载控制器:Public
+
+[ 2016-07-24T16:18:07+08:00 ] ::1 /Public/angular.js/1.3.0/angular.min.js.map
+ERR: 无法加载控制器:Public
+
+[ 2016-07-24T16:18:52+08:00 ] ::1 /Public/jquery/2.1.1/jquery.min.map
+ERR: 无法加载控制器:Public
+
+[ 2016-07-24T16:18:52+08:00 ] ::1 /Public/angular.js/1.3.0/angular.min.js.map
+ERR: 无法加载控制器:Public
+
+[ 2016-07-24T16:18:55+08:00 ] ::1 /Project/getProjectTypeCount/
+ERR: SQLSTATE[HY000] [2002] ����Ŀ�����������ܾ����޷����ӡ�
+
+
+[ 2016-07-24T16:19:21+08:00 ] ::1 /Public/angular.js/1.3.0/angular.min.js.map
+ERR: 无法加载控制器:Public
+
+[ 2016-07-24T16:19:21+08:00 ] ::1 /Public/jquery/2.1.1/jquery.min.map
+ERR: 无法加载控制器:Public
+
+[ 2016-07-24T16:19:28+08:00 ] ::1 /Public/jquery/2.1.1/jquery.min.map
+ERR: 无法加载控制器:Public
+
+[ 2016-07-24T16:19:28+08:00 ] ::1 /Public/angular.js/1.3.0/angular.min.js.map
+ERR: 无法加载控制器:Public
+
+[ 2016-07-24T16:19:33+08:00 ] ::1 /Public/angular.js/1.3.0/angular.min.js.map
+ERR: 无法加载控制器:Public
+
+[ 2016-07-24T16:19:33+08:00 ] ::1 /Public/jquery/2.1.1/jquery.min.map
+ERR: 无法加载控制器:Public
+
+[ 2016-07-24T16:26:36+08:00 ] ::1 /Public/angular.js/1.3.0/angular.min.js.map
+ERR: 无法加载控制器:Public
+
+[ 2016-07-24T16:26:36+08:00 ] ::1 /Public/jquery/2.1.1/jquery.min.map
+ERR: 无法加载控制器:Public
+
+[ 2016-07-24T16:36:01+08:00 ] ::1 /Public/jquery/2.1.1/jquery.min.map
+ERR: 无法加载控制器:Public
+
+[ 2016-07-24T16:36:01+08:00 ] ::1 /Public/angular.js/1.3.0/angular.min.js.map
+ERR: 无法加载控制器:Public
+
+[ 2016-07-24T16:58:01+08:00 ] ::1 /Public/jquery/2.1.1/jquery.min.map
+ERR: 无法加载控制器:Public
+
+[ 2016-07-24T16:58:01+08:00 ] ::1 /Public/angular.js/1.3.0/angular.min.js.map
+ERR: 无法加载控制器:Public
+
+[ 2016-07-24T16:58:06+08:00 ] ::1 /Public/jquery/2.1.1/jquery.min.map
+ERR: 无法加载控制器:Public
+
+[ 2016-07-24T16:58:06+08:00 ] ::1 /Public/angular.js/1.3.0/angular.min.js.map
+ERR: 无法加载控制器:Public
+
+[ 2016-07-24T16:58:14+08:00 ] ::1 /Public/angular.js/1.3.0/angular.min.js.map
+ERR: 无法加载控制器:Public
+
+[ 2016-07-24T16:58:14+08:00 ] ::1 /Public/jquery/2.1.1/jquery.min.map
+ERR: 无法加载控制器:Public
+
+[ 2016-07-24T17:51:55+08:00 ] ::1 /Public/jquery/2.1.1/jquery.min.map
+ERR: 无法加载控制器:Public
+
+[ 2016-07-24T17:51:55+08:00 ] ::1 /Public/angular.js/1.3.0/angular.min.js.map
+ERR: 无法加载控制器:Public
+
+[ 2016-07-24T17:51:58+08:00 ] ::1 /Public/angular.js/1.3.0/angular.min.js.map
+ERR: 无法加载控制器:Public
+
+[ 2016-07-24T17:51:58+08:00 ] ::1 /Public/jquery/2.1.1/jquery.min.map
+ERR: 无法加载控制器:Public
+
+[ 2016-07-24T18:02:46+08:00 ] ::1 /Public/jquery/2.1.1/jquery.min.map
+ERR: 无法加载控制器:Public
+
+[ 2016-07-24T18:02:46+08:00 ] ::1 /Public/angular.js/1.3.0/angular.min.js.map
+ERR: 无法加载控制器:Public
+
+[ 2016-07-24T18:03:18+08:00 ] ::1 /Public/jquery/2.1.1/jquery.min.map
+ERR: 无法加载控制器:Public
+
+[ 2016-07-24T18:03:18+08:00 ] ::1 /Public/angular.js/1.3.0/angular.min.js.map
+ERR: 无法加载控制器:Public
+
+[ 2016-07-24T18:03:22+08:00 ] ::1 /Public/angular.js/1.3.0/angular.min.js.map
+ERR: 无法加载控制器:Public
+
+[ 2016-07-24T18:03:22+08:00 ] ::1 /Public/jquery/2.1.1/jquery.min.map
+ERR: 无法加载控制器:Public
+
+[ 2016-07-24T18:03:47+08:00 ] ::1 /Public/jquery/2.1.1/jquery.min.map
+ERR: 无法加载控制器:Public
+
+[ 2016-07-24T18:03:47+08:00 ] ::1 /Public/angular.js/1.3.0/angular.min.js.map
+ERR: 无法加载控制器:Public
+
+[ 2016-07-24T18:03:58+08:00 ] ::1 /Public/angular.js/1.3.0/angular.min.js.map
+ERR: 无法加载控制器:Public
+
+[ 2016-07-24T18:03:58+08:00 ] ::1 /Public/jquery/2.1.1/jquery.min.map
+ERR: 无法加载控制器:Public
+
+[ 2016-07-24T18:06:31+08:00 ] ::1 /Public/jquery/2.1.1/jquery.min.map
+ERR: 无法加载控制器:Public
+
+[ 2016-07-24T18:06:31+08:00 ] ::1 /Public/angular.js/1.3.0/angular.min.js.map
+ERR: 无法加载控制器:Public
+
+[ 2016-07-24T18:07:30+08:00 ] ::1 /Public/jquery/2.1.1/jquery.min.map
+ERR: 无法加载控制器:Public
+
+[ 2016-07-24T18:07:30+08:00 ] ::1 /Public/angular.js/1.3.0/angular.min.js.map
+ERR: 无法加载控制器:Public
+
+[ 2016-07-24T19:23:10+08:00 ] ::1 /Home/People/detail/?id=7
+ERR: 1054:Champ 'project.owner_id' inconnu dans where clause
+ [ SQL语句 ] : SELECT project.id AS id,project.name AS name,project.type_id AS type_id,project.support_no AS support_no,project.manager_id AS manager_id,project.source AS source,project.start_time AS start_time,project.end_time AS end_time,project.college_id AS college_id,project.fund AS fund,project.financial_account AS financial_account,project.project_no AS project_no,project.source_department AS source_department,person.name AS manager_name,college.name AS college_name,project_type.name AS type_name FROM project project  JOIN person person ON project.manager_id=person.id  JOIN college college ON project.college_id=college.id  JOIN project_type project_type ON project_type.id=project.type_id WHERE ( project.owner_id=7 ) 
+
+[ 2016-07-24T19:47:08+08:00 ] ::1 /People/queryAPI
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001359s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.003144s ]
+SQL: SHOW COLUMNS FROM `person` [ RunTime:0.0058s ]
+SQL: SHOW COLUMNS FROM `college` [ RunTime:0.0047s ]
+SQL: SHOW COLUMNS FROM `person_mentor_type` [ RunTime:0.0045s ]
+SQL: SHOW COLUMNS FROM `person_degree` [ RunTime:0.0043s ]
+SQL: SHOW COLUMNS FROM `person_title` [ RunTime:0.0049s ]
+SQL: SHOW COLUMNS FROM `person_type` [ RunTime:0.0049s ]
+SQL: SHOW COLUMNS FROM `person_honor` [ RunTime:0.0044s ]
+SQL: SHOW COLUMNS FROM `academic_honor` [ RunTime:0.0054s ]
+SQL: SELECT person.birthday AS birthday FROM person person LEFT JOIN college college ON person.college_id=college.id LEFT JOIN person_mentor_type person_mentor_type ON person.mentor_type_id=person_mentor_type.id LEFT JOIN person_degree person_degree ON person.degree_id=person_degree.id LEFT JOIN person_title person_title ON person.title_id=person_title.id LEFT JOIN person_type person_type ON person.type_id=person_type.id LEFT JOIN person_honor person_honor ON person.id=person_honor.person_id LEFT JOIN academic_honor academic_honor ON academic_honor.id=person_honor.honor_id  [ RunTime:0.0153s ]
+
+[ 2016-07-24T20:02:12+08:00 ] ::1 /Home/People/detail/?id=2
+ERR: 1054:Champ 'project.owner_id' inconnu dans where clause
+ [ SQL语句 ] : SELECT project.id AS id,project.name AS name,project.type_id AS type_id,project.support_no AS support_no,project.manager_id AS manager_id,project.source AS source,project.start_time AS start_time,project.end_time AS end_time,project.college_id AS college_id,project.fund AS fund,project.financial_account AS financial_account,project.project_no AS project_no,project.source_department AS source_department,person.name AS manager_name,college.name AS college_name,project_type.name AS type_name FROM project project  JOIN person person ON project.manager_id=person.id  JOIN college college ON project.college_id=college.id  JOIN project_type project_type ON project_type.id=project.type_id WHERE ( project.owner_id=2 ) 
+
+[ 2016-07-24T20:02:23+08:00 ] ::1 /People/detail/?id=2
+ERR: 1054:Champ 'project.owner_id' inconnu dans where clause
+ [ SQL语句 ] : SELECT project.id AS id,project.name AS name,project.type_id AS type_id,project.support_no AS support_no,project.manager_id AS manager_id,project.source AS source,project.start_time AS start_time,project.end_time AS end_time,project.college_id AS college_id,project.fund AS fund,project.financial_account AS financial_account,project.project_no AS project_no,project.source_department AS source_department,person.name AS manager_name,college.name AS college_name,project_type.name AS type_name FROM project project  JOIN person person ON project.manager_id=person.id  JOIN college college ON project.college_id=college.id  JOIN project_type project_type ON project_type.id=project.type_id WHERE ( project.owner_id=2 ) 
+
+[ 2016-07-24T20:02:29+08:00 ] ::1 /Home/People/detail/?id=2
+ERR: 1054:Champ 'project.owner_id' inconnu dans where clause
+ [ SQL语句 ] : SELECT project.id AS id,project.name AS name,project.type_id AS type_id,project.support_no AS support_no,project.manager_id AS manager_id,project.source AS source,project.start_time AS start_time,project.end_time AS end_time,project.college_id AS college_id,project.fund AS fund,project.financial_account AS financial_account,project.project_no AS project_no,project.source_department AS source_department,person.name AS manager_name,college.name AS college_name,project_type.name AS type_name FROM project project  JOIN person person ON project.manager_id=person.id  JOIN college college ON project.college_id=college.id  JOIN project_type project_type ON project_type.id=project.type_id WHERE ( project.owner_id=2 ) 
+
+[ 2016-07-24T20:02:35+08:00 ] ::1 /Home/People/detail/?id=3
+ERR: 1054:Champ 'project.owner_id' inconnu dans where clause
+ [ SQL语句 ] : SELECT project.id AS id,project.name AS name,project.type_id AS type_id,project.support_no AS support_no,project.manager_id AS manager_id,project.source AS source,project.start_time AS start_time,project.end_time AS end_time,project.college_id AS college_id,project.fund AS fund,project.financial_account AS financial_account,project.project_no AS project_no,project.source_department AS source_department,person.name AS manager_name,college.name AS college_name,project_type.name AS type_name FROM project project  JOIN person person ON project.manager_id=person.id  JOIN college college ON project.college_id=college.id  JOIN project_type project_type ON project_type.id=project.type_id WHERE ( project.owner_id=3 ) 
+
+[ 2016-07-24T20:18:12+08:00 ] ::1 /Home/People/detail/?id=1
+ERR: 1054:Champ 'project.owner_id' inconnu dans where clause
+ [ SQL语句 ] : SELECT project.id AS id,project.name AS name,project.type_id AS type_id,project.support_no AS support_no,project.manager_id AS manager_id,project.source AS source,project.start_time AS start_time,project.end_time AS end_time,project.college_id AS college_id,project.fund AS fund,project.financial_account AS financial_account,project.project_no AS project_no,project.source_department AS source_department,person.name AS manager_name,college.name AS college_name,project_type.name AS type_name FROM project project  JOIN person person ON project.manager_id=person.id  JOIN college college ON project.college_id=college.id  JOIN project_type project_type ON project_type.id=project.type_id WHERE ( project.owner_id=1 ) 
+
+[ 2016-07-24T20:48:12+08:00 ] ::1 /Home/People/detail/?id=1
+ERR: 1054:Champ 'owner_id' inconnu dans where clause
+ [ SQL语句 ] : SELECT project.id AS id,project.name AS name,project.type_id AS type_id,project.support_no AS support_no,project.manager_id AS manager_id,project.source AS source,project.start_time AS start_time,project.end_time AS end_time,project.college_id AS college_id,project.fund AS fund,project.financial_account AS financial_account,project.project_no AS project_no,project.source_department AS source_department,person.name AS manager_name,college.name AS college_name,project_type.name AS type_name FROM project project  JOIN person person ON project.manager_id=person.id  JOIN college college ON project.college_id=college.id  JOIN project_type project_type ON project_type.id=project.type_id WHERE `owner_id` = 1 
+

@@ -1,0 +1,18 @@
+[ 2016-07-31T10:55:09+08:00 ] ::1 /Index/login
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001760s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.004668s ]
+SQL: SHOW COLUMNS FROM `user` [ RunTime:0.3813s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `user` WHERE `account` = 'nankai' AND `password` = '3df8cd56ce34d5bbb0c5e1c16274b0f7' LIMIT 1   [ RunTime:0.3549s ]
+SQL: SHOW COLUMNS FROM `audit` [ RunTime:0.2005s ]
+SQL: INSERT INTO `audit` (`name`,`ip`,`module`,`time`,`result`) VALUES ('nankai','::1','登录','16-07-31 10:55:09','成功') [ RunTime:0.0541s ]
+
+[ 2016-07-31T12:43:07+08:00 ] ::1 /Index/login
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001121s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002706s ]
+SQL: SHOW COLUMNS FROM `user` [ RunTime:0.0826s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `user` WHERE `account` = 'nankai' AND `password` = '3df8cd56ce34d5bbb0c5e1c16274b0f7' LIMIT 1   [ RunTime:0.0030s ]
+SQL: SHOW COLUMNS FROM `audit` [ RunTime:0.0883s ]
+SQL: INSERT INTO `audit` (`name`,`ip`,`module`,`time`,`result`) VALUES ('nankai','::1','登录','16-07-31 12:43:07','成功') [ RunTime:0.0668s ]
+

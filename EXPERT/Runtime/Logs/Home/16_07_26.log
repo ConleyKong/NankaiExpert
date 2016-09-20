@@ -1,0 +1,80 @@
+[ 2016-07-26T08:52:01+08:00 ] ::1 /Index/login
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001050s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002549s ]
+SQL: SHOW COLUMNS FROM `audit` [ RunTime:0.0916s ]
+SQL: INSERT INTO `audit` (`name`,`ip`,`module`,`time`,`result`,`descr`) VALUES ('fff','::1','登录','16-07-26 08:52:01','失败','验证码错误') [ RunTime:0.0954s ]
+
+[ 2016-07-26T08:52:15+08:00 ] ::1 /Index/login
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001074s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002685s ]
+SQL: SHOW COLUMNS FROM `user` [ RunTime:0.0581s ]
+SQL: SELECT * FROM `user`  [ RunTime:0.0016s ]
+SQL: SHOW COLUMNS FROM `audit` [ RunTime:0.0063s ]
+SQL: INSERT INTO `audit` (`name`,`ip`,`module`,`time`,`result`) VALUES ('fff','::1','登录','16-07-26 08:52:15','成功') [ RunTime:0.0477s ]
+
+[ 2016-07-26T15:04:14+08:00 ] ::1 /Index/login
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.002101s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.004982s ]
+SQL: SHOW COLUMNS FROM `user` [ RunTime:0.0240s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `user` WHERE `account` = 'gg' AND `password` = '73c18c59a39b18382081ec00bb456d43' LIMIT 1   [ RunTime:0.0010s ]
+SQL: SHOW COLUMNS FROM `audit` [ RunTime:0.0040s ]
+SQL: INSERT INTO `audit` (`name`,`ip`,`module`,`time`,`result`,`descr`) VALUES ('gg','::1','登录','16-07-26 03:04:14','失败','用户名密码错误') [ RunTime:0.0551s ]
+
+[ 2016-07-26T15:04:28+08:00 ] ::1 /Index/login
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.002255s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.004777s ]
+SQL: SHOW COLUMNS FROM `user` [ RunTime:0.0042s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `user` WHERE `account` = 'nankai' AND `password` = '3df8cd56ce34d5bbb0c5e1c16274b0f7' LIMIT 1   [ RunTime:0.0006s ]
+SQL: SHOW COLUMNS FROM `audit` [ RunTime:0.0046s ]
+SQL: INSERT INTO `audit` (`name`,`ip`,`module`,`time`,`result`) VALUES ('nankai','::1','登录','16-07-26 03:04:28','成功') [ RunTime:0.0533s ]
+
+[ 2016-07-26T15:04:45+08:00 ] ::1 /Index/login
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001483s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.003263s ]
+SQL: SHOW COLUMNS FROM `user` [ RunTime:0.0039s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `user` WHERE `account` = 'fff' AND `password` = '3df8cd56ce34d5bbb0c5e1c16274b0f7' LIMIT 1   [ RunTime:0.0008s ]
+SQL: SHOW COLUMNS FROM `audit` [ RunTime:0.0041s ]
+SQL: INSERT INTO `audit` (`name`,`ip`,`module`,`time`,`result`,`descr`) VALUES ('fff','::1','登录','16-07-26 03:04:45','失败','用户名密码错误') [ RunTime:0.0624s ]
+
+[ 2016-07-26T15:04:55+08:00 ] ::1 /Index/login
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001460s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.003075s ]
+SQL: SHOW COLUMNS FROM `audit` [ RunTime:0.0046s ]
+SQL: INSERT INTO `audit` (`name`,`ip`,`module`,`time`,`result`,`descr`) VALUES ('nankai','::1','登录','16-07-26 03:04:55','失败','验证码错误') [ RunTime:0.0807s ]
+
+[ 2016-07-26T15:05:05+08:00 ] ::1 /Index/login
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001420s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.003066s ]
+SQL: SHOW COLUMNS FROM `user` [ RunTime:0.0050s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `user` WHERE `account` = 'nankai' AND `password` = '3df8cd56ce34d5bbb0c5e1c16274b0f7' LIMIT 1   [ RunTime:0.0006s ]
+SQL: SHOW COLUMNS FROM `audit` [ RunTime:0.0041s ]
+SQL: INSERT INTO `audit` (`name`,`ip`,`module`,`time`,`result`) VALUES ('nankai','::1','登录','16-07-26 03:05:05','成功') [ RunTime:0.0534s ]
+
+[ 2016-07-26T17:06:12+08:00 ] ::1 /Event/eventList/
+ERR: 1054:Champ 'Event.time_start' inconnu dans order clause
+ [ SQL语句 ] : SELECT * FROM `event` ORDER BY Event.time_start desc LIMIT 0,10  
+
+[ 2016-07-26T17:06:12+08:00 ] ::1 /Event/eventList/
+ERR: 1054:Champ 'Event.time_start' inconnu dans order clause
+ [ SQL语句 ] : SELECT * FROM `event` ORDER BY Event.time_start desc LIMIT 0,10  
+
+[ 2016-07-26T17:06:12+08:00 ] ::1 /Event/eventList/
+ERR: 1054:Champ 'Event.time_start' inconnu dans order clause
+ [ SQL语句 ] : SELECT * FROM `event` ORDER BY Event.time_start desc LIMIT 0,10  
+
+[ 2016-07-26T17:15:03+08:00 ] ::1 /Index/login
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.002096s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.004531s ]
+SQL: SHOW COLUMNS FROM `user` [ RunTime:0.0054s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `user` WHERE `account` = 'nankai' AND `password` = '3df8cd56ce34d5bbb0c5e1c16274b0f7' LIMIT 1   [ RunTime:0.0007s ]
+SQL: SHOW COLUMNS FROM `audit` [ RunTime:0.0053s ]
+SQL: INSERT INTO `audit` (`name`,`ip`,`module`,`time`,`result`) VALUES ('nankai','::1','登录','16-07-26 05:15:03','成功') [ RunTime:0.0394s ]
+

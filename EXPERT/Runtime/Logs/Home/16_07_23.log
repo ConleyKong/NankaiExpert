@@ -1,0 +1,110 @@
+[ 2016-07-23T09:13:05+08:00 ] ::1 /expert/
+ERR: 无法加载控制器:Test
+
+[ 2016-07-23T09:53:39+08:00 ] 192.168.1.14 /Index/login
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001922s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.003204s ]
+SQL: SHOW COLUMNS FROM `user` [ RunTime:0.0051s ]
+SQL: SELECT * FROM `user`  [ RunTime:0.0004s ]
+SQL: SHOW COLUMNS FROM `audit` [ RunTime:0.0033s ]
+SQL: INSERT INTO `audit` (`name`,`ip`,`module`,`time`,`result`) VALUES ('yan','192.168.1.14','登录','16-07-23 09:53:39','成功') [ RunTime:0.0632s ]
+
+[ 2016-07-23T09:54:03+08:00 ] 192.168.1.14 /Index/login
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001332s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002223s ]
+SQL: SHOW COLUMNS FROM `user` [ RunTime:0.0032s ]
+SQL: SELECT * FROM `user`  [ RunTime:0.0003s ]
+SQL: SHOW COLUMNS FROM `audit` [ RunTime:0.0034s ]
+SQL: INSERT INTO `audit` (`name`,`ip`,`module`,`time`,`result`) VALUES ('qqq','192.168.1.14','登录','16-07-23 09:54:03','成功') [ RunTime:0.0855s ]
+
+[ 2016-07-23T20:31:01+08:00 ] ::1 /Index/login
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000922s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001514s ]
+SQL: SHOW COLUMNS FROM `user` [ RunTime:0.0081s ]
+SQL: SELECT * FROM `user`  [ RunTime:0.0008s ]
+SQL: SHOW COLUMNS FROM `audit` [ RunTime:0.0066s ]
+SQL: INSERT INTO `audit` (`name`,`ip`,`module`,`time`,`result`) VALUES ('ff','::1','登录','16-07-23 08:31:01','成功') [ RunTime:0.0392s ]
+
+[ 2016-07-23T21:46:08+08:00 ] ::1 /expert/Public/jquery/2.1.1/jquery.min.map
+ERR: 无法加载控制器:Public
+
+[ 2016-07-23T21:47:02+08:00 ] ::1 /expert/Public/jquery/2.1.1/jquery.min.map
+ERR: 无法加载控制器:Public
+
+[ 2016-07-23T21:50:16+08:00 ] ::1 /expert/Public/jquery/2.1.1/jquery.min.map
+ERR: 无法加载控制器:Public
+
+[ 2016-07-23T21:51:11+08:00 ] ::1 /expert/Public/jquery/2.1.1/jquery.min.map
+ERR: 无法加载控制器:Public
+
+[ 2016-07-23T22:00:09+08:00 ] ::1 /expert/Public/jquery/2.1.1/jquery.min.map
+ERR: 无法加载控制器:Public
+
+[ 2016-07-23T22:01:43+08:00 ] ::1 /Index/login
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001052s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001866s ]
+SQL: SHOW COLUMNS FROM `audit` [ RunTime:0.0793s ]
+SQL: INSERT INTO `audit` (`name`,`ip`,`module`,`time`,`result`,`descr`) VALUES ('','::1','登录','16-07-23 10:01:43','失败','验证码错误') [ RunTime:0.0560s ]
+
+[ 2016-07-23T22:01:59+08:00 ] ::1 /Index/login
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000533s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001004s ]
+SQL: SHOW COLUMNS FROM `user` [ RunTime:0.0751s ]
+SQL: SELECT * FROM `user`  [ RunTime:0.0011s ]
+SQL: SHOW COLUMNS FROM `audit` [ RunTime:0.0110s ]
+SQL: INSERT INTO `audit` (`name`,`ip`,`module`,`time`,`result`) VALUES ('jj','::1','登录','16-07-23 10:01:58','成功') [ RunTime:0.0665s ]
+
+[ 2016-07-23T22:04:42+08:00 ] ::1 /Public/jquery/2.1.1/jquery.min.map
+ERR: 无法加载控制器:Public
+
+[ 2016-07-23T22:04:42+08:00 ] ::1 /Public/angular.js/1.3.0/angular.min.js.map
+ERR: 无法加载控制器:Public
+
+[ 2016-07-23T22:09:39+08:00 ] ::1 /Index/login
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000791s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001542s ]
+SQL: SHOW COLUMNS FROM `audit` [ RunTime:0.0417s ]
+SQL: INSERT INTO `audit` (`name`,`ip`,`module`,`time`,`result`,`descr`) VALUES ('','::1','登录','16-07-23 10:09:39','失败','验证码错误') [ RunTime:0.0566s ]
+
+[ 2016-07-23T22:10:40+08:00 ] ::1 /Index/login
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000589s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001159s ]
+SQL: SHOW COLUMNS FROM `audit` [ RunTime:0.0038s ]
+SQL: INSERT INTO `audit` (`name`,`ip`,`module`,`time`,`result`,`descr`) VALUES ('ff','::1','登录','16-07-23 10:10:40','失败','验证码错误') [ RunTime:0.0409s ]
+
+[ 2016-07-23T22:10:50+08:00 ] ::1 /Index/login
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000581s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001182s ]
+SQL: SHOW COLUMNS FROM `user` [ RunTime:0.0311s ]
+SQL: SELECT * FROM `user`  [ RunTime:0.0003s ]
+SQL: SHOW COLUMNS FROM `audit` [ RunTime:0.0033s ]
+SQL: INSERT INTO `audit` (`name`,`ip`,`module`,`time`,`result`) VALUES ('ff','::1','登录','16-07-23 10:10:50','成功') [ RunTime:0.0608s ]
+
+[ 2016-07-23T22:12:34+08:00 ] ::1 /Index/logout
+ERR: 1048:Le champ 'name' ne peut être vide (null)
+ [ SQL语句 ] : INSERT INTO `audit` (`name`,`ip`,`module`,`time`,`result`) VALUES (NULL,'::1','退出登录','16-07-23 10:12:34','成功')
+
+[ 2016-07-23T22:13:16+08:00 ] ::1 /Index/login
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000945s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001650s ]
+SQL: SHOW COLUMNS FROM `user` [ RunTime:0.0035s ]
+SQL: SELECT * FROM `user`  [ RunTime:0.0003s ]
+SQL: SHOW COLUMNS FROM `audit` [ RunTime:0.0036s ]
+SQL: INSERT INTO `audit` (`name`,`ip`,`module`,`time`,`result`) VALUES ('ff','::1','登录','16-07-23 10:13:16','成功') [ RunTime:0.0818s ]
+
+[ 2016-07-23T22:13:56+08:00 ] ::1 /Index/login
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000704s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001230s ]
+SQL: SHOW COLUMNS FROM `audit` [ RunTime:0.0039s ]
+SQL: INSERT INTO `audit` (`name`,`ip`,`module`,`time`,`result`,`descr`) VALUES ('ff','::1','登录','16-07-23 10:13:56','失败','验证码错误') [ RunTime:0.0594s ]
+

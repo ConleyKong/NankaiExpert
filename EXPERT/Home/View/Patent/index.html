@@ -1,0 +1,127 @@
+<extend name="EXPERT/Templates/nav.html"/>
+<block name="content">
+  <div class="container" ng-app="patent" ng-controller="patentController as vm">
+    <div class="col-sm-12 row">
+      <show-more count="2">
+        <div class="col-sm-12">
+            <span class="cond-label">所在单位：</span>
+            <div class="btn-group">
+              <label style="margin-bottom:0;color:#eee">
+                <select class="form-control" ng-model="vm.collegeSelected1" ng-options="item.id as item.name for item in vm.collegeList">
+                  <option value="">全部</option>
+                </select>
+              </label>
+              <label style="margin-bottom:0" ng-repeat="item in vm.collegeSelectedList1">
+                <button tyle="button" class="btn button-link" ng-bind="vm.collegeMap1[item]+'   X'" ng-click="vm.removeCollege1(item)"><b></b></button>&nbsp;
+              </label>
+            </div>
+        </div>
+        <div class="col-sm-12 bottom-10 top-10">
+            <span class="cond-label">发明单位：</span>
+            <div class="btn-group">
+              <label style="margin-bottom:0;color:#eee">
+                <select class="form-control" ng-model="vm.collegeSelected2" ng-options="item.id as item.name for item in vm.collegeList">
+                  <option value="">全部</option>
+                </select>
+              </label>
+              <label style="margin-bottom:0" ng-repeat="item in vm.collegeSelectedList2">
+                <button tyle="button" class="btn button-link" ng-bind="vm.collegeMap2[item]+'   X'" ng-click="vm.removeCollege2(item)"><b></b></button>&nbsp;
+              </label>
+            </div>
+        </div>
+        <div class="col-sm-12 bottom-10">
+            <span class="cond-label">专利名称：</span>
+            <div class="btn-group">
+              <input type="text" class="form-control" ng-model="vm.name"/>
+            </div>
+        </div>
+        <div class="col-sm-12 bottom-10">
+            <span class="cond-label">专利权人：</span>
+            <div class="btn-group">
+              <input type="text" class="form-control" ng-model="vm.owner_name"/>
+            </div>
+        </div>
+        <div class="col-sm-12 bottom-10">
+            <span class="cond-label">发明人：</span>
+            <div class="btn-group">
+              <input type="text" class="form-control" ng-model="vm.firstinventor_name"/>
+            </div>
+        </div>
+        <div class="col-sm-12">
+          <span class="cond-label"></span>
+            <button class="btn btn-info" ng-click="vm.submit()">确定</button>
+            <button class="btn btn-default" ng-click="vm.cancel()">取消</button>
+        </div>
+        <div class="col-sm-12" id="more">
+            <span class="glyphicon glyphicon-triangle-bottom">
+            </span>
+        </div>
+      </show-more>
+  </div>
+  	<div class="col-md-12">
+      <div class="panel panel-default table-header">
+        <div class="panel-heading table-heading">
+          <div class="row">
+            <div class="col-md-4 pull-left">
+              <h3 class="panel-title table-title">专利列表</h3>
+            </div>
+            <div class="col-md-8 pull-right" ng-hide="vm.showCheckbox">
+                <button type="button" class="btn btn-info pull-right right-10" ng-click="vm.showCheckbox=true">导出Excel&nbsp;&nbsp;<span class="glyphicon glyphicon-export"></span></button>
+                <div class="input-group col-md-4 pull-right right-10">
+                  <input type="text" class="form-control" ng-model="filter" placeholder="输入关键字">
+                  <div class="input-group-addon">筛选</div>
+                </div>
+            </div>
+            <div class="col-md-8" ng-show="vm.showCheckbox">
+                <button type="button" class="btn btn-default pull-right" ng-click="vm.showCheckbox=false">取消导出</span></button>
+                <button type="button" class="btn btn-primary pull-right right-10" ng-click="vm.exportExcel('all')">导出所有<span class="glyphicon glyphicon-export"></span></button>
+                <button type="button" class="btn btn-success pull-right right-10" ng-click="vm.exportExcel('current')">导出当前页<span class="glyphicon glyphicon-export"></span></button>
+                <h3 class="table-title warning-text pull-left">请选择要导出的字段</h3>
+            </div>
+          </div>
+        </div>
+      </div>
+  		<table class="table table-bordered table-striped table-hover">
+        <thead>
+          <tr>
+            <th><span ng-hide="vm.showCheckbox">#</span><span ng-show="vm.showCheckbox">全选<input type="checkbox" ng-click="vm.selectAll();"></span></th>
+            <th>专利名称<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.name"></th>
+            <th>专利权人/申请人<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.owner_name"></th>
+            <th>所在单位<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.ownercollege_name"></th>
+            <th>第一发明人<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.firstinventor_name"></th>
+            <th>第一发明人单位<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.inventorcollege_name"></th>
+            <th>专利类型<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.type"></th>
+            <th>专利（申请）号<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.apply_no"></th>
+            <th>专利申请日<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.apply_date"></th>
+            <th>专利授权日<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.grant_date"></th>
+            <th>备注<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.comment"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-if="vm.paginationConf.totalItems" ng-repeat="item in vm.patentList | filter:filter">
+            <td ng-bind="item.id"></td>
+            <td ng-bind="item.name"></td>
+            <td ng-bind="item.owner_name"></td>
+            <td ng-bind="item.ownercollege_name"></td>
+            <td ng-bind="item.firstinventor_name"></td>
+            <td ng-bind="item.inventorcollege_name"></td>
+            <td ng-bind="item.type"></td>
+            <td ng-bind="item.apply_no"></td>
+            <td ng-bind="item.apply_date"></td>
+            <td ng-bind="item.grant_date"></td>
+            <td ng-bind="item.comment"></td>
+          </tr>
+          <tr ng-if="!vm.paginationConf.totalItems"><td colspan="12"><h2 class="text-center text-danger">无数据</h2></td></tr>
+        </tbody>
+      </table>
+      <tm-pagination conf="vm.paginationConf"></tm-pagination>
+    </div>
+  </div>
+</block>
+<block name="js">
+<script type="text/javascript" src="__PUBLIC__/js/patent.controller.js"></script>
+<script type="text/javascript" src="__CDN__/angular-ui-bootstrap/0.14.3/ui-bootstrap.min.js"></script>
+<script>
+  selectMenu('patent', 4, 0);
+</script>
+</block>

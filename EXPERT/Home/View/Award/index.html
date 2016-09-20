@@ -1,0 +1,218 @@
+<extend name="EXPERT/Templates/nav.html"/>
+<block name="content">
+  <!-- <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                  <h4 class="modal-title" id="myModalLabel">添加人员信息</h4>
+              </div>
+              <div class="modal-body">
+                  <form class="form-horizontal" action="__URL__/add" method="post">
+                      <div class="form-group">
+                          <label class="col-sm-2 control-label">姓名</label>
+                          <div class="col-sm-9">
+                              <input type="text" name="name" class="form-control" required>
+                          </div>
+                      </div>
+                      <div class="form-group">
+                          <label class="col-sm-2 control-label">性别</label>
+                          <div class="col-sm-9">
+                            <input type="radio" value="男" name="gender" checked>男&nbsp;&nbsp;&nbsp;
+                            <input type="radio" value="女" name="gender">女
+                          </div>
+                      </div>
+                      <div class="form-group">
+                          <label class="col-sm-2 control-label">邮箱</label>
+                          <div class="col-sm-9">
+                            <input type="email" name="email" class="form-control" required>
+                          </div>
+                      </div>
+                      <div class="form-group">
+                          <label class="col-sm-2 control-label">电话</label>
+                          <div class="col-sm-9">
+                            <input type="text" name="phone" class="form-control" required>
+                          </div>
+                      </div>
+                      <div class="form-group">
+                          <label class="col-sm-2 control-label">职工号</label>
+                          <div class="col-sm-9">
+                            <input type="text" name="employee_no" class="form-control" required>
+                          </div>
+                      </div>
+                      <div class="form-group">
+                          <label class="col-sm-2 control-label">博士后</label>
+                          <div class="col-sm-9">
+                            <input type="radio" value="1" name="postdoctor" checked>是&nbsp;&nbsp;&nbsp;
+                            <input type="radio" value="2" name="postdoctor">否
+                          </div>
+                      </div>
+                      <div class="form-group">
+                          <label class="col-sm-2 control-label">出生日期</label>
+                          <div class="col-sm-9">
+                            <input type="text" name="birthday" class="form-control" required>
+                          </div>
+                      </div>
+                      <div class="form-group">
+                          <label class="col-sm-2 control-label">一级学科</label>
+                          <div class="col-sm-9">
+                            <input type="text" name="first_class" class="form-control" required>
+                          </div>
+                      </div>
+                      <div class="form-group">
+                          <label class="col-sm-2 control-label">二级学科</label>
+                          <div class="col-sm-9">
+                            <input type="text" name="second_class" class="form-control" required>
+                          </div>
+                      </div>
+                      <div class="form-group">
+                          <div class="col-sm-offset-2 col-sm-5">
+                              <button type="submit" class="btn btn-info">确认</button>
+                              <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                          </div>
+                      </div>
+                  </form>
+              </div>
+          </div>
+      </div>
+  </div> -->
+  <div class="container" ng-app="award" ng-controller="awardController as vm">
+    <div class="col-sm-12 row">
+      <show-more count="5">
+        <div class="col-sm-12 bottom-10">
+            <span class="cond-label">人员年龄：</span>
+            <div class="btn-group">
+                <date-range start-time="vm.params.person_startTime" end-time="vm.params.person_endTime"></date-range>
+            </div>
+        </div>
+        <!-- <div class="col-sm-12 bottom-10">
+            <span class="cond-label">获奖时间：</span>
+            <div class="btn-group">
+                <date-range start-time="vm.params.startTime" end-time="vm.params.endTime"></date-range>
+            </div>
+        </div> -->
+        <div class="col-sm-12 bottom-10">
+            <span class="cond-label">获奖级别：</span>
+            <div class="btn-group">
+                <label class="btn btn-default active" ng-model="vm.params.level" ng-click="vm.resetCheckbox(vm.level)" uib-btn-radio="''">全部</label>
+                <label class="btn btn-default" ng-model="vm.level[0]" uib-btn-checkbox>一等奖</label>
+                <label class="btn btn-default" ng-model="vm.level[1]" uib-btn-checkbox>二等奖</label>
+                <label class="btn btn-default" ng-model="vm.level[2]" uib-btn-checkbox>三等奖</label>
+            </div>
+        </div>
+        <div class="col-sm-12 bottom-10">
+            <span class="cond-label">人员职称：</span>
+            <div class="btn-group">
+                <label class="btn btn-default active" ng-click="vm.resetCheckbox(vm.grade_id)" ng-model="vm.params.grade_id" uib-btn-radio="''">全部</label>
+                <label class="btn btn-default" ng-repeat="item in vm.gradeList" ng-model="vm.grade_id[item.id]" uib-btn-checkbox ng-bind="item.name"></label>
+            </div>
+        </div>
+        <div class="col-sm-12 bottom-10">
+            <span class="cond-label">学术称号：</span>
+            <div class="btn-group">            
+                <label class="btn btn-default active" ng-click="vm.resetCheckbox(vm.academichonor_id)" ng-model="vm.params.academichonor_id" uib-btn-radio="''">全部</label>
+                <label class="btn btn-default" ng-repeat="item in vm.academichonorList" ng-model="vm.academichonor_id[item.id]" uib-btn-checkbox data-toggle="tooltip" data-placement="top" title="{{item.name}}" ng-bind="item.name.length>4?item.name.substr(0,4) + '...':item.name"></label>
+            </div>
+        </div>
+        <div class="col-sm-12">
+            <span class="cond-label">学院：</span>
+            <div class="btn-group">
+              <label style="margin-bottom:0;color:#eee">
+                <select class="form-control" ng-model="vm.collegeSelected" ng-options="item.id as item.name for item in vm.collegeList">
+                  <option value="">全部</option>
+                </select>
+              </label>
+              <label style="margin-bottom:0" ng-repeat="item in vm.collegeSelectedList">
+                <button tyle="button" class="btn button-link" ng-bind="vm.collegeMap[item]+'   X'" ng-click="vm.removeCollege(item)"><b></b></button>&nbsp;
+              </label>
+            </div>
+        </div>
+        <div class="col-sm-12 bottom-10 top-10">
+            <span class="cond-label">人员姓名：</span>
+            <div class="btn-group">
+              <input type="text" class="form-control" ng-model="vm.person_name"/>
+            </div>
+        </div>
+        <div class="col-sm-12 bottom-10">
+            <span class="cond-label">奖励名称：</span>
+            <div class="btn-group">
+              <input type="text" class="form-control" ng-model="vm.name"/>
+            </div>
+        </div>
+        <div class="col-sm-12">
+          <span class="cond-label"></span>
+            <button class="btn btn-info" ng-click="vm.submit()">确定</button>
+            <button class="btn btn-default" ng-click="vm.cancel()">取消</button>
+        </div>
+        <div class="col-sm-12" id="more">
+            <span class="glyphicon glyphicon-triangle-bottom">
+            </span>
+        </div>
+      </show-more>
+  </div>
+  	<div class="col-md-12">
+      <div class="panel panel-default table-header">
+        <div class="panel-heading table-heading">
+          <div class="row">
+            <div class="col-md-4 pull-left">
+              <h3 class="panel-title table-title">获奖列表</h3>
+            </div>
+            <div class="col-md-8 pull-right" ng-hide="vm.showCheckbox">
+                <!-- <button type="button" class="btn btn-info pull-right" data-toggle="modal" data-target="#modal">新增&nbsp;&nbsp;<span class="glyphicon glyphicon-plus"></span></button> -->
+                <button type="button" class="btn btn-info pull-right right-10" ng-click="vm.showCheckbox=true">导出Excel&nbsp;&nbsp;<span class="glyphicon glyphicon-export"></span></button>
+                <div class="input-group col-md-4 pull-right right-10">
+                  <input type="text" class="form-control" ng-model="filter" placeholder="输入关键字">
+                  <div class="input-group-addon">筛选</div>
+                </div>
+            </div>
+            <div class="col-md-8" ng-show="vm.showCheckbox">
+                <button type="button" class="btn btn-default pull-right" ng-click="vm.showCheckbox=false">取消导出</span></button>
+                <button type="button" class="btn btn-primary pull-right right-10" ng-click="vm.exportExcel('all')">导出所有<span class="glyphicon glyphicon-export"></span></button>
+                <button type="button" class="btn btn-success pull-right right-10" ng-click="vm.exportExcel('current')">导出当前页<span class="glyphicon glyphicon-export"></span></button>
+                <h3 class="table-title warning-text pull-left">请选择要导出的字段</h3>
+            </div>
+          </div>
+        </div>
+      </div>
+  		<table class="table table-bordered table-striped table-hover">
+        <thead>
+          <tr>
+            <th><span ng-hide="vm.showCheckbox">#</span><span ng-show="vm.showCheckbox">全选<input type="checkbox" ng-click="vm.selectAll();"></span></th>
+            <th>姓名<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.person_name"></th>
+            <th>出生日期<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.birthday"></th>
+            <th>学院<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.col_name"></th>
+            <th>职称<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.grade_name"></th>
+            <th>学术荣誉<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.academichonor_name"></th>
+            <th>奖励名称<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.name"></th>
+            <th>奖励级别<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.level"></th>
+            <th>获奖时间<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.time"></th>
+            <th>备注<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.comment"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-if="vm.paginationConf.totalItems" ng-repeat="item in vm.awardList | filter:filter">
+            <td ng-bind="item.id"></td>
+            <td ng-bind="item.person_name"></td>
+            <td ng-bind="item.birthday"></td>
+            <td ng-bind="item.col_name"></td>
+            <td ng-bind="item.grade_name"></td>
+            <td ng-bind="item.academichonor_name"></td>
+            <td ng-bind="item.name"></td>
+            <td ng-bind="item.level"></td>
+            <td ng-bind="item.time"></td>
+            <td ng-bind="item.comment"></td>
+          </tr>
+          <tr ng-if="!vm.paginationConf.totalItems"><td colspan="12"><h2 class="text-center text-danger">无数据</h2></td></tr>
+        </tbody>
+      </table>
+      <tm-pagination conf="vm.paginationConf"></tm-pagination>
+    </div>
+  </div>
+</block>
+<block name="js">
+<script type="text/javascript" src="__PUBLIC__/js/award.controller.js"></script>
+<script type="text/javascript" src="__CDN__/angular-ui-bootstrap/0.14.3/ui-bootstrap.min.js"></script>
+<script>
+  selectMenu('award', 0, 0);  
+</script>
+</block>

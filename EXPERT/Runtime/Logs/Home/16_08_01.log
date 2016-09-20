@@ -1,0 +1,86 @@
+[ 2016-08-01T10:18:48+08:00 ] ::1 /Index/login
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001037s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002490s ]
+SQL: SHOW COLUMNS FROM `audit` [ RunTime:0.5182s ]
+SQL: INSERT INTO `audit` (`name`,`ip`,`module`,`time`,`result`,`descr`) VALUES ('nankai','::1','登录','16-08-01 10:18:47','失败','验证码错误') [ RunTime:0.1016s ]
+
+[ 2016-08-01T10:18:56+08:00 ] ::1 /Index/login
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001053s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002936s ]
+SQL: SHOW COLUMNS FROM `audit` [ RunTime:0.0039s ]
+SQL: INSERT INTO `audit` (`name`,`ip`,`module`,`time`,`result`,`descr`) VALUES ('nankai','::1','登录','16-08-01 10:18:56','失败','验证码错误') [ RunTime:0.0456s ]
+
+[ 2016-08-01T10:18:59+08:00 ] ::1 /Index/login
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001017s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002590s ]
+SQL: SHOW COLUMNS FROM `audit` [ RunTime:0.0043s ]
+SQL: INSERT INTO `audit` (`name`,`ip`,`module`,`time`,`result`,`descr`) VALUES ('nankai','::1','登录','16-08-01 10:18:59','失败','验证码错误') [ RunTime:0.0471s ]
+
+[ 2016-08-01T10:19:09+08:00 ] ::1 /Index/login
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001117s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002856s ]
+SQL: SHOW COLUMNS FROM `user` [ RunTime:0.0674s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `user` WHERE `account` = 'nankai' AND `password` = '3df8cd56ce34d5bbb0c5e1c16274b0f7' LIMIT 1   [ RunTime:0.0895s ]
+SQL: SHOW COLUMNS FROM `audit` [ RunTime:0.0139s ]
+SQL: INSERT INTO `audit` (`name`,`ip`,`module`,`time`,`result`) VALUES ('nankai','::1','登录','16-08-01 10:19:09','成功') [ RunTime:0.0781s ]
+
+[ 2016-08-01T10:26:23+08:00 ] ::1 /Home/People/detail/?id=1
+ERR: 1054:Champ 'person.mentor_typ_id' inconnu dans field list
+ [ SQL语句 ] : SELECT person.id AS id,person.name AS name,person.gender AS gender,person.employee_no AS employee_no,person.college_id AS college_id,person.postdoctor AS postdoctor,person.title_id AS title_id,person.birthday AS birthday,person.email AS email,person.phone AS phone,person.first_class AS first_class,person.second_class AS second_class,person.type_id AS type_id,person.degree_id AS degree_id,person.mentor_typ_id AS mentor_typ_id,college.id AS college_id,college.name AS college_name,person_mentor_type.name AS mentor_name,person_degree.name AS degree_name,person_title.name AS title_name,person_type.name AS person_type,academic_honor.name AS academic_name FROM person person LEFT JOIN college college ON person.college_id=college.id LEFT JOIN person_mentor_type person_mentor_type ON person.mentor_type_id=person_mentor_type.id LEFT JOIN person_degree person_degree ON person.degree_id=person_degree.id LEFT JOIN person_title person_title ON person.title_id=person_title.id LEFT JOIN person_type person_type ON person.type_id=person_type.id LEFT JOIN person_honor person_honor ON person.id=person_honor.person_id LEFT JOIN academic_honor academic_honor ON academic_honor.id=person_honor.honor_id WHERE person.id = 1 
+
+[ 2016-08-01T10:32:31+08:00 ] ::1 /Home/People/detail/?id=1
+ERR: 1054:Champ 'person.mentor_typ_id' inconnu dans field list
+ [ SQL语句 ] : SELECT person.id AS id,person.name AS name,person.gender AS gender,person.employee_no AS employee_no,person.college_id AS college_id,person.postdoctor AS postdoctor,person.title_id AS title_id,person.birthday AS birthday,person.email AS email,person.phone AS phone,person.first_class AS first_class,person.second_class AS second_class,person.type_id AS type_id,person.degree_id AS degree_id,person.mentor_typ_id AS mentor_typ_id,college.id AS college_id,college.name AS college_name,person_mentor_type.id AS men_id,person_mentor_type.name AS mentor_name,person_degree.id AS deg_id,person_degree.name AS degree_name,person_title.id AS gra_id,person_title.name AS title_name,person_type.name AS person_type,academic_honor.id AS aca_id,academic_honor.name AS academic_name FROM person person LEFT JOIN college college ON person.college_id=college.id LEFT JOIN person_mentor_type person_mentor_type ON person.mentor_type_id=person_mentor_type.id LEFT JOIN person_degree person_degree ON person.degree_id=person_degree.id LEFT JOIN person_title person_title ON person.title_id=person_title.id LEFT JOIN person_type person_type ON person.type_id=person_type.id LEFT JOIN person_honor person_honor ON person.id=person_honor.person_id LEFT JOIN academic_honor academic_honor ON academic_honor.id=person_honor.honor_id WHERE person.id = 1 
+
+[ 2016-08-01T20:26:31+08:00 ] ::1 /People/personList/
+ERR: 1054:Champ 'Array' inconnu dans where clause
+ [ SQL语句 ] : SELECT person.id AS id,person.name AS name,person.gender AS gender,person.employee_no AS employee_no,person.postdoctor AS postdoctor,person.birthday AS birthday,person.email AS email,person.phone AS phone,person.first_class AS first_class,person.second_class AS second_class,college.name AS college_name,academic_honor.name AS academic_name FROM person person LEFT JOIN college college ON person.college_id=college.id LEFT JOIN person_mentor_type person_mentor_type ON person.mentor_type_id=person_mentor_type.id LEFT JOIN person_degree person_degree ON person.degree_id=person_degree.id LEFT JOIN person_title person_title ON person.title_id=person_title.id LEFT JOIN person_type person_type ON person.type_id=person_type.id LEFT JOIN person_honor person_honor ON person.id=person_honor.person_id LEFT JOIN academic_honor academic_honor ON academic_honor.id=person_honor.honor_id WHERE ( (Array) ) ORDER BY person.id ASC LIMIT 0,10  
+
+[ 2016-08-01T20:27:34+08:00 ] ::1 /People/personList/
+ERR: 1054:Champ 'Array' inconnu dans where clause
+ [ SQL语句 ] : SELECT person.id AS id,person.name AS name,person.gender AS gender,person.employee_no AS employee_no,person.postdoctor AS postdoctor,person.birthday AS birthday,person.email AS email,person.phone AS phone,person.first_class AS first_class,person.second_class AS second_class,college.name AS college_name,academic_honor.name AS academic_name FROM person person LEFT JOIN college college ON person.college_id=college.id LEFT JOIN person_mentor_type person_mentor_type ON person.mentor_type_id=person_mentor_type.id LEFT JOIN person_degree person_degree ON person.degree_id=person_degree.id LEFT JOIN person_title person_title ON person.title_id=person_title.id LEFT JOIN person_type person_type ON person.type_id=person_type.id LEFT JOIN person_honor person_honor ON person.id=person_honor.person_id LEFT JOIN academic_honor academic_honor ON academic_honor.id=person_honor.honor_id WHERE ( (Array) ) ORDER BY person.id ASC LIMIT 0,10  
+
+[ 2016-08-01T20:31:10+08:00 ] ::1 /People/personList/
+ERR: 1054:Champ 'Array' inconnu dans where clause
+ [ SQL语句 ] : SELECT person.id AS id,person.name AS name,person.gender AS gender,person.employee_no AS employee_no,person.postdoctor AS postdoctor,person.birthday AS birthday,person.email AS email,person.phone AS phone,person.first_class AS first_class,person.second_class AS second_class,college.name AS college_name,academic_honor.name AS academic_name FROM person person LEFT JOIN college college ON person.college_id=college.id LEFT JOIN person_mentor_type person_mentor_type ON person.mentor_type_id=person_mentor_type.id LEFT JOIN person_degree person_degree ON person.degree_id=person_degree.id LEFT JOIN person_title person_title ON person.title_id=person_title.id LEFT JOIN person_type person_type ON person.type_id=person_type.id LEFT JOIN person_honor person_honor ON person.id=person_honor.person_id LEFT JOIN academic_honor academic_honor ON academic_honor.id=person_honor.honor_id WHERE ( (Array) ) ORDER BY person.id ASC LIMIT 0,10  
+
+[ 2016-08-01T20:38:28+08:00 ] ::1 /People/personList/
+ERR: 1054:Champ 'Array' inconnu dans where clause
+ [ SQL语句 ] : SELECT person.id AS id,person.name AS name,person.gender AS gender,person.employee_no AS employee_no,person.postdoctor AS postdoctor,person.birthday AS birthday,person.email AS email,person.phone AS phone,person.first_class AS first_class,person.second_class AS second_class,college.name AS college_name,academic_honor.name AS academic_name FROM person person LEFT JOIN college college ON person.college_id=college.id LEFT JOIN person_mentor_type person_mentor_type ON person.mentor_type_id=person_mentor_type.id LEFT JOIN person_degree person_degree ON person.degree_id=person_degree.id LEFT JOIN person_title person_title ON person.title_id=person_title.id LEFT JOIN person_type person_type ON person.type_id=person_type.id LEFT JOIN person_honor person_honor ON person.id=person_honor.person_id LEFT JOIN academic_honor academic_honor ON academic_honor.id=person_honor.honor_id WHERE ( (Array) ) ORDER BY person.id ASC LIMIT 0,10  
+
+[ 2016-08-01T20:39:15+08:00 ] ::1 /People/personList/
+ERR: 1054:Champ 'Array' inconnu dans where clause
+ [ SQL语句 ] : SELECT person.id AS id,person.name AS name,person.gender AS gender,person.employee_no AS employee_no,person.postdoctor AS postdoctor,person.birthday AS birthday,person.email AS email,person.phone AS phone,person.first_class AS first_class,person.second_class AS second_class,college.name AS college_name,academic_honor.name AS academic_name FROM person person LEFT JOIN college college ON person.college_id=college.id LEFT JOIN person_mentor_type person_mentor_type ON person.mentor_type_id=person_mentor_type.id LEFT JOIN person_degree person_degree ON person.degree_id=person_degree.id LEFT JOIN person_title person_title ON person.title_id=person_title.id LEFT JOIN person_type person_type ON person.type_id=person_type.id LEFT JOIN person_honor person_honor ON person.id=person_honor.person_id LEFT JOIN academic_honor academic_honor ON academic_honor.id=person_honor.honor_id WHERE ( (Array) ) ORDER BY person.id ASC LIMIT 0,10  
+
+[ 2016-08-01T20:40:06+08:00 ] ::1 /People/personList/
+ERR: 1054:Champ 'Array' inconnu dans where clause
+ [ SQL语句 ] : SELECT person.id AS id,person.name AS name,person.gender AS gender,person.employee_no AS employee_no,person.postdoctor AS postdoctor,person.birthday AS birthday,person.email AS email,person.phone AS phone,person.first_class AS first_class,person.second_class AS second_class,college.name AS college_name,academic_honor.name AS academic_name FROM person person LEFT JOIN college college ON person.college_id=college.id LEFT JOIN person_mentor_type person_mentor_type ON person.mentor_type_id=person_mentor_type.id LEFT JOIN person_degree person_degree ON person.degree_id=person_degree.id LEFT JOIN person_title person_title ON person.title_id=person_title.id LEFT JOIN person_type person_type ON person.type_id=person_type.id LEFT JOIN person_honor person_honor ON person.id=person_honor.person_id LEFT JOIN academic_honor academic_honor ON academic_honor.id=person_honor.honor_id WHERE ( (Array) ) ORDER BY person.id ASC LIMIT 0,10  
+
+[ 2016-08-01T20:40:42+08:00 ] ::1 /People/personList/
+ERR: 1054:Champ 'Array' inconnu dans where clause
+ [ SQL语句 ] : SELECT person.id AS id,person.name AS name,person.gender AS gender,person.employee_no AS employee_no,person.postdoctor AS postdoctor,person.birthday AS birthday,person.email AS email,person.phone AS phone,person.first_class AS first_class,person.second_class AS second_class,college.name AS college_name,academic_honor.name AS academic_name FROM person person LEFT JOIN college college ON person.college_id=college.id LEFT JOIN person_mentor_type person_mentor_type ON person.mentor_type_id=person_mentor_type.id LEFT JOIN person_degree person_degree ON person.degree_id=person_degree.id LEFT JOIN person_title person_title ON person.title_id=person_title.id LEFT JOIN person_type person_type ON person.type_id=person_type.id LEFT JOIN person_honor person_honor ON person.id=person_honor.person_id LEFT JOIN academic_honor academic_honor ON academic_honor.id=person_honor.honor_id WHERE ( (Array) ) ORDER BY person.id ASC LIMIT 0,10  
+
+[ 2016-08-01T20:52:20+08:00 ] ::1 /People/personList/
+ERR: 1054:Champ 'Array' inconnu dans where clause
+ [ SQL语句 ] : SELECT person.id AS id,person.name AS name,person.gender AS gender,person.employee_no AS employee_no,person.postdoctor AS postdoctor,person.birthday AS birthday,person.email AS email,person.phone AS phone,person.first_class AS first_class,person.second_class AS second_class,college.name AS college_name,academic_honor.name AS academic_name FROM person person LEFT JOIN college college ON person.college_id=college.id LEFT JOIN person_mentor_type person_mentor_type ON person.mentor_type_id=person_mentor_type.id LEFT JOIN person_degree person_degree ON person.degree_id=person_degree.id LEFT JOIN person_title person_title ON person.title_id=person_title.id LEFT JOIN person_type person_type ON person.type_id=person_type.id LEFT JOIN person_honor person_honor ON person.id=person_honor.person_id LEFT JOIN academic_honor academic_honor ON academic_honor.id=person_honor.honor_id WHERE ( (Array) ) ORDER BY person.id ASC LIMIT 0,10  
+
+[ 2016-08-01T20:53:41+08:00 ] ::1 /People/personList/
+ERR: 1054:Champ 'Array' inconnu dans where clause
+ [ SQL语句 ] : SELECT person.id AS id,person.name AS name,person.gender AS gender,person.employee_no AS employee_no,person.postdoctor AS postdoctor,person.birthday AS birthday,person.email AS email,person.phone AS phone,person.first_class AS first_class,person.second_class AS second_class,college.name AS college_name,academic_honor.name AS academic_name FROM person person LEFT JOIN college college ON person.college_id=college.id LEFT JOIN person_mentor_type person_mentor_type ON person.mentor_type_id=person_mentor_type.id LEFT JOIN person_degree person_degree ON person.degree_id=person_degree.id LEFT JOIN person_title person_title ON person.title_id=person_title.id LEFT JOIN person_type person_type ON person.type_id=person_type.id LEFT JOIN person_honor person_honor ON person.id=person_honor.person_id LEFT JOIN academic_honor academic_honor ON academic_honor.id=person_honor.honor_id WHERE ( (Array) ) ORDER BY person.id ASC LIMIT 0,10  
+
+[ 2016-08-01T20:56:37+08:00 ] ::1 /People/personList/
+ERR: 1054:Champ 'Array' inconnu dans where clause
+ [ SQL语句 ] : SELECT person.id AS id,person.name AS name,person.gender AS gender,person.employee_no AS employee_no,person.postdoctor AS postdoctor,person.birthday AS birthday,person.email AS email,person.phone AS phone,person.first_class AS first_class,person.second_class AS second_class,college.name AS college_name,academic_honor.name AS academic_name FROM person person LEFT JOIN college college ON person.college_id=college.id LEFT JOIN person_mentor_type person_mentor_type ON person.mentor_type_id=person_mentor_type.id LEFT JOIN person_degree person_degree ON person.degree_id=person_degree.id LEFT JOIN person_title person_title ON person.title_id=person_title.id LEFT JOIN person_type person_type ON person.type_id=person_type.id LEFT JOIN person_honor person_honor ON person.id=person_honor.person_id LEFT JOIN academic_honor academic_honor ON academic_honor.id=person_honor.honor_id WHERE ( (Array) ) ORDER BY person.id ASC LIMIT 0,10  
+
+[ 2016-08-01T21:05:53+08:00 ] ::1 /People/personList/
+ERR: 1054:Champ 'Array' inconnu dans where clause
+ [ SQL语句 ] : SELECT person.id AS id,person.name AS name,person.gender AS gender,person.employee_no AS employee_no,person.postdoctor AS postdoctor,person.birthday AS birthday,person.email AS email,person.phone AS phone,person.first_class AS first_class,person.second_class AS second_class,college.name AS college_name,academic_honor.name AS academic_name FROM person person LEFT JOIN college college ON person.college_id=college.id LEFT JOIN person_mentor_type person_mentor_type ON person.mentor_type_id=person_mentor_type.id LEFT JOIN person_degree person_degree ON person.degree_id=person_degree.id LEFT JOIN person_title person_title ON person.title_id=person_title.id LEFT JOIN person_type person_type ON person.type_id=person_type.id LEFT JOIN person_honor person_honor ON person.id=person_honor.person_id LEFT JOIN academic_honor academic_honor ON academic_honor.id=person_honor.honor_id WHERE ( (Array) ) ORDER BY person.id ASC LIMIT 0,10  
+
+[ 2016-08-01T21:06:51+08:00 ] ::1 /People/personList/
+ERR: 1054:Champ 'Array' inconnu dans where clause
+ [ SQL语句 ] : SELECT person.id AS id,person.name AS name,person.gender AS gender,person.employee_no AS employee_no,person.postdoctor AS postdoctor,person.birthday AS birthday,person.email AS email,person.phone AS phone,person.first_class AS first_class,person.second_class AS second_class,college.name AS college_name,academic_honor.name AS academic_name FROM person person LEFT JOIN college college ON person.college_id=college.id LEFT JOIN person_mentor_type person_mentor_type ON person.mentor_type_id=person_mentor_type.id LEFT JOIN person_degree person_degree ON person.degree_id=person_degree.id LEFT JOIN person_title person_title ON person.title_id=person_title.id LEFT JOIN person_type person_type ON person.type_id=person_type.id LEFT JOIN person_honor person_honor ON person.id=person_honor.person_id LEFT JOIN academic_honor academic_honor ON academic_honor.id=person_honor.honor_id WHERE ( (Array) ) ORDER BY person.id ASC LIMIT 0,10  
+

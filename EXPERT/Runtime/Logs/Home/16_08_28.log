@@ -1,0 +1,60 @@
+[ 2016-08-28T17:28:55+08:00 ] 127.0.0.1 /scrape.php?passkey=937af33f5a14115f3a7403e97fdcdec8&info_hash=%09D%9a%c2o%18i%05%97%10%0b%e8%98S%d0%81u%e7%1ew&info_hash=%14%7d5%eb%85%12%fc%86ko%b4%8b%22%be%83%97m%83s%a8&info_hash=x%c9%f0%00%08%9c%97%80%ea6%1a%40%c3%b37lk%b1%98v&info_hash=U%f7t%f1G%bd%d9%e1%e7%7c%14%a5x%11%af%0b%12%ba5%8b&info_hash=l~%87%8b%7d%9eh%95%3a%dd%60%9b%7d%e8%0e%8cPhs5&info_hash=%16%cc%23B%9c%0e%85C2%a1%a2%0d.n%18m%d5%f8%c2%02&info_hash=%cc%80Vc%a6%bb%28%1d%82%a9%0c%9dm%09%03%f8R%a1%e6%b0&info_hash=o%0a%3c%17%84S%07z%ac%e9u%e9%f8%da%84v%e4%f51%db&info_hash=%e8%a1%85%85%3a%e8%b1%9ag%97%8c3%11%c9U%3f%17%7cz%ac&info_hash=B%f4-F%13%7cv%07%3a%09%b2%23%1560%60%eac%03Y&info_hash=%8aG%fa%99%f3%b7%f0u%1aE.%0b%2b%5cB%a8%8dr%92%ec&info_hash=%e4%03A%3a%5d%b1jB%a5%da%a4%fc%b5%c4%a8%b9%95N%de%08&info_hash=%e4%ef%7c%7d%d5%ca%0a%af%f2FL%da%ee%28nU%0fF%b1%cc&info_hash=%e2%02YT%d1%8b%fb-%0c%3e%2ajL%e2%c4%3c%8c%a7%de%a3&info_hash=%95%85%a7Y%9d%5b%a6%02%5c%122%c7%0f%fe%3e%13%cbB%f6%00&info_hash=%b2%60t%ddP%e7%8d%8d%c4Tr%0c%e9%5b%19%93%7d%86s%e6&info_hash=%16%d8%b1K%7f%e3%85%19%8e%dcLL%a1%7f%fcH%1a%f8%19%80&info_hash=1%1cK%fd%3d0%5e%abk%f0%c6S%e6t%dedS%40%d9O
+ERR: 无法加载控制器:Scrape
+
+[ 2016-08-28T17:29:07+08:00 ] 127.0.0.1 /announce.php?passkey=937af33f5a14115f3a7403e97fdcdec8&info_hash=%09D%9a%c2o%18i%05%97%10%0b%e8%98S%d0%81u%e7%1ew&peer_id=-UT2040-RT%fa%89%e8%dba%bfz%8cxr&port=53172&uploaded=0&downloaded=0&left=14849830672&corrupt=0&key=314854A1&event=started&numwant=200&compact=1&no_peer_id=1&ipv6=2001%3a250%3a401%3a6119%3a5888%3a5065%3ad039%3aff8c
+ERR: 无法加载控制器:Announce
+
+[ 2016-08-28T17:59:10+08:00 ] 127.0.0.1 /announce.php?passkey=937af33f5a14115f3a7403e97fdcdec8&info_hash=%09D%9a%c2o%18i%05%97%10%0b%e8%98S%d0%81u%e7%1ew&peer_id=-UT2040-RT%fa%89%e8%dba%bfz%8cxr&port=53172&uploaded=0&downloaded=0&left=14849830672&corrupt=0&key=314854A1&event=started&numwant=200&compact=1&no_peer_id=1&ipv6=2001%3a250%3a401%3a6119%3a5888%3a5065%3ad039%3aff8c
+ERR: 无法加载控制器:Announce
+
+[ 2016-08-28T17:59:10+08:00 ] 127.0.0.1 /announce.php?passkey=937af33f5a14115f3a7403e97fdcdec8&info_hash=%e6%1c7%d1%e9c%8e%11%f6r%db%7c%b0%f5%bfF2kQ%07&peer_id=-UT2040-RT%fa%89%e8%dba%bfz%8cxr&port=53172&uploaded=0&downloaded=5423464507&left=0&corrupt=0&key=314854A1&event=started&numwant=200&compact=1&no_peer_id=1&ipv6=2001%3a250%3a401%3a6119%3a5888%3a5065%3ad039%3aff8c
+ERR: 无法加载控制器:Announce
+
+[ 2016-08-28T18:08:41+08:00 ] ::1 /Index/login
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001018s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002259s ]
+SQL: SHOW COLUMNS FROM `user` [ RunTime:0.0039s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `user` WHERE `account` = 'admin' AND `password` = '21232f297a57a5a743894a0e4a801fc3' LIMIT 1   [ RunTime:0.0007s ]
+SQL: SHOW COLUMNS FROM `audit` [ RunTime:0.0034s ]
+SQL: INSERT INTO `audit` (`name`,`ip`,`module`,`time`,`result`) VALUES ('admin','::1','登录','16-08-28 06:08:41','成功') [ RunTime:0.0826s ]
+
+[ 2016-08-28T18:26:01+08:00 ] ::1 /People/import
+ERR: Think\Model:relation方法不存在！
+
+[ 2016-08-28T18:29:13+08:00 ] 127.0.0.1 /announce.php?passkey=937af33f5a14115f3a7403e97fdcdec8&info_hash=%e6%1c7%d1%e9c%8e%11%f6r%db%7c%b0%f5%bfF2kQ%07&peer_id=-UT2040-RT%fa%89%e8%dba%bfz%8cxr&port=53172&uploaded=0&downloaded=5423464507&left=0&corrupt=0&key=314854A1&event=started&numwant=200&compact=1&no_peer_id=1&ipv6=2001%3a250%3a401%3a6119%3a5888%3a5065%3ad039%3aff8c
+ERR: 无法加载控制器:Announce
+
+[ 2016-08-28T18:29:13+08:00 ] 127.0.0.1 /announce.php?passkey=937af33f5a14115f3a7403e97fdcdec8&info_hash=%09D%9a%c2o%18i%05%97%10%0b%e8%98S%d0%81u%e7%1ew&peer_id=-UT2040-RT%fa%89%e8%dba%bfz%8cxr&port=53172&uploaded=0&downloaded=0&left=14849830672&corrupt=0&key=314854A1&event=started&numwant=200&compact=1&no_peer_id=1&ipv6=2001%3a250%3a401%3a6119%3a5888%3a5065%3ad039%3aff8c
+ERR: 无法加载控制器:Announce
+
+[ 2016-08-28T18:59:16+08:00 ] 127.0.0.1 /announce.php?passkey=937af33f5a14115f3a7403e97fdcdec8&info_hash=%09D%9a%c2o%18i%05%97%10%0b%e8%98S%d0%81u%e7%1ew&peer_id=-UT2040-RT%fa%89%e8%dba%bfz%8cxr&port=53172&uploaded=0&downloaded=0&left=14849830672&corrupt=0&key=314854A1&event=started&numwant=200&compact=1&no_peer_id=1&ipv6=2001%3a250%3a401%3a6119%3a5888%3a5065%3ad039%3aff8c
+ERR: 无法加载控制器:Announce
+
+[ 2016-08-28T18:59:16+08:00 ] 127.0.0.1 /announce.php?passkey=937af33f5a14115f3a7403e97fdcdec8&info_hash=%e6%1c7%d1%e9c%8e%11%f6r%db%7c%b0%f5%bfF2kQ%07&peer_id=-UT2040-RT%fa%89%e8%dba%bfz%8cxr&port=53172&uploaded=0&downloaded=5423464507&left=0&corrupt=0&key=314854A1&event=started&numwant=200&compact=1&no_peer_id=1&ipv6=2001%3a250%3a401%3a6119%3a5888%3a5065%3ad039%3aff8c
+ERR: 无法加载控制器:Announce
+
+[ 2016-08-28T19:08:33+08:00 ] ::1 /People/import
+ERR: 模板不存在:./EXPERT/Home/View/People/导入成功.html
+
+[ 2016-08-28T19:12:07+08:00 ] ::1 /People/import
+ERR: 模板不存在:./EXPERT/Home/View/People/导入成功.html
+
+[ 2016-08-28T22:22:38+08:00 ] 127.0.0.1 /announce.php?passkey=937af33f5a14115f3a7403e97fdcdec8&info_hash=%09D%9a%c2o%18i%05%97%10%0b%e8%98S%d0%81u%e7%1ew&peer_id=-UT2040-RT%fa%89%e8%dba%bfz%8cxr&port=53172&uploaded=0&downloaded=0&left=14849830672&corrupt=0&key=314854A1&event=started&numwant=200&compact=1&no_peer_id=1&ipv6=2001%3a250%3a401%3a6119%3a5888%3a5065%3ad039%3aff8c
+ERR: 无法加载控制器:Announce
+
+[ 2016-08-28T22:22:38+08:00 ] 127.0.0.1 /announce.php?passkey=937af33f5a14115f3a7403e97fdcdec8&info_hash=%e6%1c7%d1%e9c%8e%11%f6r%db%7c%b0%f5%bfF2kQ%07&peer_id=-UT2040-RT%fa%89%e8%dba%bfz%8cxr&port=53172&uploaded=0&downloaded=5423464507&left=0&corrupt=0&key=314854A1&event=started&numwant=200&compact=1&no_peer_id=1&ipv6=2001%3a250%3a401%3a6119%3a5888%3a5065%3ad039%3aff8c
+ERR: 无法加载控制器:Announce
+
+[ 2016-08-28T22:52:41+08:00 ] 127.0.0.1 /announce.php?passkey=937af33f5a14115f3a7403e97fdcdec8&info_hash=%09D%9a%c2o%18i%05%97%10%0b%e8%98S%d0%81u%e7%1ew&peer_id=-UT2040-RT%fa%89%e8%dba%bfz%8cxr&port=53172&uploaded=0&downloaded=0&left=14849830672&corrupt=0&key=314854A1&event=started&numwant=200&compact=1&no_peer_id=1&ipv6=2001%3a250%3a401%3a6119%3a5888%3a5065%3ad039%3aff8c
+ERR: 无法加载控制器:Announce
+
+[ 2016-08-28T22:52:41+08:00 ] 127.0.0.1 /announce.php?passkey=937af33f5a14115f3a7403e97fdcdec8&info_hash=%e6%1c7%d1%e9c%8e%11%f6r%db%7c%b0%f5%bfF2kQ%07&peer_id=-UT2040-RT%fa%89%e8%dba%bfz%8cxr&port=53172&uploaded=0&downloaded=5423464507&left=0&corrupt=0&key=314854A1&event=started&numwant=200&compact=1&no_peer_id=1&ipv6=2001%3a250%3a401%3a6119%3a5888%3a5065%3ad039%3aff8c
+ERR: 无法加载控制器:Announce
+
+[ 2016-08-28T23:22:44+08:00 ] 127.0.0.1 /announce.php?passkey=937af33f5a14115f3a7403e97fdcdec8&info_hash=%e6%1c7%d1%e9c%8e%11%f6r%db%7c%b0%f5%bfF2kQ%07&peer_id=-UT2040-RT%fa%89%e8%dba%bfz%8cxr&port=53172&uploaded=0&downloaded=5423464507&left=0&corrupt=0&key=314854A1&event=started&numwant=200&compact=1&no_peer_id=1&ipv6=2001%3a250%3a401%3a6119%3a5888%3a5065%3ad039%3aff8c
+ERR: 无法加载控制器:Announce
+
+[ 2016-08-28T23:22:44+08:00 ] 127.0.0.1 /announce.php?passkey=937af33f5a14115f3a7403e97fdcdec8&info_hash=%09D%9a%c2o%18i%05%97%10%0b%e8%98S%d0%81u%e7%1ew&peer_id=-UT2040-RT%fa%89%e8%dba%bfz%8cxr&port=53172&uploaded=0&downloaded=0&left=14849830672&corrupt=0&key=314854A1&event=started&numwant=200&compact=1&no_peer_id=1&ipv6=2001%3a250%3a401%3a6119%3a5888%3a5065%3ad039%3aff8c
+ERR: 无法加载控制器:Announce
+

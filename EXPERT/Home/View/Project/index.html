@@ -1,0 +1,128 @@
+<extend name="EXPERT/Templates/nav.html"/>
+<block name="content">
+  <div class="container" ng-app="project" ng-controller="projectController as vm">
+    <div class="col-sm-12 row">
+      <!-- <div class="col-sm-12">
+          <span class="cond-label">参与单位：</span>
+          <div class="btn-group">
+            <label style="margin-bottom:0;color:#eee">
+              <select class="form-control" ng-model="vm.collegeSelected" ng-options="item.id as item.name for item in vm.collegeList">
+                <option value="">全部</option>
+              </select>
+            </label>
+            <label style="margin-bottom:0" ng-repeat="item in vm.collegeSelectedList">
+              <button tyle="button" class="btn button-link" ng-bind="vm.collegeMap[item]+'   X'" ng-click="vm.removeCollege(item)"><b></b></button>&nbsp;
+            </label>
+          </div>
+      </div> -->
+      <div class="col-sm-12 bottom-10 top-10">
+          <span class="cond-label">起始时间：</span>
+          <div class="btn-group">
+            <form class="form-inline">
+              <div class="form-group">
+                <input type="text" class="form-control" ng-model="vm.start_time" placeholder="时间格式：2010-10-10"/>
+                至
+              </div>
+              <div class="form-group">
+                <input type="text" class="form-control" ng-model="vm.end_time" placeholder="时间格式：2010-10-10"/>
+              </div>
+            </form>
+          </div>
+      </div>
+      <div class="col-sm-12 bottom-10">
+          <span class="cond-label">拥有者：</span>
+          <div class="btn-group">
+            <input type="text" class="form-control" ng-model="vm.person_name"/>
+          </div>
+      </div>
+      <div class="col-sm-12 bottom-10">
+          <span class="cond-label">项目名称：</span>
+          <div class="btn-group">
+            <input type="text" class="form-control" ng-model="vm.name"/>
+          </div>
+      </div>
+      <div class="col-sm-12">
+        <span class="cond-label"></span>
+          <button class="btn btn-info" ng-click="vm.submit()">确定</button>
+          <button class="btn btn-default" ng-click="vm.cancel()">取消</button>
+      </div>
+      <div class="col-sm-12" id="more">
+          <span class="glyphicon">
+          </span>
+      </div>
+  </div>
+    <div class="col-md-12">
+      <div class="panel panel-default table-header">
+        <div class="panel-heading table-heading">
+          <div class="row">
+            <div class="col-md-4 pull-left">
+              <h3 class="panel-title table-title">论文列表</h3>
+            </div>
+            <div class="col-md-8 pull-right" ng-hide="vm.showCheckbox">
+                <button type="button" class="btn btn-info pull-right right-10" ng-click="vm.showCheckbox=true">导出Excel&nbsp;&nbsp;<span class="glyphicon glyphicon-export"></span></button>
+                <div class="input-group col-md-4 pull-right right-10">
+                  <input type="text" class="form-control" ng-model="filter" placeholder="输入关键字">
+                  <div class="input-group-addon">筛选</div>
+                </div>
+            </div>
+            <div class="col-md-8" ng-show="vm.showCheckbox">
+                <button type="button" class="btn btn-default pull-right" ng-click="vm.showCheckbox=false">取消导出</span></button>
+                <button type="button" class="btn btn-primary pull-right right-10" ng-click="vm.exportExcel('all')">导出所有<span class="glyphicon glyphicon-export"></span></button>
+                <button type="button" class="btn btn-success pull-right right-10" ng-click="vm.exportExcel('current')">导出当前页<span class="glyphicon glyphicon-export"></span></button>
+                <h3 class="table-title warning-text pull-left">请选择要导出的字段</h3>
+            </div>
+          </div>
+        </div>
+      </div>
+      <table class="table table-bordered table-striped table-hover">
+        <thead>
+          <tr>
+            <th><span ng-hide="vm.showCheckbox">#</span><span ng-show="vm.showCheckbox">全选<input type="checkbox" ng-click="vm.selectAll();"></span></th>
+            <th>拥有者<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.person_name"></th>
+            <th>项目名称<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.name"></th>
+            <th>类型<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.type_name"></th>
+            <th>支助编号<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.support_no"></th>
+            <th>参与单位<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.join_unit"></th>
+            <th>项目来源<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.source"></th>
+            <th>子类<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.subtype"></th>
+            <th>开始时间<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.start_time"></th>
+            <th>结束时间<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.end_time"></th>
+            <th>经费<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.fund"></th>
+            <th>直接经费<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.direct_fund"></th>
+            <th>间接经费<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.indirect_fund"></th>
+            <th>金融账户<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.financial_account"></th>
+            <th>备注<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.comment"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-if="vm.paginationConf.totalItems" ng-repeat="item in vm.projectList | filter:filter">
+            <td ng-bind="item.id"></td>
+            <td ng-bind="item.person_name"></td>
+            <td ng-bind="item.name"></td>
+            <td ng-bind="item.type_name"></td>
+            <td ng-bind="item.support_no"></td>
+            <td ng-bind="item.join_unit"></td>
+            <td ng-bind="item.source"></td>
+            <td ng-bind="item.subtype"></td>
+            <td ng-bind="item.start_time"></td>
+            <td ng-bind="item.end_time"></td>
+            <td ng-bind="item.fund"></td>
+            <td ng-bind="item.direct_fund"></td>
+            <td ng-bind="item.indirect_fund"></td>
+            <td ng-bind="item.financial_account"></td>
+            <td ng-bind="item.comment"></td>
+          </tr>
+          <tr ng-if="!vm.paginationConf.totalItems"><td colspan="15"><h2 class="text-center text-danger">无数据</h2></td></tr>
+        </tbody>
+      </table>
+      <tm-pagination conf="vm.paginationConf"></tm-pagination>
+    </div>
+  </div>
+</block>
+<block name="js">
+<script type="text/javascript" src="__PUBLIC__/js/project.controller.js"></script>
+<script type="text/javascript" src="__CDN__/angular-ui-bootstrap/0.14.3/ui-bootstrap.min.js"></script>
+<script>
+  selectMenu('project', 2, 0);
+</script>
+</block>

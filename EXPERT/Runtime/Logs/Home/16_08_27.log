@@ -1,0 +1,37 @@
+[ 2016-08-27T19:19:49+08:00 ] ::1 /Index/login
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001026s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002447s ]
+SQL: SHOW COLUMNS FROM `user` [ RunTime:0.1105s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `user` WHERE `account` = 'admin' AND `password` = '21232f297a57a5a743894a0e4a801fc3' LIMIT 1   [ RunTime:0.0322s ]
+SQL: SHOW COLUMNS FROM `audit` [ RunTime:0.2304s ]
+SQL: INSERT INTO `audit` (`name`,`ip`,`module`,`time`,`result`) VALUES ('admin','::1','登录','16-08-27 07:19:48','成功') [ RunTime:0.0753s ]
+
+[ 2016-08-27T22:53:39+08:00 ] ::1 /People/import
+ERR: Think\Controller:dump方法不存在！
+
+[ 2016-08-27T22:54:14+08:00 ] ::1 /People/import
+ERR: 模板不存在:./EXPERT/Home/View/Array.html
+
+[ 2016-08-27T22:55:20+08:00 ] ::1 /People/import
+ERR: 模板不存在:./EXPERT/Home/View/People/测试001.html
+
+[ 2016-08-27T22:58:38+08:00 ] ::1 /People/import
+ERR: 模板不存在:./EXPERT/Home/View/People/张雪涛.html
+
+[ 2016-08-27T23:04:26+08:00 ] ::1 /People/import
+ERR: 模板不存在:./EXPERT/Home/View/People/import.html
+
+[ 2016-08-27T23:04:49+08:00 ] ::1 /People/import
+ERR: 模板不存在:./EXPERT/Home/View/People/import.html
+
+[ 2016-08-27T23:05:29+08:00 ] ::1 /People/import
+ERR: 模板不存在:./EXPERT/Home/View/People/1111111.html
+
+[ 2016-08-27T23:24:40+08:00 ] ::1 /People/import
+ERR: 模板不存在:./EXPERT/Home/View/People/博士.html
+
+[ 2016-08-27T23:49:32+08:00 ] ::1 /People/import
+ERR: 1054:Champ 'degree_name' inconnu dans field list
+ [ SQL语句 ] : INSERT INTO `person` (`employee_no`,`name`,`degree_name`) VALUES ('1111111','张雪涛','博士')
+

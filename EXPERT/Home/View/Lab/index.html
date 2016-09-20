@@ -1,0 +1,109 @@
+<extend name="EXPERT/Templates/nav.html"/>
+<block name="content">
+  <div class="container" ng-app="lab" ng-controller="labController as vm">
+    <div class="col-sm-12 row">
+      <div class="col-sm-12">
+        <span class="cond-label">所属单位：</span>
+        <div class="btn-group">
+          <label style="margin-bottom:0;color:#eee">
+            <select class="form-control" ng-model="vm.collegeSelected" ng-options="item.id as item.name for item in vm.collegeList">
+              <option value="">全部</option>
+            </select>
+          </label>
+          <label style="margin-bottom:0" ng-repeat="item in vm.collegeSelectedList">
+            <button tyle="button" class="btn button-link" ng-bind="vm.collegeMap[item]+'   X'" ng-click="vm.removeCollege(item)"><b></b></button>&nbsp;
+          </label>
+        </div>
+      </div>
+      <div class="col-sm-12 bottom-10 top-10">
+        <span class="cond-label">负 责 人 ：</span>
+        <div class="btn-group">
+          <input type="text" class="form-control" ng-model="vm.manager_name"/>
+        </div>
+      </div>
+      <!--<div class="col-sm-12 bottom-10">-->
+        <!--<span class="cond-label">成立时间：</span>-->
+        <!--<div class="btn-group">-->
+          <!--<form class="form-inline">-->
+            <!--<div class="form-group">-->
+              <!--<input type="text" class="form-control" ng-model="vm.formed_start" placeholder="时间格式：2000-10-10"/>-->
+              <!--至-->
+            <!--</div>-->
+            <!--<div class="form-group">-->
+              <!--<input type="text" class="form-control" ng-model="vm.formed_end" placeholder="时间格式：2015-10-10"/>-->
+            <!--</div>-->
+          <!--</form>-->
+        <!--</div>-->
+      <!--</div>-->
+      <div class="col-sm-12">
+        <span class="cond-label"></span>
+        <button class="btn btn-info" ng-click="vm.submit()">确定</button>
+        <button class="btn btn-default" ng-click="vm.cancel()">取消</button>
+      </div>
+      <div class="col-sm-12" id="more">
+          <span class="glyphicon">
+          </span>
+      </div>
+    </div>
+  	<div class="col-md-12">
+      <div class="panel panel-default table-header">
+        <div class="panel-heading table-heading">
+          <div class="row">
+            <div class="col-md-4 pull-left">
+              <h3 class="panel-title table-title">平台列表</h3>
+            </div>
+            <div class="col-md-8 pull-right" ng-hide="vm.showCheckbox">
+              <button type="button" class="btn btn-info pull-right right-10" ng-click="vm.showCheckbox=true">导出Excel&nbsp;&nbsp;<span class="glyphicon glyphicon-export"></span></button>
+              <!--<div class="input-group col-md-4 pull-right right-10">-->
+                <!--<input type="text" class="form-control" ng-model="filter" placeholder="输入关键字">-->
+                <!--<div class="input-group-addon">筛选</div>-->
+              <!--</div>-->
+            </div>
+            <div class="col-md-8" ng-show="vm.showCheckbox">
+              <button type="button" class="btn btn-default pull-right" ng-click="vm.showCheckbox=false">取消导出</span></button>
+              <button type="button" class="btn btn-primary pull-right right-10" ng-click="vm.exportExcel('all')">导出所有<span class="glyphicon glyphicon-export"></span></button>
+              <button type="button" class="btn btn-success pull-right right-10" ng-click="vm.exportExcel('current')">导出当前页<span class="glyphicon glyphicon-export"></span></button>
+              <h3 class="table-title warning-text pull-left">请选择要导出的字段</h3>
+            </div>
+          </div>
+        </div>
+      </div>
+  		<table class="table table-bordered table-striped table-hover">
+          <thead>
+            <tr>
+              <!--点击实验室名称后显示实验室详细信息，类似于用户详细信息-->
+              <th><span ng-hide="vm.showCheckbox">#</span><span ng-show="vm.showCheckbox">全选<input type="checkbox" ng-click="vm.selectAll();"></span></th>
+              <th>实验室名<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.name"></th>
+              <th>负责人<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.manager_name"></th>
+              <th>地址<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.location"></th>
+              <th>成立时间<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.formed_time"></th>
+              <th>所属院系<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.college_name"></th>
+              <th>成员<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.member"></th>
+              <th>简介<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.description"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-if="vm.paginationConf.totalItems" ng-repeat="item in vm.labList | filter:filter">
+              <td ng-bind="item.id"></td>
+              <td ng-bind="item.name"></td>
+              <td ng-bind="item.manager_name"></td>
+              <td ng-bind="item.location"></td>
+              <td ng-bind="item.formed_time"></td>
+              <td ng-bind="item.college_name"></td>
+              <td ng-bind="item.member"></td>
+              <td ng-bind="item.description"></td>
+            </tr>
+            <tr ng-if="!vm.paginationConf.totalItems"><td colspan="12"><h2 class="text-center text-danger">无数据</h2></td></tr>
+          </tbody>
+      </table>
+      <tm-pagination conf="vm.paginationConf"></tm-pagination>
+    </div>
+  </div>
+</block>
+<block name="js">
+<script type="text/javascript" src="__PUBLIC__/js/lab.controller.js"></script>
+<script type="text/javascript" src="__CDN__/angular-ui-bootstrap/0.14.3/ui-bootstrap.min.js"></script>
+<script>
+  selectMenu('lab', 6, 0);
+</script>
+</block>

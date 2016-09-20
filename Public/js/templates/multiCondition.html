@@ -1,0 +1,28 @@
+<div>
+	<div class="col-sm-12 bottom-10">
+	    <span class="cond-label" ng-transclude></span>
+	    <div class="btn-group">
+	        <label class="btn btn-default active" ng-model="vm.modelType" ng-click="vm.changeFreq()" uib-btn-radio="''">全部</label>
+	        <label class="btn btn-default" ng-model="vm.modelType" ng-click="vm.changeFreq()" ng-repeat="(key, value) in vm.freqData" uib-btn-radio="'{{key}}'" ng-if="$index<5" ng-style="{true: {'border-top-right-radius': '4px','border-bottom-right-radius':'4px'}, false: {}}[($last||$index==4)&&!vm.other]">{{value}}</label>
+	        <label class="btn btn-default" ng-model="vm.modelType" uib-btn-radio="vm.otherValue" ng-show="vm.other">{{vm.otherText}}</label>
+	    </div>
+	</div>
+	<div class="condition-dropdown large-dropdown dropdown-menu" ng-if="vm.other">
+		<!-- <h4 class="pull-right"><a href="javascript:void(0)"><span class="glyphicon glyphicon-remove"></span></a></h4> -->
+	    <h5>选择器<span class="h-tips">(单选)</span>
+	    	<span class="more">
+	        	<label class="search-bar">
+	        		<input type="text" placeholder="请输入任意值搜索" ng-model="query" class="input-search">
+	                <a href="javascript:void(0)" class="btn-search">
+	                	<i class="icon-search2"></i>
+	                </a>
+	            </label>
+	        </span>
+	    </h5>
+		<div class="content">
+			<ul class="list-horizontal">
+				<li ng-repeat="item in vm.otherData | filter:query"><label><a href="javascript:void(0)" ng-click="vm.changeOther(item.key, item.value)">{{item.value}}</a></label></li>
+			</ul>
+		</div>
+	</div>
+</div>

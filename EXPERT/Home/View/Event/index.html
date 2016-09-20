@@ -1,0 +1,51 @@
+<extend name="EXPERT/Templates/nav.html"/>
+<block name="content">
+    <div class="container" ng-app="event" ng-controller="eventController as vm">
+        <div class="col-md-12">
+            <div class="panel panel-default table-header">
+                <div class="panel-heading table-heading">
+                    <div class="row">
+                        <div class="col-md-4 pull-left">
+                            <h3 class="panel-title table-title">科技事件列表</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <table class="table table-bordered table-striped table-hover">
+                <thead>
+                <tr>
+                    <th>开始时间</th>
+                    <th>结束时间</th>
+                    <th>名称</th>
+                    <th>简介</th>
+                    <th>相关人员</th>
+                    <th>地址</th>
+                    <th>备注</th>
+                    <th>图片</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-if="vm.paginationConf.totalItems" ng-repeat="item in vm.eventList | filter:filter">
+                    <td ng-bind="item.time_start"></td>
+                    <td ng-bind="item.time_end"></td>
+                    <td ng-bind="item.name"></td>
+                    <td ng-bind="item.abstract"></td>
+                    <td ng-bind="item.relevant_person"></td>
+                    <td ng-bind="item.location"></td>
+                    <td ng-bind="item.remark"></td>
+                    <td><a href="__URL__/show_picture/?id={{item.id}}" target="_blank">查看</a></td>
+                </tr>
+                <tr ng-if="!vm.paginationConf.totalItems"><td colspan="12"><h2 class="text-center text-danger">无数据</h2></td></tr>
+                </tbody>
+            </table>
+            <tm-pagination conf="vm.paginationConf"></tm-pagination>
+        </div>
+    </div>
+</block>
+<block name="js">
+    <script type="text/javascript" src="__PUBLIC__/js/event.controller.js"></script>
+    <script type="text/javascript" src="__CDN__/angular-ui-bootstrap/0.14.3/ui-bootstrap.min.js"></script>
+    <script>
+        selectMenu('event',6, 0);
+    </script>
+</block>

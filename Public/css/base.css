@@ -1,0 +1,46 @@
+@charset "UTF-8";
+.table-header{
+	margin-bottom: 0;
+	border-bottom: none;
+	border-bottom-right-radius: 0;
+	border-bottom-left-radius: 0;
+}
+.table-header .table-heading{
+	padding: 5px;
+}
+.table-header .table-title{
+	padding: 8px;
+}
+.warning-text {color:red;font-size:16px}
+table td:last-child span.glyphicon{
+	cursor: pointer;
+}
+th input[type="checkbox"]{
+	width: 15px;
+	height: 15px;
+	float: left!important;
+}
+.bottom-10{
+	margin-bottom: 10px;
+}
+.top-10{
+	margin-top: 10px;
+}
+.right-10{
+	margin-right: 10px;
+}
+.cond-label{
+	min-width: 35px;
+}
+.cond-selected{color: #333!important}
+.page-color>.active>span{background-color:#31b0d5!important;border-color: #31b0d5!important;}
+button.button-link{
+	border: 1px solid #46b8da;
+	background-color: #fff;
+	color: #46b8da;
+}
+button.button-link:hover{
+	border: 1px solid #46b8da;
+	background-color: #46b8da;
+	color: #fff;
+}
