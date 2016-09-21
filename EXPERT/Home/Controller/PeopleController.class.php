@@ -199,7 +199,7 @@ class PeopleController extends Controller {
                 $extension = strtolower ( $file_type );
                 if (!in_array($extension,$excel_type))
                 {
-                    $this->error ( '不是Excel文件，请重新上传' );
+                    $this->error ( '不是Excel文件，请重新选择文件！' );
                 }
                 /*设置上传路径*/
                 $savePath = './Public/upfile/Excel/';
@@ -333,11 +333,11 @@ class PeopleController extends Controller {
                              * 插入的主表为person_honor  涉及到 person中的id   和  academic_honor中的id
                              * $u_honor = $v[15];
                              */
-                            dump($data);//显示添加的数据
+//                            dump($data);//显示添加的数据
                             $person_id = (int)$result;
                             $honor_list = explode('，',(string)$v[15]);//此处分隔符需要选用全角逗号，因为Excel中输入的可能是用的中文输入法
                             foreach($honor_list as $honor_name){
-                                dump('honorName: '.$honor_name);
+//                                dump('honorName: '.$honor_name);
                                 $honor_id = getForeignKey($honor_name,'academic_honor',$honor_buffer);
                                 if($honor_id!=null){
                                     $token = array('person_id'=>$person_id,'honor_id'=>$honor_id);

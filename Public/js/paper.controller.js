@@ -119,7 +119,7 @@
 
 	 	//导入导出
 	 	vm.showCheckbox = false;
-	 	vm.exportParams = {person_name:false,col_name:false,conference_name:false,publish_date:false,comment:false};
+	 	vm.exportParams = {person_name:false,col_name:false,name:false,conference_name:false,publish_date:false,comment:false};
 
 	 	vm.exportExcel = exportExcel;
 	 	function exportExcel(type){

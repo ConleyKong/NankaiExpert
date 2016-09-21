@@ -84,6 +84,7 @@
             <th>支助编号<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.support_no"></th>
             <th>参与单位<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.join_unit"></th>
             <th>项目来源<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.source"></th>
+            <th>来源单位<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.source_department"></th>
             <th>子类<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.subtype"></th>
             <th>开始时间<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.start_time"></th>
             <th>结束时间<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.end_time"></th>
@@ -103,6 +104,7 @@
             <td ng-bind="item.support_no"></td>
             <td ng-bind="item.join_unit"></td>
             <td ng-bind="item.source"></td>
+            <td ng-bind="item.source_department"></td>
             <td ng-bind="item.subtype"></td>
             <td ng-bind="item.start_time"></td>
             <td ng-bind="item.end_time"></td>

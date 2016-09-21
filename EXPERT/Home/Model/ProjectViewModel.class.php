@@ -13,22 +13,29 @@ class ProjectViewModel extends ViewModel {
 			'start_time',
 			'end_time',
 			'college_id',
+			'direct_fund',
+			'indirect_fund',
 			'fund',
 			'financial_account',
 			'project_no',
 			'source_department',
+			'comment',
 		),
 		'person' => array(
-			'name' => 'manager_name',
-			'_on' => 'project.manager_id=person.id'
+			'name' => 'person_name',
+			'_on' => 'person.id=project.manager_id',
+			'_type' => 'LEFT'
 		),
 		'college' => array(
-			'name' => 'college_name',
-			'_on' => 'project.college_id=college.id'
+//			'name' => 'college_name',
+			'name' => 'join_unit',
+			'_on' => 'college.id=project.college_id',
+			'_type' => 'LEFT'
 		),
 		'project_type' => array(
 			'name' => 'type_name',
 			'_on' => 'project_type.id=project.type_id',
+			'_type' => 'LEFT'
 		)
 	);
 }

@@ -11,8 +11,8 @@ class PatentViewModel extends ViewModel {
 			'type',
 			'apply_no',
 			'apply_date',
-			//'grant_date',
-			//'comment',
+			'grant_date',
+			'comment',
 			'_type' => 'LEFT'
 		),
 		'inventor' => array(

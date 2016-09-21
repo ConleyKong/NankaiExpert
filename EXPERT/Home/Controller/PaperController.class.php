@@ -63,36 +63,45 @@ class PaperController extends Controller {
             deleteEmptyValue($query);
             $pageNum = $query['page'] ? $query['page'] : 1;
             $itemsNum =  $query['items'] ? $query['items'] : 10;
-            if ($query['pub_start'] && $query['pub_end'])
+            if ($query['pub_start'] && $query['pub_end']){
                 $query['publish_date'] = array(array('gt',$query['pub_start']),array('lt',$query['pub_end']));
+            }
+            $string = '';
             if ($query['college_id']){
                 $string .= $string ? ' AND ('.$query['college_id'].')' : '('.$query['college_id'].')';
                 //unset($query['college_id']);
             }
-            if ($string)
+            if ($string){
                 $query['_string'] = $string;
+            }
 
-            $Paper = D('PaperView');
+
+            $paper = D('PaperView');
             $query = objectToArray($query);
             unset($query['pub_start']);
             unset($query['pub_end']);
             unset($query['page']);
             unset($query['items']);
             if ($type == 'all'){
-                $result = $Paper->field($field)->where($query)->order('Paper.id')->select();
+                $audit['descr'] = '导出所有。';
+                $result = $paper->field($field)->where($query)->order('paper.id')->select();
             }
             else if ($type == 'current'){
-                $result = $Paper->field($field)->where($query)->page($pageNum,$itemsNum)->order('Paper.id')->select();
+                $audit['descr'] = '导出当前。';
+                $result = $paper->field($field)->where($query)->page($pageNum,$itemsNum)->order('paper.id')->select();
             }
-            else
+            else{
                 return '未知错误';
-            $titleMap = array('person_name'=>'第一作者','col_name'=>'第一作者单位','conference_name'=>'期刊/会议名称','publish_date'=>'发表时间','comment'=>'备注');
+            }
+
+            $titleMap = array('person_name'=>'第一作者','col_name'=>'第一作者单位','name'=>'论文名','conference_name'=>'期刊/会议名称','publish_date'=>'发表时间','comment'=>'备注');
             $field = split(',', $field); 
             $excelTitle = array();
             foreach ($field as $value) {
                 array_push($excelTitle, $titleMap[$value]);
             }
             $filename = '论文信息';
+            exportExcel($filename, $field, $result, $excelTitle);
             //审计日志
             $audit['name'] = session('username');
             $audit['ip'] = getIp();
@@ -101,7 +110,6 @@ class PaperController extends Controller {
             $audit['result'] = '成功';
             $audit['descr'] .= '导出论文信息';
             M('audit')->add($audit);
-            exportExcel($filename, $excelTitle, $result);
         }
     }
 }

@@ -80,6 +80,7 @@
             <th><span ng-hide="vm.showCheckbox">#</span><span ng-show="vm.showCheckbox">全选<input type="checkbox" ng-click="vm.selectAll();"></span></th>
             <th>第一作者<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.person_name"></th>
             <th>第一作者单位<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.col_name"></th>
+            <th>论文名<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.name"></th>
             <th>期刊/会议名称<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.conference_name"></th>
             <th>发表时间<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.publish_date"></th>
             <th>备注<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.comment"></th>
@@ -90,6 +91,7 @@
             <td ng-bind="item.id"></td>
             <td ng-bind="item.person_name"></td>
             <td ng-bind="item.col_name"></td>
+            <td ng-bind="item.name"></td>
             <td ng-bind="item.conference_name"></td>
             <td ng-bind="item.publish_date"></td>
             <td ng-bind="item.comment"></td>

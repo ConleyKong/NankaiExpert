@@ -26,6 +26,14 @@ class AuditController extends Controller {
 	        $result = $Audit->page($pageNum,$itemsNum)->order('Audit.id desc')->select();
             $totalNum = $Audit->count();
             $result[0]['totalNum'] = $totalNum;
+			//审计日志
+			$audit['name'] = session('username');
+			$audit['ip'] = getIp();
+			$audit['module'] = '审计日志列表';
+			$audit['time'] = date('y-m-d h:i:s',time());
+			$audit['result'] = '成功';
+			$audit['descr'] = '查询所有字段';
+			M('audit')->add($audit);
             $this->ajaxReturn($result,'json');
 	    }
     }

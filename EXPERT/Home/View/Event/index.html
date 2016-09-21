@@ -1,5 +1,426 @@
 <extend name="EXPERT/Templates/nav.html"/>
 <block name="content">
+    <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">添加科技事件信息</h4>
+                </div>
+<!--<?php
+
+if (isset($_FILES['imgfile'])
+
+&& is_uploaded_file($_FILES['imgfile']['tmp_name']))
+
+{
+
+ $imgFile = $_FILES['imgfile'];
+
+$upErr = $imgFile['error'];
+
+
+
+if ($upErr == 0)
+
+{
+
+$imgType = $imgFile['type']; //文件类型。
+
+
+
+/* 判断文件类型，这个例子里仅支持jpg和gif类型的图片文件。*/
+
+if ($imgType == 'image/jpeg'
+
+|| $imgType == 'image/gif')
+
+{
+
+$imgFileName = $imgFile['name'];
+
+$imgSize = $imgFile['size'];
+
+$imgTmpFile = $imgFile['tmp_name'];
+
+
+
+/* 将文件从临时文件夹移到上传文件夹中。*/
+
+move_uploaded_file($imgTmpFile, 'upfile/'.$imgFileName);
+
+
+/*显示上传后的文件的信息。*/
+
+$strPrompt = sprintf("文件%s上传成功<br>"
+
+                , "文件大小: %s字节<br>"
+
+                , "<img src='upfile/%s'>"
+
+                , $imgFileName, $imgSize, $imgFileName
+
+                );
+
+                echo $strPrompt;
+
+                }
+
+                else
+
+                {
+
+                echo "请选择jpg或gif文件，不支持其它类型的文件。";
+
+                }
+
+                }
+
+                else
+
+                {
+
+                echo "文件上传失败。<br>";
+
+                switch ($upErr)
+
+                {
+
+                case 1:
+
+                echo "超过了php.ini中设置的上传文件大小。";
+
+                break;
+
+                case 2:
+
+                echo "超过了MAX_FILE_SIZE选项指定的文件大小。";
+
+                break;
+
+                case 3:
+
+                echo "文件只有部分被上传。";
+
+                break;
+
+                case 4:
+
+                echo "文件未被上传。";
+
+                break;
+
+                case 5:
+
+                echo "上传文件大小为0";
+
+                break;
+
+                }
+
+                }
+
+                }
+
+                else
+
+                {
+
+                /*显示表单。*/
+
+                ?>-->
+
+                <div class="modal-body">
+                    <form class="form-horizontal" action="__URL__/add" method="post">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">开始时间</label>
+                            <div class="col-sm-9">
+                                <input type="text" name="time_start" class="form-control"  placeholder="时间格式：2010-10-10" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">结束时间</label>
+                            <div class="col-sm-9">
+                                <input type="text" name="time_end" class="form-control"  placeholder="时间格式：2010-10-10" >
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">名称</label>
+                            <div class="col-sm-9">
+                                <input type="text" name="name" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">简介</label>
+                            <div class="col-sm-9">
+                                <input type="text" name="abstract" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">相关人员</label>
+                            <div class="col-sm-9">
+                                <input type="text" name="relevant_person" class="form-control" >
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">地址</label>
+                            <div class="col-sm-9">
+                                <input type="text" name="location" class="form-control" >
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">备注</label>
+                            <div class="col-sm-9">
+                                <input type="text" name="remark" class="form-control" >
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">请选择上传图片</label>
+                            <div class="col-sm-9">
+                                <input name="imgfile" type="file" accept="image/gif, image/jpeg"/>
+
+                                <input name="upload" type="submit" value="上传" />
+
+                            </div>
+
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-5">
+                                <button type="submit" class="btn btn-info">确认</button>
+                                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+
+
+
+<!--<?php
+}
+?>-->
+
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+    <div class="modal fade" id="modal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModal2Label">修改科技事件信息</h4>
+                </div>
+                <!--<?php
+
+                if (isset($_FILES['imgfile'])
+
+                && is_uploaded_file($_FILES['imgfile']['tmp_name']))
+
+                {
+
+                 $imgFile = $_FILES['imgfile'];
+
+                $upErr = $imgFile['error'];
+
+
+
+                if ($upErr == 0)
+
+                {
+
+                $imgType = $imgFile['type']; //文件类型。
+
+
+
+                /* 判断文件类型，这个例子里仅支持jpg和gif类型的图片文件。*/
+
+                if ($imgType == 'image/jpeg'
+
+                || $imgType == 'image/gif')
+
+                {
+
+                $imgFileName = $imgFile['name'];
+
+                $imgSize = $imgFile['size'];
+
+                $imgTmpFile = $imgFile['tmp_name'];
+
+
+
+                /* 将文件从临时文件夹移到上传文件夹中。*/
+
+                move_uploaded_file($imgTmpFile, 'upfile/'.$imgFileName);
+
+
+                /*显示上传后的文件的信息。*/
+
+                $strPrompt = sprintf("文件%s上传成功<br>"
+
+                                , "文件大小: %s字节<br>"
+
+                                , "<img src='upfile/%s'>"
+
+                                , $imgFileName, $imgSize, $imgFileName
+
+                                );
+
+                                echo $strPrompt;
+
+                                }
+
+                                else
+
+                                {
+
+                                echo "请选择jpg或gif文件，不支持其它类型的文件。";
+
+                                }
+
+                                }
+
+                                else
+
+                                {
+
+                                echo "文件上传失败。<br>";
+
+                                switch ($upErr)
+
+                                {
+
+                                case 1:
+
+                                echo "超过了php.ini中设置的上传文件大小。";
+
+                                break;
+
+                                case 2:
+
+                                echo "超过了MAX_FILE_SIZE选项指定的文件大小。";
+
+                                break;
+
+                                case 3:
+
+                                echo "文件只有部分被上传。";
+
+                                break;
+
+                                case 4:
+
+                                echo "文件未被上传。";
+
+                                break;
+
+                                case 5:
+
+                                echo "上传文件大小为0";
+
+                                break;
+
+                                }
+
+                                }
+
+                                }
+
+                                else
+
+                                {
+
+                                /*显示表单。*/
+
+                                ?>-->
+
+                <div class="modal-body">
+                    <form class="form-horizontal" action="__URL__/add" method="post">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">开始时间</label>
+                            <div class="col-sm-9">
+                                <input type="text" name="time_start" class="form-control"  placeholder="<?php echo $_GET['time_start']?>" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">结束时间</label>
+                            <div class="col-sm-9">
+                                <input type="text" name="time_end" class="form-control"  placeholder="<?php echo $_SESSION['time_end']?>" required/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">名称</label>
+                            <div class="col-sm-9">
+                                <input type="email" name="name" class="form-control"  placeholder="<?php echo $_SESSION['name']?>" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">简介</label>
+                            <div class="col-sm-9">
+                                <input type="text" name="abstract" class="form-control" placeholder="<?php echo $_SESSION['abstract']?>" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">相关人员</label>
+                            <div class="col-sm-9">
+                                <input type="text" name="relevant_person" class="form-control" placeholder="<?php echo $_SESSION['relevant_person']?>" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">地址</label>
+                            <div class="col-sm-9">
+                                <input type="text" name="location" class="form-control" placeholder="<?php echo $_SESSION['location']?>" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">备注</label>
+                            <div class="col-sm-9">
+                                <input type="text" name="remark" class="form-control" placeholder="<?php echo $_SESSION['remark']?>" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">请选择上传图片</label>
+                            <div class="col-sm-9">
+                                <input name="imgfile" type="file" accept="image/gif, image/jpeg"/>
+
+                                <input name="upload" type="submit" value="上传" />
+
+                            </div>
+
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-5">
+                                <button type="submit" class="btn btn-info">确认</button>
+                                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+
+
+
+                <!--<?php
+                }
+                ?>-->
+
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
     <div class="container" ng-app="event" ng-controller="eventController as vm">
         <div class="col-md-12">
             <div class="panel panel-default table-header">
@@ -7,6 +428,16 @@
                     <div class="row">
                         <div class="col-md-4 pull-left">
                             <h3 class="panel-title table-title">科技事件列表</h3>
+                        </div>
+                        <div class="col-md-8 pull-right" ng-hide="vm.showCheckbox">
+
+
+                            <button type="button" class="btn btn-info pull-right" data-toggle="modal" data-target="#modal">新增
+                                &nbsp;&nbsp;<span class="glyphicon glyphicon-plus"></span></button>&nbsp;&nbsp;&nbsp;
+
+                            <button type="button" class="btn btn-info pull-right right-10" ng-click="vm.showCheckbox=true">导出Excel
+                                &nbsp;&nbsp;<span class="glyphicon glyphicon-export"></span></button>&nbsp;&nbsp;&nbsp;
+
                         </div>
                     </div>
                 </div>
@@ -22,6 +453,8 @@
                     <th>地址</th>
                     <th>备注</th>
                     <th>图片</th>
+                    <th></th>
+                    <th></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -34,6 +467,9 @@
                     <td ng-bind="item.location"></td>
                     <td ng-bind="item.remark"></td>
                     <td><a href="__URL__/show_picture/?id={{item.id}}" target="_blank">查看</a></td>
+                    <td><a href="__URL__/delete?id={{item.id}}" >删除</a></td>
+                    <td><a href="__URL__/select?id={{item.id}}" data-toggle="modal" data-target="#modal2">修改</a></td>
+
                 </tr>
                 <tr ng-if="!vm.paginationConf.totalItems"><td colspan="12"><h2 class="text-center text-danger">无数据</h2></td></tr>
                 </tbody>

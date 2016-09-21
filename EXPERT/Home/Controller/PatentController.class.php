@@ -79,9 +79,11 @@ class PatentController extends Controller {
             unset($query['page']);
             unset($query['items']);
             if ($type == 'all'){
+                $audit['descr'] = '导出所有。';
                 $result = $Patent->field($field)->where($query)->order('Patent.id')->select();
             }
             else if ($type == 'current'){
+                $audit['descr'] = '导出单页。';
                 $result = $Patent->field($field)->where($query)->page($pageNum,$itemsNum)->order('Patent.id')->select();
             }
             else
@@ -93,6 +95,7 @@ class PatentController extends Controller {
                 array_push($excelTitle, $titleMap[$value]);
             }
             $filename = '专利信息';
+            exportExcel($filename, $field, $result, $excelTitle);
             $audit['name'] = session('username');
             $audit['ip'] = getIp();
             $audit['module'] = '专利列表';
@@ -100,7 +103,6 @@ class PatentController extends Controller {
             $audit['result'] = '成功';
             $audit['descr'] = '导出专利列表信息';
             M('audit')->add($audit);
-            exportExcel($filename, $excelTitle, $result);
         }
     }
 }

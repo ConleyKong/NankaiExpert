@@ -10,7 +10,8 @@ class AwardViewModel extends ViewModel {
 			'name',
 			'level',
 			'achievement',
-			'date' => 'time'
+			'date' => 'time',
+			'comment',
 		),
 		'person' => array(
 			'id' => 'person_id',
