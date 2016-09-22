@@ -4,7 +4,7 @@ return array(
 	'DB_HOST' => 'localhost', // 服务器地址
 	'DB_NAME' => 'expert', // 数据库名
 	'DB_USER' => 'root', // 数据库用户名
-	'DB_PWD'  => '', // 数据库密码
+	'DB_PWD'  => 'admin', // 数据库密码
 	'DB_TYPE' =>'mysql',
 	'SHOW_PAGE_TRACE'=>true,//开启页面trace
 	'SHOW_DB_TIMES' =>true,

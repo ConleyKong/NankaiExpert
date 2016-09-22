@@ -123,11 +123,11 @@ class PaperController extends Controller {
             $this->redirect('Index/index');
         } else {
             //如果文件非空
-            if (! empty ( $_FILES ['file_paper'] ['name'] ))
+            if (! empty ( $_FILES ['file_import'] ['name'] ))
             {
-                //导入person表
-                $tmp_file = $_FILES ['file_paper'] ['tmp_name'];
-                $file_types = explode ( ".", $_FILES ['file_paper'] ['name'] );
+                //导入paper表
+                $tmp_file = $_FILES ['file_import'] ['tmp_name'];
+                $file_types = explode ( ".", $_FILES ['file_import'] ['name'] );
                 $file_type = $file_types [count ( $file_types ) - 1];
                 /*判别是不是.xls文件，判别是不是excel文件*/
                 $excel_type = array("xls","xlsx");
@@ -179,42 +179,54 @@ class PaperController extends Controller {
 
                         /*
                          *输入数据表的表结构：
-                         * 论文名（name）	第一作者职工号(first_author_id->person(employee_num))	发表日期(publish_date)	联系作者职工号(contact_author_id->person(employee_num))
-                         * 论文类型(paper_type)	期刊/会议名称(conference_name)	其他作者（学院），多个作者中间用分号隔开(other_author)，	学院名(college_id->college(name))
+                         *
+                         * 		，
                          *  需要特殊处理的字段：第一作者id，学院id，联系作者id
                          */
                         $paper = M("paper");
                         $data = array();
-                        $data["name"]= $v[0];
-//                       $v[1];第一作者id
-                        $data["publish_date"]=$v[2];
-//                       $v[3];联系作者id
-                        $data["paper_type"]=$v[4];
-                        $data["conference_name"]=$v[5];
-                        $data["other_author"]=$v[6];
-//                       $v[7];学院id
+                        $data["name"]= $v[0];//论文名（name）
+                        $first_author_no = trim($v[1]);//第一作者职工号(first_author_id->person(employee_num))
+                        $data["publish_date"]=$v[2];//发表日期(publish_date)
+                        $contact_author_no = $v[3];//联系作者id//联系作者职工号(contact_author_id->person(employee_num))
+                        $data["paper_type"]=$v[4];//论文类型(paper_type)
+                        $data["conference_name"]=$v[5];//期刊/会议名称(conference_name)
+                        $data["other_author"]=$v[6];//其他作者（学院），多个作者中间用分号隔开(other_author)
+                        $college_name = $v[7];//学院名(college_id->college(name))
 
                         ///////////////////////////////////////////////////////////////////////
                         //\\\\\涉及外键的操作////\\
 
                         // 处理第一作者信息 person
-                        $first_author_id = getPersonIdByEmployeeNo($v[1]);
+                        $first_author_id = getPersonIdByEmployeeNo($first_author_no);
                         if($first_author_id>0){
                             $data["first_author_id"] = $first_author_id;
-                        }//else:id信息获取失败
+                        }else{
+                            $error_counter++;
+                            $errored_name[]=$data["name"]."（第一作者职工号有误）";
+                            continue;
+                        }
 
-                        //处理联系作者信息 person
+                        //处理联系作者信息 联系作者职工号(contact_author_id->person(employee_num))
 
-                        $contact_author_id = getPersonIdByEmployeeNo($v[3]);
+                        $contact_author_id = getPersonIdByEmployeeNo($contact_author_no);
                         if($contact_author_id>0){
                             $data["contact_author_id"] = $contact_author_id;
-                        }//else:id信息获取失败
+                        }else{
+                            $error_counter++;
+                            $errored_name[]=$data["name"]."（联系作者职工号有误）";
+                            continue;
+                        }
 
                         //处理学院id college
-                        $college_id = getForeignKey($v[7],"college",$college_buffer);
+                        $college_id = getForeignKey($college_name,"college",$college_buffer);
                         if($college_id>0){
                             $data["college_id"] = $college_id;
-                        }//else:id信息获取失败
+                        }else{
+                            $error_counter++;
+                            $errored_name[]=$data["name"]."（学院名不存在）";
+                            continue;
+                        }
 
                         $condition = array("name"=>$v[0]);
                         $isduplicated = $paper->where($condition)->find();
@@ -277,7 +289,6 @@ class PaperController extends Controller {
                 M('audit')->add($audit);
 
                 if($error_counter==0){
-//                    $this->success("恭喜您，成功导入或更新数据"+($insert_counter+$update_counter)+"条！（详情见日志）",'',5);
                     $this->success("恭喜您，科研成果数据导入操作成功！（详情见审计模块）",'',4);
                 }else{
                     $this->error("存在导入失败的记录，请查看审计模块的日志进行修正！",'',4);

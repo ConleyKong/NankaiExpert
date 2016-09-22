@@ -107,43 +107,6 @@ function readExcel($filename, $extension='xls', $encode = 'utf-8')
 }
 
 
-/*
- * 输入：
- * $i_data,需要插入外表的真实数据
- * $i_table,外表的名称
- * $i_buffer=null，外表数据缓存
- * 返回值：
- * 获得的外表的id
- */
-function getForeignKey($i_data,$i_table,&$i_buffer=null){
-	if($i_data!=null){
-		$t_id = null;
-		if(array_key_exists($i_data,$i_buffer)){
-			//缓存中存在当前的学历，取出来type_id，插入到person表中
-			$t_id = $i_buffer[$i_data];
-		}else{
-			//缓存中不存在当前的学历
-			$d_array = M($i_table)->where("name='%s'",$i_data)->field('id')->find();
-			$t_id = (int)$d_array['id'];
-			if($t_id==null){
-				//数据库中若没有该学历则需要新建
-				$t['name'] = $i_data;
-				$t_id = M("person_type")->add($t);
-			}
-			if($i_buffer!=null){
-				$i_buffer[$i_data]=$t_id;//加入缓存
-			}
-		}
-		if($t_id!=null){
-			return  $t_id;
-		}else{
-			//$d_id获取失败，无法插入
-//                $this->error ( $i_table.' 的id获取失败，无法插入' );
-			return -1;
-		}
-	}
-}
-
 	function objectToArray($object)
 	{
 	    $_array = is_object($object) ? get_object_vars($object) : $object;
@@ -171,3 +134,53 @@ function getForeignKey($i_data,$i_table,&$i_buffer=null){
 		}
 		return $ip;
 	}
+
+
+/*
+ * 输入：
+ * $i_data,需要插入外表的真实数据
+ * $i_table,外表的名称
+ * $i_buffer=null，外表数据缓存
+ * 返回值：
+ * 获得的外表的id
+ */
+function getForeignKey($i_data,$i_table,&$i_buffer=null){
+	if($i_data!=null){
+		$t_id = null;
+		if(array_key_exists($i_data,$i_buffer)){
+			//缓存中存在当前的学历，取出来type_id，插入到person表中
+			$t_id = $i_buffer[$i_data];
+		}else{
+			//缓存中不存在当前的学历
+//			$condition["name"]=$i_data;
+			$d_array = M($i_table)->where("name='%s' ",$i_data)->field('id')->find();
+			$t_id = (int)$d_array['id'];
+		}
+		if($t_id!=null){
+			if($i_buffer!=null){
+				$i_buffer[$i_data]=$t_id;//加入缓存
+			}
+			return  $t_id;
+		}else{
+			//$d_id获取失败，无法插入
+//                $this->error ( $i_table.' 的id获取失败，无法插入' );
+			return -1;
+		}
+	}
+}
+
+function getPersonIdByEmployeeNo($employee_no)
+{
+	if ($employee_no != null) {
+		$id = null;
+		$p = M("person")->where("employee_no='%s' ", $employee_no)->field('id')->find();
+		$id = (int)$p['id'];
+
+		if ($id != null) {
+			return $id;
+		} else {
+			//$d_id获取失败，无法插入
+			return -1;
+		}
+	}
+}

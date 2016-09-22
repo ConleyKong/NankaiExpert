@@ -205,6 +205,10 @@
           <tr ng-if="!vm.paginationConf.totalItems"><td colspan="12"><h2 class="text-center text-danger">无数据</h2></td></tr>
         </tbody>
       </table>
+        <form method="post" action="{:U('Award/import')}" enctype="multipart/form-data">
+            <h3>导入Excel表：</h3><input  type="file" name="file_import" />
+            <input type="submit"  value="导入" />
+        </form>
       <tm-pagination conf="vm.paginationConf"></tm-pagination>
     </div>
   </div>

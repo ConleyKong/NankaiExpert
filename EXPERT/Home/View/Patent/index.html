@@ -86,7 +86,7 @@
           <tr>
             <th><span ng-hide="vm.showCheckbox">#</span><span ng-show="vm.showCheckbox">全选<input type="checkbox" ng-click="vm.selectAll();"></span></th>
             <th>专利名称<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.name"></th>
-            <th>专利权人/申请人<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.owner_name"></th>
+            <th>专利申请人<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.owner_name"></th>
             <th>所在单位<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.ownercollege_name"></th>
             <th>第一发明人<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.firstinventor_name"></th>
             <th>第一发明人单位<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.inventorcollege_name"></th>
@@ -114,6 +114,10 @@
           <tr ng-if="!vm.paginationConf.totalItems"><td colspan="12"><h2 class="text-center text-danger">无数据</h2></td></tr>
         </tbody>
       </table>
+        <form method="post" action="{:U('Patent/import')}" enctype="multipart/form-data">
+            <h3>导入Excel表：</h3><input  type="file" name="file_import" />
+            <input type="submit"  value="导入" />
+        </form>
       <tm-pagination conf="vm.paginationConf"></tm-pagination>
     </div>
   </div>

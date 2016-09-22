@@ -17,30 +17,29 @@ class PatentViewModel extends ViewModel {
 		),
 		'inventor' => array(
 			'_table' => 'person',
-			'_as' => 'inventor',
+			'id'=>'inventorid',
 			'name' => 'firstinventor_name',
 			'_on' => 'inventor.id=patent.first_inventor_id',
 			'_type' => 'LEFT'
 		),
 		'owner' => array(
 			'_table' => 'person',
-			'_as' => 'owner',
+			'id' =>'ownerid',
 			'name' => 'owner_name',
 			'_on' => 'owner.id=patent.owner_id',
 			'_type' => 'LEFT'
 		),
-		'inventorcollege' => array(
+		'icollege' => array(
 			'_table' => 'college',
-			'_as' => 'inventorcollege',
-			'id' => 'inventorcollege_id',
+			'id' =>'icollegeid',
 			'name' => 'inventorcollege_name',
-			'_on' => 'inventorcollege.id=inventor.college_id',
+			'_on' => 'icollege.id=inventor.college_id',
 			'_type' => 'LEFT'
 		),
 		'ownercollege' => array(
 			'_table' => 'college',
 			'_as' => 'ownercollege',
-			'id' => 'ownercollege_id',
+			'id' =>'ownercollegeid',
 			'name' => 'ownercollege_name',
 			'_on' => 'ownercollege.id=owner.college_id',
 			'_type' => 'LEFT'

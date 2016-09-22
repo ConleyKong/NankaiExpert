@@ -81,7 +81,7 @@
             <th>拥有者<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.person_name"></th>
             <th>项目名称<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.name"></th>
             <th>类型<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.type_name"></th>
-            <th>支助编号<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.support_no"></th>
+            <th>资助编号<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.support_no"></th>
             <th>参与单位<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.join_unit"></th>
             <th>项目来源<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.source"></th>
             <th>来源单位<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.source_department"></th>
@@ -117,6 +117,10 @@
           <tr ng-if="!vm.paginationConf.totalItems"><td colspan="15"><h2 class="text-center text-danger">无数据</h2></td></tr>
         </tbody>
       </table>
+      <form method="post" action="{:U('Project/import')}" enctype="multipart/form-data">
+        <h3>导入Excel表：</h3><input  type="file" name="file_import" />
+        <input type="submit"  value="导入" />
+      </form>
       <tm-pagination conf="vm.paginationConf"></tm-pagination>
     </div>
   </div>

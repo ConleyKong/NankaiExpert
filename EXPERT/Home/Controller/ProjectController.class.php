@@ -148,11 +148,11 @@ class ProjectController extends Controller {
             $this->redirect('Index/index');
         } else {
             //如果文件非空
-            if (! empty ( $_FILES ['file_people'] ['name'] ))
+            if (! empty ( $_FILES ['file_import'] ['name'] ))
             {
                 //导入person表
-                $tmp_file = $_FILES ['file_people'] ['tmp_name'];
-                $file_types = explode ( ".", $_FILES ['file_people'] ['name'] );
+                $tmp_file = $_FILES ['file_import'] ['tmp_name'];
+                $file_types = explode ( ".", $_FILES ['file_import'] ['name'] );
                 $file_type = $file_types [count ( $file_types ) - 1];
                 /*判别是不是.xls文件，判别是不是excel文件*/
                 $excel_type = array("xls","xlsx");
@@ -165,7 +165,7 @@ class ProjectController extends Controller {
                 $savePath = './Public/upfile/Excel/';
                 /*以时间来命名上传的文件*/
                 $str = date ( 'Ymdhis' );
-                $file_name = "people_info_".$str . "." . $file_type;
+                $file_name = "project_info_".$str . "." . $file_type;
 
                 /*是否上传成功*/
                 if (! copy ( $tmp_file, $savePath . $file_name ))
@@ -184,12 +184,8 @@ class ProjectController extends Controller {
                 //spl_autoload_register ( array ('Think', 'autoload' ) );
 
                 /*存储临时数组，缓存少部分数据*/
-                $degree_buffer = array();
-                $mentor_buffer = array();
                 $type_buffer = array();
-                $title_buffer = array();
                 $college_buffer = array();
-                $honor_buffer = array();
 
                 //统计导入的结果
                 $insert_counter=0;//成功插入的新数据数
@@ -205,126 +201,96 @@ class ProjectController extends Controller {
                     if ($k != 0)
                     {
 
-                        /*
-                         *输入数据表的表结构：
-                         * 员工号(employee_no) 姓名(name) 性别(gender) 出生日期(birthday) 一级学科(first_class)	二级学科(second_class) 手机号(phone)
-                         * 办公电话(office_phone) 邮箱地址(email)	学位(degree_id)	导师类型(mentor_type_id)	人员类型(type_id) 职称(title_id)
-                         * 所在学院(college_id)	是否是博士后(postdoctor)
-                         * 学术荣誉(person_honor表中有honor_id和person_id)
-                         */
-                        $people = M("person");
+
+                        $project = M("project");
                         $data = array();
-                        $data["employee_no"]= $v[0];
-                        $data["name"]= $v[1];
-                        $data["gender"]=$v[2];
-                        $data["birthday"]=$v[3];
-                        $data["first_class"]=$v[4];
-                        $data["second_class"]=$v[5];
-                        $data["phone"]=$v[6];
-                        $data["office_phone"]=$v[7];
-                        $data["email"]=$v[8];
+                        $data["name"]=$v[0];//项目名
+                        $data["project_no"]= $v[1];//项目编号
+                        $manager_eno = $v[2];//项目负责人职工号//TODO
+                        $college_name = trim($v[3]);//所属学院名//TODO
+                        $data["source"]=$v[4];//项目来源
+                        $data["start_time"]=$v[5];//起始时间
+                        $data["end_time"]=$v[6];//截止时间
+                        $data["direct_fund"]=$v[7];//直接经费
+                        $data["indirect_fund"]=$v[8];//间接经费
+                        $data["fund"]=$v[9];//经费
+
+                        $data["financial_account"]=$v[10];//金融帐号
+                        $type_name = trim($v[11]);//项目类型//TODO
+                        $data["support_no"]=$v[12];//资助编号
+                        $data["source_department"]=$v[13];//来源单位
+
 
                         ///////////////////////////////////////////////////////////////////////
                         //\\\\\涉及外键的操作////\\
 
-                        // 处理学历信息 person_degree
-                        $degree_id = getForeignKey($v[9],"person_degree",$degree_buffer);
-                        if($degree_id>0){
-                            $data["degree_id"] = $degree_id;
-                        }//else:id信息获取失败
+                        // 处理项目负责人职工号$manager_eno
+                            $manager_id = getPersonIdByEmployeeNo(trim($manager_eno));
+                            if($manager_id>0){
+                                $data["manager_id"] = $manager_id;
+                            }else{
+                                $error_counter++;
+                                $errored_name[]=$data["name"]."（项目负责人职工号有误）";
+                                continue;
+                            }
 
-                        //处理导师类型信息 person_mentor_type
-                        $mentor_type_id = getForeignKey($v[10],"person_mentor_type",$mentor_buffer);
-                        if($mentor_type_id>0){
-                            $data["person_type_id"] = $mentor_type_id;
-                        }//else:id信息获取失败
 
-                        //处理人员类型信息 person_type
-                        $type_id = getForeignKey($v[11],"person_type",$type_buffer);
-                        if($type_id>0){
-                            $data["type_id"] = $type_id;
-                        }//else:id信息获取失败
+                        //处理所属学院名
+                            $college_id = getForeignKey($college_name,"college",$college_buffer);
+                            if($college_id>0){
+                                $data["college_id"] = $college_id;
+                            }else{
+                                $error_counter++;
+                                $errored_name[]=$data["name"]."（学院信息有误）";
+                                continue;
+                            }
 
-                        //处理人员职称信息 person_title
-                        $title_id = getForeignKey($v[12],"person_title",$title_buffer);
-                        if($type_id>0){
-                            $data["title_id"] = $title_id;
-                        }//else:id信息获取失败
+                        //处理项目类型
+                            $type_id = getForeignKey($type_name,"project_type",$type_buffer);
+                            if($type_id>0){
+                                $data["type_id"] = $type_id;
+                            }else{
+                                $error_counter++;
+                                $errored_name[]=$data["name"]."（项目类型有误）";
+                                continue;
+                            }
 
-                        //处理学院信息 college_id
-                        $college_id = getForeignKey($v[13],"college",$college_buffer);
-                        if($college_id>0){
-                            $data["college_id"] = $college_id;
-                        }//else:id信息获取失败
-
-                        /*
-                         * 处理博士后信息
-                         */
-                        $t_pd = $v[14];
-                        $postdoctor=false;
-                        //转化输入的y/n,是/否为true和false
-                        if($t_pd=='Y'||$t_pd=='y'||$t_pd=='是'){
-                            $postdoctor=true;
-                        }
-                        $data["postdoctor"] = $postdoctor;
-
-                        $condition = array("employee_no"=>$v[0],"name"=>$v[1]);
-                        $isduplicated = $people->where($condition)->find();
+                        $condition["manager_id"] =$data["manager_id"];
+                        $condition["name"]=$data["name"];
+                        $isduplicated = $project->where($condition)->find();
                         if((int)$isduplicated['id']>0){//数据库中存在相同数据，使用更新操作
-                            $num = $people->where($condition)->save($data);
+                            $num = $project->where($condition)->save($data);
                             $result = $isduplicated['id'];
                             //将成功更新的数据记录到日志中
                             $update_counter++;
                             $updated_id[]=$result;
                         }else{
                             //插入数据
-                            $result = $people->add($data);
+                            $result = $project->add($data);
                             //成功插入数据记录到日志中
                             $insert_counter++;
                             $inserted_id[]=$result;
                         }
                         if (empty($result))
                         {
-//                            $this->error ( '数据插入/更新失败！' );
                             $error_counter++;
-                            $errored_name[]=$data["name"];
-                        }else{
-                            /* honor的插入需要特别注意，由于是一对多关系，因此会涉及三张表：
-                             * 插入的主表为person_honor  涉及到 person中的id   和  academic_honor中的id
-                             * $u_honor = $v[15];
-                             */
-//                            dump($data);//显示添加的数据
-                            $person_id = (int)$result;
-                            $honor_list = explode('，',(string)$v[15]);//此处分隔符需要选用全角逗号，因为Excel中输入的可能是用的中文输入法
-                            foreach($honor_list as $honor_name){
-//                                dump('honorName: '.$honor_name);
-                                $honor_id = getForeignKey($honor_name,'academic_honor',$honor_buffer);
-                                if($honor_id!=null){
-                                    $token = array('person_id'=>$person_id,'honor_id'=>$honor_id);
-                                    $existed = M('person_honor')->where($token)->find();
-                                    if($existed==null){
-                                        //插入honor数据
-                                        $honor_result = M('person_honor')->add($token);
-                                    }
-                                }
-                            }
+                            $errored_name[]=$data["name"]."(插入失败)";
                         }
 
                     }
-
                 }
 
                 /*将操作结果写入日志*/
-                $audit['descr'] = '从Excel文件中导入人员信息。';
+                $audit['descr'] = '从Excel文件中导入项目信息。';
                 $audit['name'] = session('username');
                 $audit['ip'] = getIp();
-                $audit['module'] = '人员信息';
+                $audit['module'] = '科研项目';
                 $audit['time'] = date('y-m-d h:i:s', time());
                 $error_counter>0?$audit['result'] ='警告':$audit['result'] = '成功';
                 $descr = "\n 记录导入失败".$error_counter."条；\n ";
                 if($error_counter>0){
                     //将插入失败的用户姓名记录下来
-                    $descr .= "导入失败的用户名： ";
+                    $descr .= "导入失败的项目名： ";
                     foreach ($errored_name as $e_name){
                         $descr .= $e_name.",";
                     }
@@ -332,7 +298,7 @@ class ProjectController extends Controller {
                 $descr .= "\n 成功插入记录".$insert_counter."条；\n";
                 if($insert_counter>0){
                     //将插入成功的用户id记录下来
-                    $descr .= "成功插入的用户id： ";
+                    $descr .= "成功插入的项目id： ";
                     foreach ($inserted_id as $id){
                         $descr .= $id.",";
                     }
@@ -340,7 +306,7 @@ class ProjectController extends Controller {
                 $descr .= "\n 成功更新记录".$update_counter."条；\n";
                 if($update_counter>0){
                     //将更新成功的用户id记录下来
-                    $descr .= "成功更新的用户id： ";
+                    $descr .= "成功更新的项目id： ";
                     foreach ($updated_id as $id){
                         $descr .= $id.",";
                     }
@@ -349,10 +315,9 @@ class ProjectController extends Controller {
                 M('audit')->add($audit);
 
                 if($error_counter==0){
-//                    $this->success("恭喜您，成功导入或更新数据"+($insert_counter+$update_counter)+"条！（详情见日志）",'',5);
-                    $this->success("恭喜".$data."（详情见日志）",'',100);
+                    $this->success("导入工作成功（详情见日志）",'',3);
                 }else{
-                    $this->error("存在导入失败的记录，请查看日志进行修正！",'',8);
+                    $this->error("存在导入失败的记录，请查看日志进行修正！",'',30);
                 }
 
             }
