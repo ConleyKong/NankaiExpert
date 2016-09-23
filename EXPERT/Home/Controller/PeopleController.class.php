@@ -107,15 +107,42 @@ class PeopleController extends Controller {
         }
     }
 
+
     public function delete()
     {
-        if ( ! session('logged'))
-        {
+
+        if (!session('logged')){
             $this->redirect('Index/index');
         }
-        //$condition['id'] = I('post.id', null, 'int');
-        //$result  = M('person')->where($condition)->delete();
-        echo '0';
+        else {
+            $id = $_GET['id'];
+            $condition['id'] = $id;
+            $people = M('person');
+            $state = $people->where($condition)->delete();
+            //审计日志
+            $audit['name'] = session('username');
+            $audit['ip'] = getIp();
+            $audit['module'] = '人员列表';
+            $audit['time'] = date('y-m-d h:i:s',time());
+            $audit['descr'] .= '删除人员id: $id ';
+
+
+            if($state){
+                $this->success('操作成功！');
+                $audit['result'] = '成功';
+                M('audit')->add($audit);
+            }
+            else{
+                $audit['result'] = '失败';
+                M('audit')->add($audit);
+                $this->error('操作失败！');
+            }
+            ////////////////////////////////////////////////////////////////////////////////
+
+//            $this->display();
+//                $this->redirect('Event/index');
+
+        }
     }
 
     //获取学院列表

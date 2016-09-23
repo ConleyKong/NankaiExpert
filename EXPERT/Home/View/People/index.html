@@ -183,7 +183,7 @@
             <th>电话<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.phone"></th>
             <th>一级学科<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.first_class"></th>
             <th>二级学科<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.second_class"></th>
-            <!-- <th>操作</th> -->
+             <th>操作</th>
           </tr>
         </thead>
         <tbody>
@@ -200,6 +200,7 @@
             <td ng-bind="item.phone"></td>
             <td ng-bind="item.first_class"></td>
             <td ng-bind="item.second_class"></td>
+              <td><a href="__URL__/delete?id={{item.id}}" >删除</a></td>
             <!-- <td width="6%"><span class="glyphicon glyphicon-edit" onclick="modify(this);"></span><span class="glyphicon glyphicon-trash pull-right" onclick="del(this);"></span></td> -->
           </tr>
           <tr ng-if="!vm.paginationConf.totalItems"><td colspan="12"><h2 class="text-center text-danger">无数据</h2></td></tr>

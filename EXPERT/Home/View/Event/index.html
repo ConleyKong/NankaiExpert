@@ -453,8 +453,7 @@ $strPrompt = sprintf("文件%s上传成功<br>"
                     <th>地址</th>
                     <th>备注</th>
                     <th>图片</th>
-                    <th></th>
-                    <th></th>
+                    <th>操作</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -466,9 +465,8 @@ $strPrompt = sprintf("文件%s上传成功<br>"
                     <td ng-bind="item.relevant_person"></td>
                     <td ng-bind="item.location"></td>
                     <td ng-bind="item.remark"></td>
-                    <td><a href="__URL__/show_picture/?id={{item.id}}" target="_blank">查看</a></td>
+                    <td ng-bind="item.picture">图片</td>
                     <td><a href="__URL__/delete?id={{item.id}}" >删除</a></td>
-                    <td><a href="__URL__/select?id={{item.id}}" data-toggle="modal" data-target="#modal2">修改</a></td>
 
                 </tr>
                 <tr ng-if="!vm.paginationConf.totalItems"><td colspan="12"><h2 class="text-center text-danger">无数据</h2></td></tr>
