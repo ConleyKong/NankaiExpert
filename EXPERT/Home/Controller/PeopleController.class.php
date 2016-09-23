@@ -41,6 +41,7 @@ class PeopleController extends Controller {
             unset($param['items']);
             unset($param['startTime']);
             unset($param['endTime']);
+            $param["valid"]=true;
 	        $result = $person->field('id,name,gender,employee_no,postdoctor,birthday,email,phone,first_class,second_class,college_name,academic_name')->where($param)->page($pageNum,$itemsNum)->order('person.id')->select();
             $totalNum = $person->where($param)->count();
             $result[0]['totalNum'] = $totalNum;
@@ -118,16 +119,19 @@ class PeopleController extends Controller {
             $id = $_GET['id'];
             $condition['id'] = $id;
             $people = M('person');
-            $state = $people->where($condition)->delete();
+            $p = $people->where($condition)->find();
+            $p['valid']=false;
+            $state = $people->where($condition)->save($p);
+            $name = $p["name"];
             //审计日志
             $audit['name'] = session('username');
             $audit['ip'] = getIp();
             $audit['module'] = '人员列表';
             $audit['time'] = date('y-m-d h:i:s',time());
-            $audit['descr'] .= '删除人员id: $id ';
+            $audit['descr'] .= "删除人员: $id: $name ";
 
 
-            if($state){
+            if($state>0){
                 $this->success('操作成功！');
                 $audit['result'] = '成功';
                 M('audit')->add($audit);

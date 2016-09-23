@@ -34,6 +34,9 @@ class ProjectController extends Controller {
             $Paper = D('ProjectView');
             unset($param['page']);
             unset($param['items']);
+
+//            $param["valid"]=false;
+            
             $result = $Paper->where($param)->page($pageNum,$itemsNum)->order('project.id')->select();
             $totalNum = $Paper->where($param)->count();
             $result[0]['totalNum'] = $totalNum;
