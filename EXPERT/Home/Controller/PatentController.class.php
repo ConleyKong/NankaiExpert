@@ -191,7 +191,7 @@ class PatentController extends Controller {
                                 $data["first_inventor_id"] = $first_inventor_id;
                             }else{
                                 $error_counter++;
-                                $errored_name[]=$data["name"]."（第一发明人职工号有误）";
+                                $errored_name[]=$data["name"]."（第一发明人职工号不存在）";
                                 continue;
                             }
 

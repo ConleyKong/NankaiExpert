@@ -257,7 +257,7 @@ class AwardController extends Controller {
                                 $data["college_id"] = $college_id;
                             }else{
                                 $error_counter++;
-                                $errored_name[]=$data["name"]."（学院信息有误）";
+                                $errored_name[]=$data["name"]."（学院信息不存在）";
                                 continue;
                             }
 

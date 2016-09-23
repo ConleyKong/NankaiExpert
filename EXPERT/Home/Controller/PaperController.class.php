@@ -203,7 +203,7 @@ class PaperController extends Controller {
                             $data["first_author_id"] = $first_author_id;
                         }else{
                             $error_counter++;
-                            $errored_name[]=$data["name"]."（第一作者职工号有误）";
+                            $errored_name[]=$data["name"]."（第一作者职工号不存在）";
                             continue;
                         }
 
@@ -214,7 +214,7 @@ class PaperController extends Controller {
                             $data["contact_author_id"] = $contact_author_id;
                         }else{
                             $error_counter++;
-                            $errored_name[]=$data["name"]."（联系作者职工号有误）";
+                            $errored_name[]=$data["name"]."（联系作者职工号不存在）";
                             continue;
                         }
 

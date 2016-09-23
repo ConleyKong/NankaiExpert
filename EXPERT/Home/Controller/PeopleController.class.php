@@ -401,7 +401,7 @@ class PeopleController extends Controller {
                                 $data["degree_id"] = $degree_id;
                             }else{
                                 $error_counter++;
-                                $errored_name[]=$data["name"]."（用户学历信息有误）";
+                                $errored_name[]=$data["name"]."（用户学历信息不存在）";
                                 continue;
                             }
 
@@ -412,7 +412,7 @@ class PeopleController extends Controller {
                                 $data["mentor_type_id"] = $mentor_type_id;
                             }else{
                                 $error_counter++;
-                                $errored_name[]=$data["name"]."（用户导师类型信息有误）";
+                                $errored_name[]=$data["name"]."（用户导师类型信息不存在）";
                                 continue;
                             }
 
@@ -422,7 +422,7 @@ class PeopleController extends Controller {
                                 $data["type_id"] = $type_id;
                             }else{
                                 $error_counter++;
-                                $errored_name[]=$data["name"]."（用户人员类型有误）";
+                                $errored_name[]=$data["name"]."（用户人员类型不存在）";
                                 continue;
                             }
 
@@ -433,7 +433,7 @@ class PeopleController extends Controller {
                                 $data["title_id"] = $title_id;
                             }else{
                                 $error_counter++;
-                                $errored_name[]=$data["name"]."（职称信息有误）";
+                                $errored_name[]=$data["name"]."（职称信息不存在）";
                                 continue;
                             }
 
@@ -444,7 +444,7 @@ class PeopleController extends Controller {
                                 $data["college_id"] = $college_id;
                             }else{
                                 $error_counter++;
-                                $errored_name[]=$data["name"]."（学院信息有误）";
+                                $errored_name[]=$data["name"]."（学院信息不存在）";
                                 continue;
                             }
 
@@ -507,7 +507,7 @@ class PeopleController extends Controller {
                                     }
                                 }else{
                                     $error_counter++;
-                                    $errored_name[]=$data["name"]."（学术称号 $honor_name 有误）";
+                                    $errored_name[]=$data["name"]."（学术称号 $honor_name 不存在）";
                                     continue;
                                 }
                             }

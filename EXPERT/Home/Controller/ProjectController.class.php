@@ -233,7 +233,7 @@ class ProjectController extends Controller {
                                 $data["manager_id"] = $manager_id;
                             }else{
                                 $error_counter++;
-                                $errored_name[]=$data["name"]."（项目负责人职工号有误）";
+                                $errored_name[]=$data["name"]."（项目负责人职工号不存在）";
                                 continue;
                             }
 
@@ -244,7 +244,7 @@ class ProjectController extends Controller {
                                 $data["college_id"] = $college_id;
                             }else{
                                 $error_counter++;
-                                $errored_name[]=$data["name"]."（学院信息有误）";
+                                $errored_name[]=$data["name"]."（学院信息不存在）";
                                 continue;
                             }
 
@@ -254,7 +254,7 @@ class ProjectController extends Controller {
                                 $data["type_id"] = $type_id;
                             }else{
                                 $error_counter++;
-                                $errored_name[]=$data["name"]."（项目类型有误）";
+                                $errored_name[]=$data["name"]."（项目类型不存在）";
                                 continue;
                             }
 
