@@ -37,6 +37,9 @@ class PaperController extends Controller {
             unset($param['pub_end']);
             unset($param['page']);
             unset($param['items']);
+
+            $param["valid"]=true;
+
 	        $result = $paper->where($param)->page($pageNum,$itemsNum)->order('paper.id')->select();
             $totalNum = $paper->where($param)->count();
             $result[0]['totalNum'] = $totalNum;
@@ -49,6 +52,52 @@ class PaperController extends Controller {
             M('audit')->add($audit);
             $this->ajaxReturn($result,'json');
 	    }
+    }
+
+
+    /*
+    * 删除指定paper
+    * 将paper的valid置为false
+    */
+    public function delete()
+    {
+
+        if (!session('logged')){
+            $this->redirect('Index/index');
+        }
+        else {
+            $id = $_GET['id'];
+            $condition['id'] = $id;
+//            $condition['valid']=true;
+            $paper = M('paper');
+            $p = $paper->where($condition)->find();
+            $p['valid']=false;
+            $state = $paper->where($condition)->save($p);
+            $name = $p["name"];
+            //审计日志
+            $audit['name'] = session('username');
+            $audit['ip'] = getIp();
+            $audit['module'] = '成果列表';
+            $audit['time'] = date('y-m-d h:i:s',time());
+            $audit['descr'] .= "删除成果: $id: $name ";
+
+
+            if($state>0){
+                $this->success('操作成功！');
+                $audit['result'] = '成功';
+                M('audit')->add($audit);
+            }
+            else{
+                $audit['result'] = '失败';
+                M('audit')->add($audit);
+                $this->error('操作失败！');
+            }
+            ////////////////////////////////////////////////////////////////////////////////
+
+//            $this->display();
+//                $this->redirect('Event/index');
+
+        }
     }
 
 
