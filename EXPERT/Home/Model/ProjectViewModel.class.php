@@ -20,6 +20,7 @@ class ProjectViewModel extends ViewModel {
 			'project_no',
 			'source_department',
 			'comment',
+			'valid',
 		),
 		'person' => array(
 			'name' => 'person_name',

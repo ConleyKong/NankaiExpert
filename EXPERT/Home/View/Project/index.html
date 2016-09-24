@@ -93,6 +93,7 @@
             <th>间接经费<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.indirect_fund"></th>
             <th>金融账户<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.financial_account"></th>
             <th>备注<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.comment"></th>
+            <th>操作</th>
           </tr>
         </thead>
         <tbody>
@@ -113,6 +114,7 @@
             <td ng-bind="item.indirect_fund"></td>
             <td ng-bind="item.financial_account"></td>
             <td ng-bind="item.comment"></td>
+            <td><a href="__URL__/delete?id={{item.id}}">删除</a> </td>
           </tr>
           <tr ng-if="!vm.paginationConf.totalItems"><td colspan="15"><h2 class="text-center text-danger">无数据</h2></td></tr>
         </tbody>

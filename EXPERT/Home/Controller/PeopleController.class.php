@@ -383,6 +383,8 @@ class PeopleController extends Controller {
                         $data["phone"]=$v[6];
                         $data["office_phone"]=$v[7];
                         $data["email"]=$v[8];
+                        //隐含字段
+                        $data["valid"]=true;
 
                         $degree_name = trim($v[9]);
                         $mentor_type_name = trim($v[10]);
