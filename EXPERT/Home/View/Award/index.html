@@ -187,6 +187,7 @@
             <th>奖励级别<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.level"></th>
             <th>获奖时间<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.time"></th>
             <th>备注<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.comment"></th>
+            <th>操作</th>
           </tr>
         </thead>
         <tbody>
@@ -201,6 +202,7 @@
             <td ng-bind="item.level"></td>
             <td ng-bind="item.time"></td>
             <td ng-bind="item.comment"></td>
+            <td><a href="__URL__/delete?id={{item.id}}">删除</a></td>
           </tr>
           <tr ng-if="!vm.paginationConf.totalItems"><td colspan="12"><h2 class="text-center text-danger">无数据</h2></td></tr>
         </tbody>

@@ -12,6 +12,7 @@ class LabViewModel extends ViewModel {
 			'college_id',
 			'member',
 			'description',
+			'valid',
 		),
 		'person' => array(
 			'name' => 'manager_name',

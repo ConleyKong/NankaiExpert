@@ -53,6 +53,9 @@ class AwardController extends Controller {
             unset($param['endTime']);
             unset($param['person_startTime']);
             unset($param['person_endTime']);
+            
+            $param["valid"]=true;
+            
 	        $result = $award->field('id,name,level,time,comment,birthday,person_name,grade_name,academichonor_name,col_name')->where($param)->page($pageNum,$itemsNum)->order('award.id')->select();
             $totalNum = $award->where($param)->count();
             $result[0]['totalNum'] = $totalNum;
@@ -67,9 +70,6 @@ class AwardController extends Controller {
             $this->ajaxReturn($result,'json');
 	    }
     }
-
-
-
 
     //获取人员职称
     public function getGradeList(){
@@ -92,6 +92,49 @@ class AwardController extends Controller {
             $academichonor = M('academic_honor');
             $result = $academichonor->field('id,name')->select();
             $this->ajaxReturn($result, 'json');
+        }
+    }
+
+    /*
+     * 删除
+     */
+    public function delete()
+    {
+        if (!session('logged')){
+            $this->redirect('Index/index');
+        }
+        else {
+            $id = $_GET['id'];
+            $condition['id'] = $id;
+//            $condition['valid']=true;
+            $award = M('award');
+            $p = $award->where($condition)->find();
+            $p['valid'] = false;
+            $state = $award->where($condition)->save($p);
+            $name = $p["name"];
+            //审计日志
+            $audit['name'] = session('username');
+            $audit['ip'] = getIp();
+            $audit['module'] = '成果获奖';
+            $audit['time'] = date('y-m-d h:i:s',time());
+            $audit['descr'] .= "删除奖励: $id: $name ";
+
+
+            if($state>0){
+                $this->success('操作成功！');
+                $audit['result'] = '成功';
+                M('audit')->add($audit);
+            }
+            else{
+                $audit['result'] = '失败';
+                M('audit')->add($audit);
+                $this->error('操作失败！');
+            }
+            ////////////////////////////////////////////////////////////////////////////////
+
+//            $this->display();
+//                $this->redirect('Event/index');
+
         }
     }
 

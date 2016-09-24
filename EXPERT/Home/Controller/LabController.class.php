@@ -39,6 +39,9 @@ class LabController extends Controller {
             $Lab = D('LabView');
             unset($param['page']);
             unset($param['items']);
+
+            $param["valid"]=true;
+
             $result = $Lab->where($param)->page($pageNum,$itemsNum)->order('Lab.id')->select();
             $totalNum = $Lab->where($param)->count();
             $result[0]['totalNum'] = $totalNum;
@@ -54,6 +57,45 @@ class LabController extends Controller {
     }
 
 
+    public function delete()
+    {
+        if (!session('logged')){
+            $this->redirect('Index/index');
+        }
+        else {
+            $id = $_GET['id'];
+            $condition['id'] = $id;
+//            $condition['valid']=true;
+            $lab = M('lab');
+            $p = $lab->where($condition)->find();
+            $p['valid']=false;
+            $state = $lab->where($condition)->save($p);
+            $name = $p["name"];
+            //审计日志
+            $audit['name'] = session('username');
+            $audit['ip'] = getIp();
+            $audit['module'] = '科研平台';
+            $audit['time'] = date('y-m-d h:i:s',time());
+            $audit['descr'] .= "删除平台: $id: $name ";
+
+
+            if($state>0){
+                $this->success('操作成功！');
+                $audit['result'] = '成功';
+                M('audit')->add($audit);
+            }
+            else{
+                $audit['result'] = '失败';
+                M('audit')->add($audit);
+                $this->error('操作失败！');
+            }
+        }
+    }
+
+
+    /*
+     * 导入导出
+     */
     public function export(){
         if (! session('logged')){
             $this->redirect('Index/index');

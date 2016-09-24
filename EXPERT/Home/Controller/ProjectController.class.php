@@ -101,7 +101,7 @@ class ProjectController extends Controller {
             //审计日志
             $audit['name'] = session('username');
             $audit['ip'] = getIp();
-            $audit['module'] = '成果列表';
+            $audit['module'] = '项目列表';
             $audit['time'] = date('y-m-d h:i:s',time());
             $audit['descr'] .= "删除项目: $id: $name ";
 

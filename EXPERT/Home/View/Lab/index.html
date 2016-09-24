@@ -80,6 +80,7 @@
               <th>所属院系<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.college_name"></th>
               <th>成员<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.member"></th>
               <th>简介<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.description"></th>
+              <th>操作</th>
             </tr>
           </thead>
           <tbody>
@@ -92,6 +93,7 @@
               <td ng-bind="item.college_name"></td>
               <td ng-bind="item.member"></td>
               <td ng-bind="item.description"></td>
+              <td><a href="__URL__/delete?id={{item.id}}">删除</a></td>
             </tr>
             <tr ng-if="!vm.paginationConf.totalItems"><td colspan="12"><h2 class="text-center text-danger">无数据</h2></td></tr>
           </tbody>

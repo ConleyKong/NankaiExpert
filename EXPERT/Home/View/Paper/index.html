@@ -84,6 +84,7 @@
             <th>期刊/会议名称<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.conference_name"></th>
             <th>发表时间<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.publish_date"></th>
             <th>备注<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.comment"></th>
+            <th>操作</th>
           </tr>
         </thead>
         <tbody>
@@ -95,6 +96,7 @@
             <td ng-bind="item.conference_name"></td>
             <td ng-bind="item.publish_date"></td>
             <td ng-bind="item.comment"></td>
+            <td><a href="__URL__/delete?id={{item.id}}">删除</a> </td>
           </tr>
           <tr ng-if="!vm.paginationConf.totalItems"><td colspan="12"><h2 class="text-center text-danger">无数据</h2></td></tr>
         </tbody>

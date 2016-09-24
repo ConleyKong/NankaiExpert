@@ -12,6 +12,7 @@ class PaperViewModel extends ViewModel {
 			'paper_type',
 			'conference_name',
 			'other_author',
+			'valid',
             '_type' => 'LEFT'
 		),
 		'person' => array(
