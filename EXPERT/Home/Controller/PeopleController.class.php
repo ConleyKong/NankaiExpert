@@ -196,18 +196,23 @@ class PeopleController extends Controller {
 //            $patent = D('PatentView')->where("patent.owner_id=%d",$id)->select();
 
             $person_condition['id']=$id;
+            $person_condition['valid']=true;
             $person = D('PeopleView')->where($person_condition)->select();
 
             $award_condition['first_id']=$id;
+            $award_condition['valid']=true;
             $award = D('AwardView')->where($award_condition)->select();
 
             $paper_condition['firstauthor_id']=$id;
+            $paper_condition['valid']=true;
             $paper = D('PaperView')->where($paper_condition)->select();
 
             $patent_condition['owner_id']=$id;
+            $patent_condition['valid']=true;
             $patent = D('PatentView')->where($patent_condition)->select();
 
             $project_condition['manager_id']=$id;
+            $project_condition['valid']=true;
             $project = D('ProjectView')->where($project_condition)->select();
 
 
