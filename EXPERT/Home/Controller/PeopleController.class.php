@@ -42,7 +42,12 @@ class PeopleController extends Controller {
             unset($param['startTime']);
             unset($param['endTime']);
             $param["valid"]=true;
-	        $result = $person->field('id,name,gender,employee_no,postdoctor,birthday,email,phone,first_class,second_class,college_name,academic_name')->where($param)->page($pageNum,$itemsNum)->order('person.id')->select();
+	        $result = $person
+                ->field('id,name,gender,employee_no,postdoctor,birthday,email,phone,first_class,second_class,college_name,academic_name')
+                ->where($param)
+                ->page($pageNum,$itemsNum)
+                ->order('person.id')
+                ->select();
             $totalNum = $person->where($param)->count();
             $result[0]['totalNum'] = $totalNum;
 
@@ -177,7 +182,8 @@ class PeopleController extends Controller {
             $field = I('post.field', null, 'string');
             $group = I('post.group', null, 'string');
             $person = D('PeopleView');
-            $result = $person->field($field)->group($group)->select();
+            $condition['valid']=true;
+            $result = $person->where($condition)->field($field)->group($group)->select();
             $this->result = $result;
             $this->ajaxReturn($result, 'json');
         }
@@ -238,32 +244,40 @@ class PeopleController extends Controller {
             //query：查询条件
             //field:导出的字段
             $type = I('get.type');//$param['type'];
-            $params = I('get.params');// $param['params'];
             $field = I('get.field');// $param['field'];
-            deleteEmptyValue($params);
-            $pageNum = $params['page'] ? $params['page'] : 1;
-            $itemsNum =  $params['items'] ? $params['items'] : 10;
 
-            if ($params['startTime'])
-                $params['birthday'] = array('gt',$params['startTime']);
+            $academichonor_id = I('get.academichonor_id');
+            $college_id = I('get.college_id');
+            $startTime = I('get.startTime');
+            $endTime = I('get.endTime');
+            $gender = urldecode(I('get.gender'));
+            $postdoctor = I('get.postdoctor');
+
+            $page = I('get.page');
+            $items = I('get.items');
+
+            $pageNum = $page? $page : 1;
+            $itemsNum =  $items? $items : 10;
+
+            if ($startTime)
+                $query['birthday'] = array(array('gt',$startTime),array('lt',$endTime));
+            if ($gender)
+                $query['gender'] = $gender;
+            if ($postdoctor)
+                $query['postdoctor']=$postdoctor;
+
             $string = '';
-            if ($params['academichonor_id']){
-                $string .= $string ? ' AND ('.$params['academichonor_id'].')' : '('.$params['academichonor_id'].')';
-//                unset($query['academichonor_id']);
-            }
-            if ($params['college_id']){
-                $string .= $string ? ' AND ('.$params['college_id'].')' : '('.$params['college_id'].')';
-//                unset($query['college_id']);
-            }
+            if ($academichonor_id)
+                $string .= $string ? ' AND ('.$academichonor_id.')' : '('.$academichonor_id.')';
+            if ($college_id)
+                $string .= $string ? ' AND ('.$college_id.')' : '('.$college_id.')';
+
             if ($string)
-                $params['_string'] = $string;
+                $query['_string'] = $string;
+
+            $query['valid']=true;
 
             $person = D('PeopleView');
-            $query = objectToArray($params);
-            unset($query['page']);
-            unset($query['items']);
-            unset($query['startTime']);
-            unset($query['endTime']);
             if ($type == 'all'){
                 $audit['descr'] = '导出所有。';
                 $result = $person->field($field)->where($query)->order('person.id')->select();

@@ -137,12 +137,37 @@
  				alert('请至少选择一个字段');
  				return;
  			}
-			console.log(vm.params);
-	 		var url = '/People/export/?type=' + type + '&params=' + vm.params + '&field=' + field;
+
+			//去除params中的空值
+			var parameters = {};//map
+			angular.forEach(vm.params,function (value,key) {
+					if(value){
+						parameters[key]=value;
+					}
+				}
+			);
+
+	 		var url = '/People/export/?type=' + type +'&'+jQuery.param(parameters)  + '&field=' + field;
+			console.log(url);
 			location.href = url;
 	 		vm.showCheckbox = false;
 
 	 	}
+
+		// function objectToArray(o)
+		// {
+		// 	this.data=[];
+		// 	var keyset=o.keys();
+		// 	if(typeof (o)=='object'){
+        //
+		// 	}
+		// 	foreach ($_array as $key => $value) {
+		// 	$value = (is_array($value) || is_object($value)) ? objectToArray($value) : $value;
+		// 	$array[$key] = $value;
+		// 	return this.data;
+		// }
+		// 	return $array;
+		// }
 
 	 	getAcademichonorList();
 	 	function getAcademichonorList(){
