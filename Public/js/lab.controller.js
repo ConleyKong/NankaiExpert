@@ -127,8 +127,19 @@
 				alert('请至少选择一个字段');
 				return;
 			}
+
+			//去除params中的空值
+			var parameters = {};//map
+			angular.forEach(vm.params,function (value,key) {
+					if(value){
+						parameters[key]=value;
+					}
+				}
+			);
+			
+			
 			// query用来进行分页查询
-			var url = '/Lab/export/?type=' + type + '&query=' + vm.params + '&field=' + field;
+			var url = '/Lab/export/?type=' + type +'&'+jQuery.param(parameters)  + '&field=' + field;
 			location.href = url;
 			vm.showCheckbox = false;
 		}

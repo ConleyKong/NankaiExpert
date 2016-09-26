@@ -240,9 +240,7 @@ class PeopleController extends Controller {
             $this->redirect('Index/index');
         }
         else{
-            //type:导出所有页或者导出当前页
-            //query：查询条件
-            //field:导出的字段
+            
             $type = I('get.type');//$param['type'];
             $field = I('get.field');// $param['field'];
 
@@ -276,7 +274,6 @@ class PeopleController extends Controller {
                 $query['_string'] = $string;
 
             $query['valid']=true;
-
             $person = D('PeopleView');
             if ($type == 'all'){
                 $audit['descr'] = '导出所有。';

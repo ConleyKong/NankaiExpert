@@ -22,7 +22,7 @@ class PaperViewModel extends ViewModel {
             '_type' => 'LEFT'
 		),
 		'college' => array(
-			'id' => 'col_id',
+			'id' => 'college_id',
 			'name' => 'col_name',
 			'_on' => 'paper.college_id=college.id',
 			 '_type' => 'LEFT'

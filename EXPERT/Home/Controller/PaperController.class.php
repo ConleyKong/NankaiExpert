@@ -22,15 +22,23 @@ class PaperController extends Controller {
             deleteEmptyValue($param);
 	    	$pageNum = $param['page'] ? $param['page'] : 1;  //当前页
             $itemsNum =  $param['items'] ? $param['items'] : 10; //每页个数
+
             if ($param['pub_start'] && $param['pub_end'])
-                $param['publish_date'] = array(array('gt',$param['pub_start']),array('lt',$param['pub_end']));
+                $query['publish_date'] = array(array('gt',$param['pub_start']),array('lt',$param['pub_end']));
+            if ($param['name'])
+                $query['name']=array('like','%'.$param['name'].'%');
+            if ($param['conference_name'])
+                $query['conference_name']=array('like','%'.$param['conference_name'].'%');
+            if ($param['person_name'])
+                $query['person_name']=array('like','%'.$param['person_name'].'%');
+
             $string = '';
             if ($param['college_id']){
                 $string .= $string ? ' AND ('.$param['college_id'].')' : '('.$param['college_id'].')';
                 unset($param['college_id']);
             }
             if ($string)
-                $param['_string'] = $string;
+                $query['_string'] = $string;
 
 	        $paper = D('PaperView');
             unset($param['pub_start']);
@@ -38,10 +46,10 @@ class PaperController extends Controller {
             unset($param['page']);
             unset($param['items']);
 
-            $param["valid"]=true;
+            $query["valid"]=true;
 
-	        $result = $paper->where($param)->page($pageNum,$itemsNum)->order('paper.id')->select();
-            $totalNum = $paper->where($param)->count();
+	        $result = $paper->where($query)->page($pageNum,$itemsNum)->order('paper.id')->select();
+            $totalNum = $paper->where($query)->count();
             $result[0]['totalNum'] = $totalNum;
             //审计日志
             $audit['name'] = session('username');
@@ -110,31 +118,41 @@ class PaperController extends Controller {
             $this->redirect('Index/index');
         }
         else{
-            $type = I('get.type');
-            $query = I('get.query');
-            $field = I('get.field');
-            deleteEmptyValue($query);
-            $pageNum = $query['page'] ? $query['page'] : 1;
-            $itemsNum =  $query['items'] ? $query['items'] : 10;
-            if ($query['pub_start'] && $query['pub_end']){
-                $query['publish_date'] = array(array('gt',$query['pub_start']),array('lt',$query['pub_end']));
-            }
-            $string = '';
-            if ($query['college_id']){
-                $string .= $string ? ' AND ('.$query['college_id'].')' : '('.$query['college_id'].')';
-                //unset($query['college_id']);
-            }
-            if ($string){
-                $query['_string'] = $string;
-            }
 
+            $type = I('get.type');//$param['type'];
+            $field = I('get.field');// $param['field'];
+
+            $page = I('get.page');
+            $items = I('get.items');
+
+            $pageNum = $page? $page : 1;
+            $itemsNum =  $items? $items : 10;
+
+            $college_id = I('get.college_id');
+            $conference_name = I('get.conference_name');
+            $person_name = I('get.person_name');
+            $pub_start = I('get.pub_start');
+            $pub_end = I('get.pub_end');
+
+
+            if ($pub_start)
+                $query['birthday'] = array(array('gt',$pub_start),array('lt',$pub_end));
+            if ($person_name)
+                $query['person_name'] = array('like','%'.$person_name.'%');
+            if ($conference_name)
+                $query['conference_name'] = array('like','%'.$conference_name.'%');
+
+            $string = '';
+            if ($college_id)
+                $string .= $string ? ' AND ('.$college_id.')' : '('.$college_id.')';
+
+            if ($string)
+                $query['_string'] = $string;
+
+            $query['valid']=true;
 
             $paper = D('PaperView');
-            $query = objectToArray($query);
-            unset($query['pub_start']);
-            unset($query['pub_end']);
-            unset($query['page']);
-            unset($query['items']);
+
             if ($type == 'all'){
                 $audit['descr'] = '导出所有。';
                 $result = $paper->field($field)->where($query)->order('paper.id')->select();

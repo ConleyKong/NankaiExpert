@@ -167,7 +167,17 @@
  				alert('请至少选择一个字段');
  				return;
  			}
-	 		var url = '/patent/export/?type=' + type + '&query=' + vm.params + '&field=' + field;
+
+			//去除params中的空值
+			var parameters = {};//map
+			angular.forEach(vm.params,function (value,key) {
+					if(value){
+						parameters[key]=value;
+					}
+				}
+			);
+
+	 		var url = '/patent/export/?type=' + type +'&'+jQuery.param(parameters)  + '&field=' + field;
 			location.href = url;
 	 		vm.showCheckbox = false;
 	 	}
