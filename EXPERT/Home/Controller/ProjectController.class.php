@@ -23,22 +23,28 @@ class ProjectController extends Controller {
             deleteEmptyValue($param);
             $pageNum = $param['page'] ? $param['page'] : 1;  //当前页
             $itemsNum =  $param['items'] ? $param['items'] : 10; //每页个数
+
+            if($param['name'])
+                $query['name'] = array('like','%'.$param['name'].'%');
+            if($param['person_name'])
+                $query['person_name'] = array('like','%'.$param['person_name'].'%');
+
             $string='';
             if ($param['college_id']){
                 $string .= $string ? ' AND ('.$param['college_id'].')' : '('.$param['college_id'].')';
                 unset($param['college_id']);
             }
             if ($string)
-                $param['_string'] = $string;
+                $query['_string'] = $string;
 
             $Paper = D('ProjectView');
             unset($param['page']);
             unset($param['items']);
 
-            $param["valid"]=true;
+            $query["valid"]=true;
             
-            $result = $Paper->where($param)->page($pageNum,$itemsNum)->order('project.id')->select();
-            $totalNum = $Paper->where($param)->count();
+            $result = $Paper->where($query)->page($pageNum,$itemsNum)->order('project.id')->select();
+            $totalNum = $Paper->where($query)->count();
             $result[0]['totalNum'] = $totalNum;
             //审计日志
             $audit['name'] = session('username');
@@ -131,42 +137,53 @@ class ProjectController extends Controller {
             $this->redirect('Index/index');
         }
         else{
-            //type:导出所有页或者导出当前页
-            //query：查询条件
-            //field:导出的字段
+
             $type = I('get.type');//$param['type'];
-            $params = I('get.params');// $param['params'];
             $field = I('get.field');// $param['field'];
-            deleteEmptyValue($params);
-            $pageNum = $params['page'] ? $params['page'] : 1;
-            $itemsNum =  $params['items'] ? $params['items'] : 10;
 
-            if ($params['startTime'])
-                $params['birthday'] = array('gt',$params['startTime']);
-            $string = '';
-            if ($params['academichonor_id']){
-                $string .= $string ? ' AND ('.$params['academichonor_id'].')' : '('.$params['academichonor_id'].')';
-//                unset($query['academichonor_id']);
-            }
-            if ($params['college_id']){
-                $string .= $string ? ' AND ('.$params['college_id'].')' : '('.$params['college_id'].')';
-//                unset($query['college_id']);
-            }
-            if ($string)
-                $params['_string'] = $string;
+//            $academichonor_id = I('get.academichonor_id');
+//            $college_id = I('get.college_id');
+//            $gender = urldecode(I('get.gender'));
+//            $postdoctor = I('get.postdoctor');
 
-            $person = D('ProjectView');
-            $query = objectToArray($params);
-            unset($query['page']);
-            unset($query['items']);
-            unset($query['startTime']);
-            unset($query['endTime']);
+            $startTime = I('get.startTime');
+            $endTime = I('get.endTime');
+
+            $name = I('get.name');
+            $person_name = I('get.person_name');
+
+            $page = I('get.page');
+            $items = I('get.items');
+
+            $pageNum = $page? $page : 1;
+            $itemsNum =  $items? $items : 10;
+
+            if ($startTime)
+                $query['birthday'] = array(array('gt',$startTime),array('lt',$endTime));
+            if ($name)
+                $query['name'] = array('like','%'.$name.'%');
+            if ($person_name)
+                $query['person_name']= array('like','%'.$person_name.'%');
+
+//            $string = '';
+//            if ($academichonor_id)
+//                $string .= $string ? ' AND ('.$academichonor_id.')' : '('.$academichonor_id.')';
+//            if ($college_id)
+//                $string .= $string ? ' AND ('.$college_id.')' : '('.$college_id.')';
+//
+//            if ($string)
+//                $query['_string'] = $string;
+
+            $query['valid']=true;
+
+            $project = D('ProjectView');
+
             if ($type == 'all'){
                 $audit['descr'] = '导出所有。';
-                $result = $person->field($field)->where($query)->order('project.id')->select();
+                $result = $project->field($field)->where($query)->order('project.id')->select();
             }else if ($type == 'current'){
                 $audit['descr'] = '导出当前。';
-                $result = $person->field($field)->where($query)->page($pageNum,$itemsNum)->order('project.id')->select();
+                $result = $project->field($field)->where($query)->page($pageNum,$itemsNum)->order('project.id')->select();
             }else{
                 return '未知错误';
             }
