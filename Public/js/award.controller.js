@@ -157,20 +157,26 @@
 	 	vm.level = [false, false, false];
 	 	vm.params.grade_id = '';
 	 	vm.params.academichonor_id = '';
-	 	vm.params.startTime = [];
-	 	vm.params.endTime = [];
+	 	// vm.params.startTime = [];
+	 	// vm.params.endTime = [];
+		vm.params.startTime = '';
+		vm.params.endTime = '';
 	 	vm.params.person_startTime = '';
 	 	vm.params.person_endTime = '';
 	 	vm.params.college_id = '';
 	 	vm.submit = function(){
 	 		vm.params.name = vm.name;
 	 		vm.params.person_name = vm.person_name;
+			vm.params.startTime = vm.startTime;
+			vm.params.endTime = vm.endTime;
 	 	}
 	 	vm.cancel = function(){
 	 		vm.params.name = '';
 	 		vm.name = '';
 	 		vm.params.person_name = '';
 	 		vm.person_name = '';
+			vm.startTime='';
+			vm.endTime='';
 	 	}
 
 	 	vm.resetCheckbox = function(param){

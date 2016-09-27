@@ -23,10 +23,26 @@ class AwardController extends Controller {
 	    	$pageNum = $param['page'] ? $param['page'] : 1;  //当前页
             $itemsNum =  $param['items'] ? $param['items'] : 10; //每页个数
 
-            if ($param['startTime'])
-                $query['time'] = array(array('gt',$param['startTime']),array('lt',$param['endTime']));
-            if ($param['person_startTime'])
-                $query['birthday'] = array(array('gt',$param['person_startTime']),array('lt',$param['person_endTime']));
+            $startTime = $param['startTime'];
+            $endTime = $param['endTime'];
+            $date = array();
+            if ($startTime)
+                $date = array('gt',$startTime);
+            if ($endTime)
+                $date = array('lt',$endTime);
+            if($date)
+                $query['date']=$date;
+
+
+            $person_startTime = $param['person_startTime'];
+            $person_endTime = $param['person_endTime'];
+            $birthday = array();
+            if ($person_startTime)
+                $birthday = array('gt',$person_startTime);
+            if ($person_endTime)
+                $birthday = array('lt',$person_endTime);
+            if ($birthday)
+                $query['birthday'] = $birthday;
 
             if ($param['person_name'])
                 $query['person_name']=array('like','%'.$param['person_name'].'%');
@@ -161,34 +177,44 @@ class AwardController extends Controller {
 
             $page = I('get.page');
             $items = I('get.items');
-
             $pageNum = $page ? $page : 1;  //当前页
             $itemsNum =  $items ? $items : 10; //每页个数
 
+
             $startTime = I('get.startTime');
             $endTime = I('get.endTime');
+            $date = array();
+            if ($startTime)
+                $date = array('gt',$startTime);
+            if ($endTime)
+                $date = array('lt',$endTime);
+            if($date)
+                $query['date']=$date;
+
+
             $person_startTime = I('get.person_startTime');
             $person_endTime = I('get.person_endTime');
+            $birthday = array();
+            if ($person_startTime)
+                $birthday = array('gt',$person_startTime);
+            if ($person_endTime)
+                $birthday = array('lt',$person_endTime);
+            if ($birthday)
+                $query['birthday'] = $birthday;
 
-            $level = I('get.level');
-            $academichonor_id = I('get.academichonor_id');
-            $grade_id = I('get.grade_id');
-            $college_id = I('get.college_id');
 
             $person_name = I('get.person_name');
             $name = I('get.name');
-
             if ($person_name)
                 $query['person_name']=array('like','%'.$person_name.'%');
             if ($name)
                 $query['name']=array('like','%'.$name.'%');
 
-            if ($startTime)
-                $query['time'] = array(array('gt',$startTime),array('lt',$endTime));
-            if ($person_startTime)
-                $query['birthday'] = array(array('gt',$person_startTime),array('lt',$person_endTime));
 
-
+            $level = I('get.level');
+            $academichonor_id = I('get.academichonor_id');
+            $grade_id = I('get.grade_id');
+            $college_id = I('get.college_id');
             $string = '';
             if ($level){
                 $string .= $string ? ' AND ('.$level.')' : '('.$level.')';
@@ -208,24 +234,9 @@ class AwardController extends Controller {
             if ($string)
                 $query['_string'] = $string;
 
-            $award = D('AwardView');
-            unset($param['page']);
-            unset($param['items']);
-            unset($param['startTime']);
-            unset($param['endTime']);
-            unset($param['person_startTime']);
-            unset($param['person_endTime']);
-
             $query["valid"]=true;
 
             $award = D('AwardView');
-            $query = objectToArray($query);
-            unset($query['page']);
-            unset($query['items']);
-            unset($query['startTime']);
-            unset($query['endTime']);
-            unset($query['person_startTime']);
-            unset($query['person_endTime']);
             if ($type == 'all'){
                 $audit['descr'] = '导出所有。';
                 $result = $award->field($field)->where($query)->order('award.id')->select();

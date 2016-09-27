@@ -17,6 +17,7 @@
 	    	}
 		}
 		$scope.$watch('vm.params', function(){
+			console.log('params change', vm.params);
 			getLabList(vm.params);
 		}, true);
 
@@ -94,16 +95,16 @@
 		vm.params.college_id = '';
 		vm.submit = function(){
 			vm.params.manager_name = vm.manager_name;
-			// vm.params.formed_start = vm.formed_start;
-			// vm.params.formed_end = vm.formed_end;
+			vm.params.formed_start = vm.formed_start;
+			vm.params.formed_end = vm.formed_end;
 		}
 		vm.cancel = function(){
 			vm.params.manager_name = '';
 			vm.params.formed_start = '';
 			vm.params.formed_end = '';
 			vm.manager_name = '';
-			// vm.formed_start = '';
-			// vm.formed_end = '';
+			vm.formed_start = '';
+			vm.formed_end = '';
 		}
 
 		vm.resetCheckbox = function(param){

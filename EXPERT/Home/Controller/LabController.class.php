@@ -23,27 +23,45 @@ class LabController extends Controller {
             $pageNum = $param['page'] ? $param['page'] : 1;  //当前页
             $itemsNum =  $param['items'] ? $param['items'] : 10; //每页个数
 
-            $string = '';
-            if ($param['manager_id']){
-                $string .= $string ? ' AND ('.$param['manager_id'].')' : '('.$param['manager_id'].')';
-                unset($param['manager_id']);
+            $manager_name = $param['manager_name'];
+            if($manager_name){
+                $query['manager_name']=array('like','%'.$manager_name.'%');
+                unset($param['manager_name']);
             }
+
+            $formed_start = $param['formed_start'];
+            $formed_end = $param['formed_end'];
+            $formed_date = array();
+            if($formed_start){
+                $formed_date = array('gt',$formed_start);
+                unset($param['formed_start']);
+            }
+            if($formed_end){
+                $formed_date = array('lt',$formed_end);
+                unset($param['formed_end']);
+            }
+            if($formed_date)
+                $query['formed_date']=$formed_date;
+
+
+            $string = '';
             if ($param['college_id']){
                 $string .= $string ? ' AND ('.$param['college_id'].')' : '('.$param['college_id'].')';
                 unset($param['college_id']);
             }
 
             if ($string)
-                $param['_string'] = $string;
+                $query['_string'] = $string;
+
+            $query["valid"]=true;
 
             $Lab = D('LabView');
             unset($param['page']);
             unset($param['items']);
 
-            $param["valid"]=true;
+            $result = $Lab->where($query)->page($pageNum,$itemsNum)->order('Lab.id')->select();
+            $totalNum = $Lab->where($query)->count();
 
-            $result = $Lab->where($param)->page($pageNum,$itemsNum)->order('Lab.id')->select();
-            $totalNum = $Lab->where($param)->count();
             $result[0]['totalNum'] = $totalNum;
             //审计日志
             $audit['name'] = session('username');
@@ -102,29 +120,44 @@ class LabController extends Controller {
         }
         else{
             $type = I('get.type');
-            $query = I('get.query');
             $field = I('get.field');
-            deleteEmptyValue($query);
-            $pageNum = $query['page'] ? $query['page'] : 1;
-            $itemsNum =  $query['items'] ? $query['items'] : 10;
-            $string = '';
-            if ($query['formed_start'] && $query['formed_end'])
-                $query['formed_time'] = array(array('gt',$query['formed_start']),array('lt',$query['formed_end']));
-//
-            if ($query['college_id']){
-                $string .= $string ? ' AND ('.$query['college_id'].')' : '('.$query['college_id'].')';
-                //unset($query['college_id']);
-            }
-            if ($string){
-                $query['_string'] = $string;
+
+            $page = I('get.page');
+            $items = I('get.items');
+
+            $pageNum = $page ? $page : 1;  //当前页
+            $itemsNum =  $items ? $items : 10; //每页个数
+
+            $manager_name = I('get.manager_name');
+            if($manager_name){
+                $query['manager_name']=array('like','%'.$manager_name.'%');
             }
 
+            $formed_start = I('get.formed_start');
+            $formed_end = I('get.formed_end');
+            $formed_date = array();
+            if($formed_start){
+                $formed_date = array('gt',$formed_start);
+            }
+            if($formed_end){
+                $formed_date = array('lt',$formed_end);
+            }
+            if($formed_date)
+                $query['formed_date']=$formed_date;
+
+            $college_id = I('get.college_id');
+            $string = '';
+            if ($college_id){
+                $string .= $string ? ' AND ('.$college_id.')' : '('.$college_id.')';
+            }
+
+            if ($string)
+                $query['_string'] = $string;
+
+            $query["valid"]=true;
+
             $Lab = D('LabView');
-            $query = objectToArray($query);
-            unset($query['formed_start']);
-            unset($query['formed_end']);
-            unset($query['page']);
-            unset($query['items']);
+
             if ($type == 'all'){
                 $result = $Lab->field($field)->where($query)->order('Lab.id')->select();
             }
@@ -133,7 +166,8 @@ class LabController extends Controller {
             }
             else
                 return '未知错误';
-            $titleMap = array('name'=>'平台名称','manager_name'=>'负责人姓名','location'=>'地址','formed_time'=>'成立时间','college_name'=>'所属院系','member'=>'成员','description'=>'描述');
+
+            $titleMap = array('name'=>'平台名称','manager_name'=>'负责人姓名','location'=>'地址','formed_date'=>'成立时间','college_name'=>'所属院系','member'=>'成员','description'=>'描述');
             $field = split(',', $field);
             $excelTitle = array();
             foreach ($field as $value) {
@@ -141,6 +175,8 @@ class LabController extends Controller {
             }
             $filename = '平台信息';
             exportExcel($filename,$field, $result, $excelTitle);
+
+
             //审计日志
             $audit['name'] = session('username');
             $audit['ip'] = getIp();

@@ -23,9 +23,20 @@ class PeopleController extends Controller {
             deleteEmptyValue($param);
 	    	$pageNum = $param['page'] ? $param['page'] : 1;  //当前页
             $itemsNum =  $param['items'] ? $param['items'] : 10; //每页个数
-            if ($param['startTime'])
-                $param['birthday'] = array(array('gt',$param['startTime']),array('lt',$param['endTime']));
-	        $string = '';
+
+            $startTime = $param['startTime'];
+            $endTime = $param['endTime'];
+            $birthday = array();
+            if ($startTime)
+                $birthday = array('gt',$startTime);
+            if($endTime)
+                $birthday = array('lt',$endTime);
+            if($birthday)
+                $query['birthday'] = $birthday;
+
+
+
+            $string = '';
             if ($param['academichonor_id']){
                 $string .= $string ? ' AND ('.$param['academichonor_id'].')' : '('.$param['academichonor_id'].')';
                 unset($param['academichonor_id']);
@@ -244,26 +255,34 @@ class PeopleController extends Controller {
             $type = I('get.type');//$param['type'];
             $field = I('get.field');// $param['field'];
 
-            $academichonor_id = I('get.academichonor_id');
-            $college_id = I('get.college_id');
-            $startTime = I('get.startTime');
-            $endTime = I('get.endTime');
-            $gender = urldecode(I('get.gender'));
-            $postdoctor = I('get.postdoctor');
-
             $page = I('get.page');
             $items = I('get.items');
-
             $pageNum = $page? $page : 1;
             $itemsNum =  $items? $items : 10;
 
+
+            $startTime = I('get.startTime');
+            $endTime = I('get.endTime');
+            $birthday = array();
             if ($startTime)
-                $query['birthday'] = array(array('gt',$startTime),array('lt',$endTime));
+                $birthday = array('gt',$startTime);
+            if($endTime)
+                $birthday = array('lt',$endTime);
+            if($birthday)
+                $query['birthday'] = $birthday;
+
+
+            $gender = urldecode(I('get.gender'));
             if ($gender)
                 $query['gender'] = $gender;
+
+            $postdoctor = I('get.postdoctor');
             if ($postdoctor)
                 $query['postdoctor']=$postdoctor;
 
+
+            $academichonor_id = I('get.academichonor_id');
+            $college_id = I('get.college_id');
             $string = '';
             if ($academichonor_id)
                 $string .= $string ? ' AND ('.$academichonor_id.')' : '('.$academichonor_id.')';

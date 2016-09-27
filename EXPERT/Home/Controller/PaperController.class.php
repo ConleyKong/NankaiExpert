@@ -23,8 +23,17 @@ class PaperController extends Controller {
 	    	$pageNum = $param['page'] ? $param['page'] : 1;  //当前页
             $itemsNum =  $param['items'] ? $param['items'] : 10; //每页个数
 
-            if ($param['pub_start'] && $param['pub_end'])
-                $query['publish_date'] = array(array('gt',$param['pub_start']),array('lt',$param['pub_end']));
+            $pub_start = $param['pub_start'];
+            $pub_end = $param['pub_end'];
+            $publish_date = array();
+            if ($pub_start)
+                $publish_date = array('gt',$pub_start);
+            if($pub_end)
+                $publish_date = array('lt',$pub_end);
+            if($publish_date)
+                $query['publish_date'] = $publish_date;
+
+
             if ($param['name'])
                 $query['name']=array('like','%'.$param['name'].'%');
             if ($param['conference_name'])
@@ -128,20 +137,28 @@ class PaperController extends Controller {
             $pageNum = $page? $page : 1;
             $itemsNum =  $items? $items : 10;
 
-            $college_id = I('get.college_id');
-            $conference_name = I('get.conference_name');
-            $person_name = I('get.person_name');
+
             $pub_start = I('get.pub_start');
             $pub_end = I('get.pub_end');
-
-
+            $publish_date = array();
             if ($pub_start)
-                $query['birthday'] = array(array('gt',$pub_start),array('lt',$pub_end));
+                $publish_date = array('gt',$pub_start);
+            if($pub_end)
+                $publish_date = array('lt',$pub_end);
+            if($publish_date)
+                $query['publish_date'] = $publish_date;
+
+
+            $conference_name = I('get.conference_name');
+            $person_name = I('get.person_name');
             if ($person_name)
                 $query['person_name'] = array('like','%'.$person_name.'%');
             if ($conference_name)
                 $query['conference_name'] = array('like','%'.$conference_name.'%');
 
+
+
+            $college_id = I('get.college_id');
             $string = '';
             if ($college_id)
                 $string .= $string ? ' AND ('.$college_id.')' : '('.$college_id.')';

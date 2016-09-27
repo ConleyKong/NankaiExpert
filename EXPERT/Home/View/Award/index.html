@@ -85,12 +85,6 @@
                 <date-range start-time="vm.params.person_startTime" end-time="vm.params.person_endTime"></date-range>
             </div>
         </div>
-        <!-- <div class="col-sm-12 bottom-10">
-            <span class="cond-label">获奖时间：</span>
-            <div class="btn-group">
-                <date-range start-time="vm.params.startTime" end-time="vm.params.endTime"></date-range>
-            </div>
-        </div> -->
         <div class="col-sm-12 bottom-10">
             <span class="cond-label">获奖级别：</span>
             <div class="btn-group">
@@ -140,6 +134,20 @@
               <input type="text" class="form-control" ng-model="vm.name"/>
             </div>
         </div>
+          <div class="col-sm-12 bottom-10">
+              <span class="cond-label">奖励时间：</span>
+              <div class="btn-group">
+                  <form class="form-inline">
+                      <div class="form-group">
+                          <input type="text" class="form-control" ng-model="vm.startTime" placeholder="时间格式：1919-10-17"/>
+                          至
+                      </div>
+                      <div class="form-group">
+                          <input type="text" class="form-control" ng-model="vm.endTime" placeholder="时间格式：2019-10-17"/>
+                      </div>
+                  </form>
+              </div>
+          </div>
         <div class="col-sm-12">
           <span class="cond-label"></span>
             <button class="btn btn-info" ng-click="vm.submit()">确定</button>

@@ -24,6 +24,16 @@ class ProjectController extends Controller {
             $pageNum = $param['page'] ? $param['page'] : 1;  //当前页
             $itemsNum =  $param['items'] ? $param['items'] : 10; //每页个数
 
+            $startTime = $param['start_time'];
+            $endTime = $param['end_time'];
+            $startPoint = array();
+            if ($startTime)
+                $startPoint = array('gt',$startTime);
+            if ($endTime)
+                $startPoint = array('lt',$endTime);
+            if ($startPoint)
+                $query['start_time'] = $startPoint;
+
             if($param['name'])
                 $query['name'] = array('like','%'.$param['name'].'%');
             if($param['person_name'])
@@ -37,11 +47,12 @@ class ProjectController extends Controller {
             if ($string)
                 $query['_string'] = $string;
 
+            $query["valid"]=true;
+
             $Paper = D('ProjectView');
             unset($param['page']);
             unset($param['items']);
 
-            $query["valid"]=true;
             
             $result = $Paper->where($query)->page($pageNum,$itemsNum)->order('project.id')->select();
             $totalNum = $Paper->where($query)->count();
@@ -141,27 +152,29 @@ class ProjectController extends Controller {
             $type = I('get.type');//$param['type'];
             $field = I('get.field');// $param['field'];
 
+            $page = I('get.page');
+            $items = I('get.items');
+            $pageNum = $page? $page : 1;
+            $itemsNum =  $items? $items : 10;
 //            $academichonor_id = I('get.academichonor_id');
 //            $college_id = I('get.college_id');
 //            $gender = urldecode(I('get.gender'));
 //            $postdoctor = I('get.postdoctor');
 
-            $startTime = I('get.startTime');
-            $endTime = I('get.endTime');
+            $startTime = I('get.start_time');
+            $endTime = I('get.end_time');
+            $startPoint = array();
+            if ($startTime)
+                $startPoint = array('gt',$startTime);
+            if ($endTime)
+                $startPoint = array('lt',$endTime);
+            if ($startPoint)
+                $query['start_time'] = $startPoint;
 
             $name = I('get.name');
-            $person_name = I('get.person_name');
-
-            $page = I('get.page');
-            $items = I('get.items');
-
-            $pageNum = $page? $page : 1;
-            $itemsNum =  $items? $items : 10;
-
-            if ($startTime)
-                $query['birthday'] = array(array('gt',$startTime),array('lt',$endTime));
             if ($name)
                 $query['name'] = array('like','%'.$name.'%');
+            $person_name = I('get.person_name');
             if ($person_name)
                 $query['person_name']= array('like','%'.$person_name.'%');
 

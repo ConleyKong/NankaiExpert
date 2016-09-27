@@ -8,7 +8,7 @@ class LabViewModel extends ViewModel {
 			'name',
 			'manager_id',
 			'location',
-			'formed_time',
+			'formed_date',
 			'college_id',
 			'member',
 			'description',

@@ -21,20 +21,20 @@
           <input type="text" class="form-control" ng-model="vm.manager_name"/>
         </div>
       </div>
-      <!--<div class="col-sm-12 bottom-10">-->
-        <!--<span class="cond-label">成立时间：</span>-->
-        <!--<div class="btn-group">-->
-          <!--<form class="form-inline">-->
-            <!--<div class="form-group">-->
-              <!--<input type="text" class="form-control" ng-model="vm.formed_start" placeholder="时间格式：2000-10-10"/>-->
-              <!--至-->
-            <!--</div>-->
-            <!--<div class="form-group">-->
-              <!--<input type="text" class="form-control" ng-model="vm.formed_end" placeholder="时间格式：2015-10-10"/>-->
-            <!--</div>-->
-          <!--</form>-->
-        <!--</div>-->
-      <!--</div>-->
+      <div class="col-sm-12 bottom-10">
+        <span class="cond-label">成立时间：</span>
+        <div class="btn-group">
+          <form class="form-inline">
+            <div class="form-group">
+              <input type="text" class="form-control" ng-model="vm.formed_start" placeholder="时间格式：2000-10-10"/>
+              至
+            </div>
+            <div class="form-group">
+              <input type="text" class="form-control" ng-model="vm.formed_end" placeholder="时间格式：2015-10-10"/>
+            </div>
+          </form>
+        </div>
+      </div>
       <div class="col-sm-12">
         <span class="cond-label"></span>
         <button class="btn btn-info" ng-click="vm.submit()">确定</button>
@@ -54,10 +54,10 @@
             </div>
             <div class="col-md-8 pull-right" ng-hide="vm.showCheckbox">
               <button type="button" class="btn btn-info pull-right right-10" ng-click="vm.showCheckbox=true">导出Excel&nbsp;&nbsp;<span class="glyphicon glyphicon-export"></span></button>
-              <!--<div class="input-group col-md-4 pull-right right-10">-->
-                <!--<input type="text" class="form-control" ng-model="filter" placeholder="输入关键字">-->
-                <!--<div class="input-group-addon">筛选</div>-->
-              <!--</div>-->
+              <div class="input-group col-md-4 pull-right right-10">
+                <input type="text" class="form-control" ng-model="filter" placeholder="输入关键字">
+                <div class="input-group-addon">筛选</div>
+              </div>
             </div>
             <div class="col-md-8" ng-show="vm.showCheckbox">
               <button type="button" class="btn btn-default pull-right" ng-click="vm.showCheckbox=false">取消导出</span></button>
@@ -76,7 +76,7 @@
               <th>实验室名<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.name"></th>
               <th>负责人<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.manager_name"></th>
               <th>地址<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.location"></th>
-              <th>成立时间<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.formed_time"></th>
+              <th>成立时间<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.formed_date"></th>
               <th>所属院系<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.college_name"></th>
               <th>成员<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.member"></th>
               <th>简介<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.description"></th>
@@ -89,7 +89,7 @@
               <td ng-bind="item.name"></td>
               <td ng-bind="item.manager_name"></td>
               <td ng-bind="item.location"></td>
-              <td ng-bind="item.formed_time"></td>
+              <td ng-bind="item.formed_date"></td>
               <td ng-bind="item.college_name"></td>
               <td ng-bind="item.member"></td>
               <td ng-bind="item.description"></td>
