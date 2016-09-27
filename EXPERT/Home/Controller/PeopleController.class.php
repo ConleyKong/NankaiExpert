@@ -46,6 +46,12 @@ class PeopleController extends Controller {
             unset($param['items']);
 
             $query = $param;
+
+            if($param['name'])
+                $query['name']=array('like','%'.$param['name'].'%');
+            if($param['employee_no'])
+                $query['employee_no']=array('like','%'.$param['employee_no'].'%');
+
             $query["valid"]=true;
 
 	        $result = $person
@@ -143,9 +149,9 @@ class PeopleController extends Controller {
 
 
             if($state>0){
-                $this->success('操作成功！');
                 $audit['result'] = '成功';
                 M('audit')->add($audit);
+                $this->success('操作成功！');
             }
             else{
                 $audit['result'] = '失败';
