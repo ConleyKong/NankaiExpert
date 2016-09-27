@@ -19,22 +19,16 @@ class PeopleController extends Controller {
     		$this->redirect('Index/index');
     	}
     	else{
+
             $param = I('post.');
             deleteEmptyValue($param);
-	    	$pageNum = $param['page'] ? $param['page'] : 1;  //当前页
+            $pageNum = $param['page'] ? $param['page'] : 1;  //当前页
             $itemsNum =  $param['items'] ? $param['items'] : 10; //每页个数
-
-            $startTime = $param['startTime'];
-            $endTime = $param['endTime'];
-            $birthday = array();
-            if ($startTime)
-                $birthday = array('gt',$startTime);
-            if($endTime)
-                $birthday = array('lt',$endTime);
-            if($birthday)
-                $query['birthday'] = $birthday;
-
-
+            if ($param['startTime']){
+                $param['birthday'] = array(array('gt',$param['startTime']),array('lt',$param['endTime']));
+                unset($param['startTime']);
+                unset($param['endTime']);
+            }
 
             $string = '';
             if ($param['academichonor_id']){
@@ -50,16 +44,17 @@ class PeopleController extends Controller {
             $person = D('PeopleView');
             unset($param['page']);
             unset($param['items']);
-            unset($param['startTime']);
-            unset($param['endTime']);
-            $param["valid"]=true;
+
+            $query = $param;
+            $query["valid"]=true;
+
 	        $result = $person
                 ->field('id,name,gender,employee_no,postdoctor,birthday,email,phone,first_class,second_class,college_name,academic_name')
-                ->where($param)
+                ->where($query)
                 ->page($pageNum,$itemsNum)
                 ->order('person.id')
                 ->select();
-            $totalNum = $person->where($param)->count();
+            $totalNum = $person->where($query)->count();
             $result[0]['totalNum'] = $totalNum;
 
             //审计日志
