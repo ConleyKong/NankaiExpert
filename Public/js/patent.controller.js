@@ -26,7 +26,7 @@
 
 		function getPatentList(params){
 	 		//console.log('getPatentList', vm.params);
-	 		var url = '/patent/patentList/';
+	 		var url = '/Patent/patentList/';
 	 		sendRequest.post(url, {}, jQuery.param(params)).then(
 	 			function(resp){
 	 				vm.patentList = resp;
@@ -37,6 +37,9 @@
 	 			}
 	 		);
 	 	}
+
+
+
 
 	 	getCollegeList();
 	 	vm.collegeMap1 = [''];

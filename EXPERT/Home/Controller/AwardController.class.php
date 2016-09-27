@@ -22,10 +22,17 @@ class AwardController extends Controller {
             deleteEmptyValue($param);
 	    	$pageNum = $param['page'] ? $param['page'] : 1;  //当前页
             $itemsNum =  $param['items'] ? $param['items'] : 10; //每页个数
+
             if ($param['startTime'])
-                $param['time'] = array(array('gt',$param['startTime']),array('lt',$param['endTime']));
+                $query['time'] = array(array('gt',$param['startTime']),array('lt',$param['endTime']));
             if ($param['person_startTime'])
-                $param['birthday'] = array(array('gt',$param['person_startTime']),array('lt',$param['person_endTime']));
+                $query['birthday'] = array(array('gt',$param['person_startTime']),array('lt',$param['person_endTime']));
+
+            if ($param['person_name'])
+                $query['person_name']=array('like','%'.$param['person_name'].'%');
+            if ($param['name'])
+                $query['name']=array('like','%'.$param['name'].'%');
+
             $string = '';
             if ($param['level']){
                 $string .= $string ? ' AND ('.$param['level'].')' : '('.$param['level'].')';
@@ -43,8 +50,9 @@ class AwardController extends Controller {
                 $string .= $string ? ' AND ('.$param['college_id'].')' : '('.$param['college_id'].')';
                 unset($param['college_id']);
             }
+
             if ($string)
-                $param['_string'] = $string;
+                $query['_string'] = $string;
 
 	        $award = D('AwardView');
             unset($param['page']);
@@ -54,10 +62,10 @@ class AwardController extends Controller {
             unset($param['person_startTime']);
             unset($param['person_endTime']);
             
-            $param["valid"]=true;
+            $query["valid"]=true;
             
-	        $result = $award->field('id,name,level,time,comment,birthday,person_name,grade_name,academichonor_name,col_name')->where($param)->page($pageNum,$itemsNum)->order('award.id')->select();
-            $totalNum = $award->where($param)->count();
+	        $result = $award->field('id,name,level,time,comment,birthday,person_name,grade_name,academichonor_name,col_name')->where($query)->page($pageNum,$itemsNum)->order('award.id')->select();
+            $totalNum = $award->where($query)->count();
             $result[0]['totalNum'] = $totalNum;
             //审计日志
             $audit['name'] = session('username');
@@ -149,34 +157,66 @@ class AwardController extends Controller {
         }
         else{
             $type = I('get.type');//$param['type'];
-            $query = I('get.query');// $param['query'];
             $field = I('get.field');// $param['field'];
-            deleteEmptyValue($query);
-            $pageNum = $query['page'] ? $query['page'] : 1;
-            $itemsNum =  $query['items'] ? $query['items'] : 10;
-            if ($query['startTime'] && $query['endTime'])
-                $query['time'] = array(array('gt',$query['startTime']),array('lt',$query['endTime']));
-            if ($query['person_startTime'] && $query['person_endTime'])
-                $query['birthday'] = array(array('gt',$query['person_startTime']),array('lt',$query['person_endTime']));
+
+            $page = I('get.page');
+            $items = I('get.items');
+
+            $pageNum = $page ? $page : 1;  //当前页
+            $itemsNum =  $items ? $items : 10; //每页个数
+
+            $startTime = I('get.startTime');
+            $endTime = I('get.endTime');
+            $person_startTime = I('get.person_startTime');
+            $person_endTime = I('get.person_endTime');
+
+            $level = I('get.level');
+            $academichonor_id = I('get.academichonor_id');
+            $grade_id = I('get.grade_id');
+            $college_id = I('get.college_id');
+
+            $person_name = I('get.person_name');
+            $name = I('get.name');
+
+            if ($person_name)
+                $query['person_name']=array('like','%'.$person_name.'%');
+            if ($name)
+                $query['name']=array('like','%'.$name.'%');
+
+            if ($startTime)
+                $query['time'] = array(array('gt',$startTime),array('lt',$endTime));
+            if ($person_startTime)
+                $query['birthday'] = array(array('gt',$person_startTime),array('lt',$person_endTime));
+
+
             $string = '';
-            if ($query['level']){
-                $string .= $string ? ' AND ('.$query['level'].')' : '('.$query['level'].')';
-                //unset($query['level']);
+            if ($level){
+                $string .= $string ? ' AND ('.$level.')' : '('.$level.')';
             }
-            if ($query['academichonor_id']){
-                $string .= $string ? ' AND ('.$query['academichonor_id'].')' : '('.$query['academichonor_id'].')';
-                //unset($query['academichonor_id']);
+
+            if ($academichonor_id){
+                $string .= $string ? ' AND ('.$academichonor_id.')' : '('.$academichonor_id.')';
             }
-            if ($query['grade_id']){
-                $string .= $string ? ' AND ('.$query['grade_id'].')' : '('.$query['grade_id'].')';
-                //unset($query['grade_id']);
+
+            if ($grade_id){
+                $string .= $string ? ' AND ('.$grade_id.')' : '('.$grade_id.')';
             }
-            if ($query['college_id']){
-                $string .= $string ? ' AND ('.$query['college_id'].')' : '('.$query['college_id'].')';
-//                unset($query['college_id']);
+            if ($college_id){
+                $string .= $string ? ' AND ('.$college_id.')' : '('.$college_id.')';
             }
+
             if ($string)
                 $query['_string'] = $string;
+
+            $award = D('AwardView');
+            unset($param['page']);
+            unset($param['items']);
+            unset($param['startTime']);
+            unset($param['endTime']);
+            unset($param['person_startTime']);
+            unset($param['person_endTime']);
+
+            $query["valid"]=true;
 
             $award = D('AwardView');
             $query = objectToArray($query);

@@ -4,7 +4,7 @@
     <div class="col-sm-12 row">
       <show-more count="2">
         <div class="col-sm-12">
-            <span class="cond-label">所在单位：</span>
+            <span class="cond-label">拥有单位：</span>
             <div class="btn-group">
               <label style="margin-bottom:0;color:#eee">
                 <select class="form-control" ng-model="vm.collegeSelected1" ng-options="item.id as item.name for item in vm.collegeList">
@@ -17,7 +17,7 @@
             </div>
         </div>
         <div class="col-sm-12 bottom-10 top-10">
-            <span class="cond-label">发明单位：</span>
+            <span class="cond-label">发明人单位：</span>
             <div class="btn-group">
               <label style="margin-bottom:0;color:#eee">
                 <select class="form-control" ng-model="vm.collegeSelected2" ng-options="item.id as item.name for item in vm.collegeList">
@@ -36,7 +36,7 @@
             </div>
         </div>
         <div class="col-sm-12 bottom-10">
-            <span class="cond-label">专利权人：</span>
+            <span class="cond-label">拥有人：</span>
             <div class="btn-group">
               <input type="text" class="form-control" ng-model="vm.owner_name"/>
             </div>
@@ -85,9 +85,9 @@
         <thead>
           <tr>
             <th><span ng-hide="vm.showCheckbox">#</span><span ng-show="vm.showCheckbox">全选<input type="checkbox" ng-click="vm.selectAll();"></span></th>
-            <th>专利名称<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.name"></th>
-            <th>专利申请人<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.owner_name"></th>
-            <th>所在单位<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.ownercollege_name"></th>
+            <th>专利名<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.name"></th>
+            <th>拥有人<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.owner_name"></th>
+            <th>拥有单位<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.ownercollege_name"></th>
             <th>第一发明人<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.firstinventor_name"></th>
             <th>第一发明人单位<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.inventorcollege_name"></th>
             <th>专利类型<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.type"></th>

@@ -44,7 +44,7 @@
 		}, true);
 
 		$scope.$watch('vm.level', function(){
-			var level = ['国家级', '省级奖', '部级奖'], temp = [];
+			var level = ['国家级', '省级奖', '部级奖','其它'], temp = [];
  			for (var i = 0;i < vm.level.length;i++)
  				if (vm.level[i])
  					temp.push("level = '" + level[i] + "'");
@@ -180,7 +180,7 @@
 
 	 	//导入导出
 	 	vm.showCheckbox = false;
-	 	vm.exportParams = {name:false,level:false,col_name:false,comment:false,time:false,birthday:false,person_name:false,grade_name:false,academichonor_name:false};
+	 	vm.exportParams = {person_name:false,birthday:false,col_name:false,grade_name:false,academichonor_name:false,name:false,level:false,time:false,comment:false};
 
 	 	vm.exportExcel = exportExcel;
 	 	function exportExcel(type){
