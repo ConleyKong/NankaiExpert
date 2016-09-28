@@ -21,45 +21,35 @@ class IndexController extends Controller {
 		//$condition['password'] = md5($_POST['password']);
 		if (I('post.captcha') != session('captcha'))
 		{
-			$audit['name'] = $condition['account'];
-            $audit['ip'] = getIp();
-            $audit['module'] = '登录';
-            $audit['time'] = date('y-m-d h:i:s',time());
-            $audit['result'] = '失败';
-            $audit['descr'] = '验证码错误';
-            M('audit')->add($audit);
-			$this->ajaxReturn(array('code' => '0','msg' => '验证码错误！'));
-		}
-		else
-		{
+			$code = 0;
+			$msg = "验证码错误";
+			$audit['result'] = '失败';
+			$audit['descr'] = '验证码错误';
+		}else{
 			$count=M('user')->where($condition)->count();
 			
 			if ($count>0) {
 				session('logged', '1');
 				session('username', $condition['account']);
-				//审计日志
-				$audit['name'] = $condition['account'];
-				$audit['ip'] = getIp();
-				$audit['module'] = '登录';
-				$audit['time'] = date('y-m-d h:i:s', time());
 				$audit['result'] = '成功';
-				M('audit')->add($audit);
-
-				$this->ajaxReturn(array('code' => '1'));
+				$code = 1;
+				$msg = '成功';
 			}
 			else
 			{
-				$audit['name'] = $condition['account'];
-	            $audit['ip'] = getIp();
-	            $audit['module'] = '登录';
-	            $audit['time'] = date('y-m-d h:i:s',time());
 	            $audit['result'] = '失败';
 	            $audit['descr'] = '用户名密码错误';
-	            M('audit')->add($audit);
-				session('yan',$condition['password']);
-				$this->ajaxReturn(array('code' => '0','msg' => '用户名或密码错误'));
+				$code = 0;
+				$msg = '用户名密码错误';
 			}
 		}
+
+		$audit['name'] = $condition['account'];
+		$audit['ip'] = getIp();
+		$audit['module'] = '登录';
+		$audit['time'] = date('y-m-d h:i:s',time());
+		M('audit')->add($audit);
+		$this->ajaxReturn(array('code' =>$code,'msg' => $msg));
 
 	}
 
