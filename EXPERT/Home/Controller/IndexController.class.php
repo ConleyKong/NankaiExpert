@@ -4,12 +4,9 @@ use Think\Controller;
 class IndexController extends Controller {
     public function index()
     {
-    	if ( ! session('logged'))
-		{
+    	if( !session('logged')){
 			$this->display();
-		}
-		else
-		{
+		}else{
 			$this->redirect('Homepage/index');
 		}
     }
@@ -97,20 +94,47 @@ class IndexController extends Controller {
 		}
 		else
 		{
-			$username = I('post.name', null, 'string');
+			$username = I('post.account', null, 'string');
 			$password = I('post.pwd', null, 'string');
-			$data['account'] = $username;
-			$data['password'] = md5($password);
-			$result = M('user')->add($data);
-			if ($result)
-			{
-				session('username', $username);
-				session('logged', '1');
-				$this->success('注册成功');
-			}
-			else
-			{
-				$this->error('注册失败');
+			$college_name = I('post.college_name',null,'string');
+			$real_name = I('post.real_name',null,'string');
+
+
+			//处理学院信息 college_id
+			$college = M("college")->where(array("name"=>$college_name))->find();
+			$college_id = $college['id'];
+			if($college_id>0){
+				$data["college_id"] = $college_id;
+
+				$data['account'] = $username;
+				$data['password'] = md5($password);
+				$data['real_name'] = $real_name;
+				$data['reg_date'] = date('y-m-d h:i:s', time());
+				$data['role_id'] = 1;//新注册用户统一为普通用户
+				$data['status_id'] = 1;//新注册用户为待审核状态
+				$data['valid'] = 1;//新用户有效
+
+				$count = M('user')->where(array('account'=>$username))->count();
+				if($count==0){
+						M('user')->add($data);
+						session('username', $username);
+						session('logged','0');
+						/*将操作结果写入日志*/
+						$audit['descr'] = '新用户注册成功';
+						$audit['name'] = session('username');
+						$audit['ip'] = getIp();
+						$audit['module'] = '用户信息';
+						$audit['time'] = date('y-m-d h:i:s', time());
+						$audit['descr'] = "$username 成功注册成为新用户，待审核";
+						M('audit')->add($audit);
+						$this->success('注册成功，请等待管理员审核通过！');
+				}else{
+					$this->error('存在同名用户，请另选登录名');
+				}
+
+			}else{
+//				dump($college_name);
+				$this->error("部门信息不存在，注册失败！");
 			}
 		}
 	}
