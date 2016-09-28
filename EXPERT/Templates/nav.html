@@ -82,7 +82,12 @@
 						</li>
 						<li class="pull-right" _t_nav="user">
 							<h2>
-								<a href="javascript:void(0);" style="padding:0 10px">你好，<?php echo $_SESSION['username'];?></a>
+								<?php $link='#';
+								 if($_SESSION['role_num']==2){
+								 	$link=U('User/userList');
+								 }
+								?>
+								<a href="{$link}" style="padding:0 10px">欢迎：<?php echo $_SESSION['username'];?></a>
 								<?php echo $_SESSION['abstract'];?>
 							</h2>
 						</li>
