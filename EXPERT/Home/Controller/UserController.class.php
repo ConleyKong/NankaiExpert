@@ -37,6 +37,7 @@ class UserController extends Controller {
                 $param['_string'] = $string;
 
             $query = $param;
+            $query['valid']=1;
             $query['account']=array('neq',session('username'));
 
             $user = D('UserView');
@@ -110,20 +111,22 @@ class UserController extends Controller {
     }
 
 
-    public function delete()
+    public function del()
     {
 
         if (!session('logged')){
             $this->redirect('Index/index');
         }
         else {
+
             $id = $_GET['id'];
             $condition['id'] = $id;
-            $people = M('person');
-            $p = $people->where($condition)->find();
-            $p['valid']=false;
-            $state = $people->where($condition)->save($p);
-            $name = $p["name"];
+
+            $user = M('user');
+            $u = $user->where($condition)->find();
+            $u['valid']=0;
+            $state = $user->where($condition)->save($u);
+            $name = $u["name"];
             //审计日志
             $audit['name'] = session('username');
             $audit['ip'] = getIp();
@@ -131,21 +134,51 @@ class UserController extends Controller {
             $audit['time'] = date('y-m-d h:i:s',time());
             $audit['descr'] .= "删除人员: $id: $name ";
 
+            if($state>0){
+                $audit['result'] = '成功';
+                M('audit')->add($audit);
+                $this->success('操作成功！');
+            }else{
+                $audit['result'] = '失败';
+                M('audit')->add($audit);
+                $this->error('操作失败！');
+            }
+
+        }
+    }
+    
+    public function set_status(){
+        if (!session('logged')){
+            $this->redirect('Index/index');
+        }
+        else {
+            $id = $_GET['id'];
+            $flag = $_GET['flag'];
+            $condition['id'] = $id;
+
+            $user = M('user');
+            $u = $user->where($condition)->find();
+            $u['status_id'] = (int)$flag;
+
+            $state = $user->where($condition)->save($u);
+            $name = $u["name"];
+            //审计日志
+            $audit['name'] = session('username');
+            $audit['ip'] = getIp();
+            $audit['module'] = '人员列表';
+            $audit['time'] = date('y-m-d h:i:s',time());
+            $audit['descr'] .= "人员状态切换: $id: $name : $flag ";
 
             if($state>0){
                 $audit['result'] = '成功';
                 M('audit')->add($audit);
                 $this->success('操作成功！');
-            }
-            else{
+            }else{
                 $audit['result'] = '失败';
                 M('audit')->add($audit);
                 $this->error('操作失败！');
+//                dump($u);
             }
-            ////////////////////////////////////////////////////////////////////////////////
-
-//            $this->display();
-//                $this->redirect('Event/index');
 
         }
     }

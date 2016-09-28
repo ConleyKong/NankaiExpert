@@ -12,6 +12,8 @@ class UserViewModel extends ViewModel {
 			'role_id',
 			'valid',
 			'reg_date',
+			'status_id',
+			'valid',
 			'_type' => 'LEFT'
 		),
 		'role_type' => array(
@@ -24,6 +26,12 @@ class UserViewModel extends ViewModel {
 			'id'=>'collegeId',
 			'name' => 'college_name',
 			'_on' => 'college.id = college_id',
+			'_type'=>'LEFT',
+		),
+		'user_status'=>array(
+			'id' =>'userstatuseid',
+			'status_name',
+			'_on'=>'user.status_id = user_status.id',
 			'_type'=>'LEFT',
 		),
 	);

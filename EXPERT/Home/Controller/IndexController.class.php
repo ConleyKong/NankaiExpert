@@ -18,6 +18,7 @@ class IndexController extends Controller {
 	{
 		$condition['account'] = I('post.account', null, 'string');
 		$condition['password'] = md5(I('post.password', null, 'string'));
+		$condition['valid'] = 1;
 		//$condition['password'] = md5($_POST['password']);
 		if (I('post.captcha') != session('captcha'))
 		{
@@ -29,27 +30,41 @@ class IndexController extends Controller {
 			$user=M('user')->where($condition)->find();
 			
 			if ($user) {
-				if($user['valid']==0){
-					$code = 0;
-					$msg = '用户已被锁定';
-					$audit['result']='失败';
-					$audit['descr']='用户被锁定';
-				}else{
-					session('logged', '1');
-					session('username', $condition['account']);
-					session('role_num',$user['role_id']);
-					$audit['result'] = '成功';
-					$code = 1;
-					$msg = '成功';
+				$status = $user['status_id'];
+				switch ($status) {
+					case 1://新注册用户未审核
+						$code = 0;
+						$msg = '请等待审核通过再登陆';
+						$audit['result'] = '失败';
+						$audit['descr'] = '未审核';
+						break;
+					case 2://正常用户
+						session('logged', '1');
+						session('username', $condition['account']);
+						session('role_num',$user['role_id']);
+						$audit['result'] = '成功';
+						$code = 1;
+						$msg = '成功';
+						break;
+					case 4://被锁定用户
+						$code = 0;
+						$msg = '用户已被锁定';
+						$audit['result'] = '失败';
+						$audit['descr'] = '用户已被锁定';
+						break;
+					default:
+						$code = 0;
+						$msg = '用户状态不明';
+						$audit['result'] = '失败';
+						$audit['descr'] = '用户状态不明';
+						break;
 				}
 
-			}
-			else
-			{
+			}else{
 	            $audit['result'] = '失败';
-	            $audit['descr'] = '用户名密码错误';
+	            $audit['descr'] = '用户名不存在或密码错误';
 				$code = 0;
-				$msg = '用户名密码错误';
+				$msg = '用户名不存在或密码错误';
 			}
 		}
 
