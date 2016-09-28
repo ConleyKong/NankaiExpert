@@ -49,13 +49,13 @@ class ProjectController extends Controller {
 
             $query["valid"]=true;
 
-            $Paper = D('ProjectView');
+            $Project = D('ProjectView');
             unset($param['page']);
             unset($param['items']);
 
             
-            $result = $Paper->where($query)->page($pageNum,$itemsNum)->order('project.id')->select();
-            $totalNum = $Paper->where($query)->count();
+            $result = $Project->where($query)->page($pageNum,$itemsNum)->order('project.id')->select();
+            $totalNum = $Project->where($query)->count();
             $result[0]['totalNum'] = $totalNum;
             //审计日志
             $audit['name'] = session('username');

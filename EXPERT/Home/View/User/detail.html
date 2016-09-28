@@ -1,0 +1,192 @@
+<extend name="EXPERT/Templates/nav.html"/>
+<block name="content">
+	<div class="container">
+		<div class="col-md-12">
+			<blockquote><h3>基本信息</h3></blockquote>
+			<table class="table table-hover table-striped table-bordered">
+		      <thead>
+		        <tr>
+		          <th>姓名</th>
+		          <th>性别</th>
+		          <th>职工号</th>
+		          <th>博士后</th>
+		          <th>出生日期</th>
+		          <th>邮箱</th>
+		          <th>手机号</th>
+		          <th>第一学科</th>
+		          <th>第二学科</th>
+		          <th>研究方向</th>
+		          <th>学院</th>
+		          <th>导师类型</th>
+		          <th>学历</th>
+		          <th>职称</th>
+		          <th>人员类型</th>
+		          <th>荣誉称号</th>
+		        </tr>
+		      </thead>
+		      <tbody>
+		      	<volist name="person" id="vo">
+					<tr>
+						<td>{$vo['name']}</td>
+						<td>{$vo['gender']}</td>
+						<td>{$vo['employee_no']}</td>
+						<td>{$vo['postdoctor']?'是':'否'}</td>
+						<td>{$vo['birthday']}</td>
+						<td>{$vo['email']}</td>
+						<td>{$vo['phone']}</td>
+						<td>{$vo['first_class']}</td>
+						<td>{$vo['second_class']}</td>
+						<td>{$vo['research_direction']}</td>
+						<!--<td>{$vo['col_name']}</td>-->
+						<td>{$vo['college_name']}</td>
+						<!--<td>{$vo['men_name']}</td>-->
+						<td>{$vo['mentor_name']}</td>
+						<!--<td>{$vo['deg_name']}</td>-->
+						<td>{$vo['degree_name']}</td>
+						<!--<td>{$vo['gra_name']}</td>-->
+						<td>{$vo['title_name']}</td>
+						<!--<td>{$vo['per_name']}</td>-->
+						<td>{$vo['person_type']}</td>
+						<!--<td>{$vo['aca_name']}</td>-->
+						<td>{$vo['academic_name']}</td>
+			        </tr>
+			    </volist>
+		      </tbody>
+		    </table>
+		</div>
+		<div class="col-md-12">
+			<blockquote><h3>科研项目</h3></blockquote>
+			<table class="table table-hover table-striped table-bordered">
+		      <thead>
+		        <tr>
+		          <th>拥有者</th>
+		          <th>项目名称</th>
+		          <th>类型</th>
+		          <th>支助编号</th>
+		          <th>参与单位</th>
+		          <th>项目来源</th>
+		          <th>子类</th>
+		          <th>开始时间</th>
+		          <th>结束时间</th>
+		          <th>经费</th>
+		          <th>直接经费</th>
+		          <th>间接经费</th>
+		          <th>金融账户</th>
+		          <th>备注</th>
+		        </tr>
+		      </thead>
+		      <tbody>
+		      	<volist name="project" id="pr">
+			        <tr>
+			          <td>{$pr['person_name']}</td>
+			          <td>{$pr['name']}</td>
+			          <td>{$pr['type_name']}</td>
+			          <td>{$pr['support_no']}</td>
+			          <td>{$pr['join_unit']}</td>
+			          <td>{$pr['source']}</td>
+			          <td>{$pr['subtype']}</td>
+			          <td>{$pr['start_time']}</td>
+			          <td>{$pr['end_time']}</td>
+			          <td>{$pr['fund']}</td>
+			          <td>{$pr['direct_fund']}</td>
+			          <td>{$pr['indirect_fund']}</td>
+			          <td>{$pr['financial_account']}</td>
+			          <td>{$pr['comment']}</td>
+			        </tr>
+			    </volist>
+		      </tbody>
+		    </table>
+		</div>
+		<div class="col-md-12">
+			<blockquote><h3>成果奖励</h3></blockquote>
+			<table class="table table-hover table-striped table-bordered">
+		      <thead>
+		        <tr>
+		          <th>获得者</th>
+		          <th>奖励名称</th>
+		          <th>等级</th>
+		          <th>获奖时间</th>
+		          <th>备注</th>
+		        </tr>
+		      </thead>
+		      <tbody>
+		      	<volist name="award" id="aw">
+						<tr>
+							<td>{$aw['person_name']}</td>
+							<td>{$aw['name']}</td>
+							<td>{$aw['level']}</td>
+							<td>{$aw['time']}</td>
+							<td>{$aw['comment']}</td>
+						</tr>
+			    </volist>
+		      </tbody>
+		    </table>		
+		</div>
+		<div class="col-md-12">
+			<blockquote><h3>科研论文</h3></blockquote>
+
+			<table class="table table-hover table-striped table-bordered">
+		      <thead>
+		        <tr>
+		          <th>第一作者</th>
+		          <th>第一作者单位</th>
+		          <th>期刊/会议名称</th>
+		          <th>发表时间</th>
+		          <th>备注</th>
+		        </tr>
+		      </thead>
+		      <tbody>
+		      	<volist name="paper" id="pa">
+			        <tr>
+			          <td>{$pa['person_name']}</td>
+			          <td>{$pa['col_name']}</td>
+			          <td>{$pa['conference_name']}</td>
+			          <td>{$pa['publish_date']}</td>
+			          <td>{$pa['comment']}</td>
+			        </tr>
+			    </volist>
+		      </tbody>
+		    </table>		
+		</div>
+		<div class="col-md-12">
+			<blockquote><h3>知识产权</h3></blockquote>
+			<table class="table table-hover table-striped table-bordered">
+		      <thead>
+		        <tr>
+		        	<th>专利名称</th>
+		        	<th>专利权人/申请人</th>
+		        	<th>所在单位</th>
+		          	<th>第一发明人</th>
+		          	<th>第一发明人单位</th>
+		          	<th>专利类型</th>
+		          	<th>专利（申请）号</th>
+		          	<th>专利申请日</th>
+		          	<th>专利授权日</th>
+		          	<th>备注</th>
+		        </tr>
+		      </thead>
+		      <tbody>
+		      	<volist name="patent" id="pat">
+			        <tr>
+			          <td>{$pat['name']}</td>
+			          <td>{$pat['owner_name']}</td>
+			          <td>{$pat['ownercollege_name']}</td>
+			          <td>{$pat['firstinventor_name']}</td>
+			          <td>{$pat['inventorcollege_name']}</td>
+			          <td>{$pat['type']}</td>
+			          <td>{$pat['apply_no']}</td>
+			          <td>{$pat['apply_date']}</td>
+			          <td>{$pat['grant_date']}</td>
+			          <td>{$pat['comment']}</td>
+			        </tr>
+			    </volist>
+		      </tbody>
+		    </table>		
+		</div>
+	</div>
+</block>
+<block name="js">
+<script type="text/javascript">
+	selectMenu('people', 0, 2);
+</script>
+</block>

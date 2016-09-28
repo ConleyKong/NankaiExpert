@@ -10,4 +10,5 @@
     angular.module('lab', ['utils','ui.bootstrap']);
     angular.module('event', ['utils', 'ui.bootstrap']);
     angular.module('audit', ['utils', 'ui.bootstrap']);
+    angular.module('user', ['utils', 'ui.bootstrap']);
 })()

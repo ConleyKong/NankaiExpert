@@ -26,14 +26,23 @@ class IndexController extends Controller {
 			$audit['result'] = '失败';
 			$audit['descr'] = '验证码错误';
 		}else{
-			$count=M('user')->where($condition)->count();
+			$user=M('user')->where($condition)->find();
 			
-			if ($count>0) {
-				session('logged', '1');
-				session('username', $condition['account']);
-				$audit['result'] = '成功';
-				$code = 1;
-				$msg = '成功';
+			if ($user) {
+				if($user['valid']==0){
+					$code = 0;
+					$msg = '用户已被锁定';
+					$audit['result']='失败';
+					$audit['descr']='用户被锁定';
+				}else{
+					session('logged', '1');
+					session('username', $condition['account']);
+					session('role_num',$user['role_id']);
+					$audit['result'] = '成功';
+					$code = 1;
+					$msg = '成功';
+				}
+
 			}
 			else
 			{
