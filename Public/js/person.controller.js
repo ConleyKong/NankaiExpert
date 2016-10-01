@@ -123,7 +123,7 @@
 
 	 	//导入导出
 	 	vm.showCheckbox = false;
-	 	vm.exportParams = {name:false,gender:false,employee_no:false,college_name:false,postdoctor:false,academic_name:false,birthday:false,email:false,phone:false,first_class:false,second_class:false};
+	 	vm.exportParams = {name:false,gender:false,employee_no:false,college_name:false,postdoctor:false,academic_name:false,birthday:false,email:false,phone:false,first_class:false,second_class:false,credit:false};
 
 	 	vm.exportExcel = exportExcel;
 	 	function exportExcel(type){

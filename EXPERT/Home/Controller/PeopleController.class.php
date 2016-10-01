@@ -55,7 +55,7 @@ class PeopleController extends Controller {
             $query["valid"]=true;
 
 	        $result = $person
-                ->field('id,name,gender,employee_no,postdoctor,birthday,email,phone,first_class,second_class,college_name,academic_name')
+                ->field('id,name,gender,employee_no,postdoctor,birthday,email,phone,first_class,second_class,college_name,academic_name,credit')
                 ->where($query)
                 ->page($pageNum,$itemsNum)
                 ->order('person.id')
@@ -305,7 +305,7 @@ class PeopleController extends Controller {
                 return '未知错误';
             }
 
-            $titleMap = array('name'=>'姓名','gender'=>'性别','employee_no'=>'职工号','college_name'=>'学院/部门','postdoctor'=>'博士后','academic_name'=>'荣誉称号','birthday'=>'出生日期','email'=>'邮箱','phone'=>'电话','first_class'=>'一级学科','second_class'=>'二级学科');
+            $titleMap = array('name'=>'姓名','gender'=>'性别','employee_no'=>'职工号','college_name'=>'学院/部门','postdoctor'=>'博士后','academic_name'=>'荣誉称号','birthday'=>'出生日期','email'=>'邮箱','phone'=>'电话','first_class'=>'一级学科','second_class'=>'二级学科','credit'=>'诚信');
             $field = split(',', $field);
             $excelTitle = array();
             foreach ($field as $value) {
@@ -429,6 +429,8 @@ class PeopleController extends Controller {
                         $college_name = trim($v[13]);
                         $postdoctor = trim($v[14]);
                         $person_honor_names=trim($v[15]);
+                        $credit = $v[16];
+                        $data['credit'] = $credit;
 
                         ///////////////////////////////////////////////////////////////////////
                         //\\\\\涉及外键的操作////\\
