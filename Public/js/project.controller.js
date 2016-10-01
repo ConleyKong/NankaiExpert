@@ -116,7 +116,7 @@
 
 	 	//导入导出
 	 	vm.showCheckbox = false;
-	 	vm.exportParams = {person_name:false,name:false,type_name:false,support_no:false,join_unit:false,source:false,source_department:false,subtype:false,start_time:false,end_time:false,fund:false,direct_fund:false,indirect_fund:false,financial_account:false,comment:false};
+	 	vm.exportParams = {person_name:false,name:false,type_name:false,depth_flag:false,support_no:false,join_unit:false,source:false,source_department:false,subtype:false,start_time:false,end_time:false,fund:false,direct_fund:false,indirect_fund:false,financial_account:false,comment:false};
 
 	 	vm.exportExcel = exportExcel;
 	 	function exportExcel(type){

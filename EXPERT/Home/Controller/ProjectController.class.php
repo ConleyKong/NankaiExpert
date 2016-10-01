@@ -23,21 +23,35 @@ class ProjectController extends Controller {
             deleteEmptyValue($param);
             $pageNum = $param['page'] ? $param['page'] : 1;  //当前页
             $itemsNum =  $param['items'] ? $param['items'] : 10; //每页个数
+            unset($param['page']);
+            unset($param['items']);
 
             $startTime = $param['start_time'];
             $endTime = $param['end_time'];
             $startPoint = array();
-            if ($startTime)
+            if ($startTime){
                 $startPoint = array('gt',$startTime);
-            if ($endTime)
+                unset($param['start_time']);
+            }
+            if ($endTime){
                 $startPoint = array('lt',$endTime);
+                unset($param['end_time']);
+            }
             if ($startPoint)
                 $query['start_time'] = $startPoint;
 
-            if($param['name'])
+            if($param['name']){
                 $query['name'] = array('like','%'.$param['name'].'%');
-            if($param['person_name'])
+                unset($param['name']);
+            }
+            if($param['person_name']){
                 $query['person_name'] = array('like','%'.$param['person_name'].'%');
+                unset($param['person_name']);
+            }
+            if($param['depth_flag']){
+                $query['depth_flag'] = $param['depth_flag'];
+                unset($param['depth_flag']);
+            }
 
             $string='';
             if ($param['college_id']){
@@ -50,10 +64,6 @@ class ProjectController extends Controller {
             $query["valid"]=true;
 
             $Project = D('ProjectView');
-            unset($param['page']);
-            unset($param['items']);
-
-            
             $result = $Project->where($query)->page($pageNum,$itemsNum)->order('project.id')->select();
             $totalNum = $Project->where($query)->count();
             $result[0]['totalNum'] = $totalNum;
@@ -171,6 +181,11 @@ class ProjectController extends Controller {
             if ($startPoint)
                 $query['start_time'] = $startPoint;
 
+            $depth_flag = I('get.depth_flag');
+            if($depth_flag){
+                $query['depth_flag']=$depth_flag;
+            }
+
             $name = I('get.name');
             if ($name)
                 $query['name'] = array('like','%'.$name.'%');
@@ -201,7 +216,7 @@ class ProjectController extends Controller {
                 return '未知错误';
             }
 
-            $titleMap = array('person_name'=>'拥有者','name'=>'项目名称','type_name'=>'类型','support_no'=>'支助编号','join_unit'=>'参与单位','source'=>'项目来源','source_department'=>'来源单位','subtype'=>'子类','start_time'=>'开始时间','end_time'=>'结束时间','fund'=>'经费','direct_fund'=>'直接经费','indirect_fund'=>'间接经费','financial_account'=>'金融账户','comment'=>'备注');
+            $titleMap = array('person_name'=>'拥有者','name'=>'项目名称','type_name'=>'类型','depth_flag'=>'是否纵向','support_no'=>'支助编号','join_unit'=>'参与单位','source'=>'项目来源','source_department'=>'来源单位','subtype'=>'子类','start_time'=>'开始时间','end_time'=>'结束时间','fund'=>'经费','direct_fund'=>'直接经费','indirect_fund'=>'间接经费','financial_account'=>'金融账户','comment'=>'备注');
             $field = split(',', $field);
             $excelTitle = array();
             foreach ($field as $value) {
@@ -297,6 +312,7 @@ class ProjectController extends Controller {
                         $type_name = trim($v[11]);//项目类型//TODO
                         $data["support_no"]=$v[12];//资助编号
                         $data["source_department"]=$v[13];//来源单位
+                        $data["depth_flag"] = $v[14];//纵向标记，汉字
 
 
                         ///////////////////////////////////////////////////////////////////////

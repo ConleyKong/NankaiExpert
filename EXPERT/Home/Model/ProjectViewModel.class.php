@@ -21,6 +21,7 @@ class ProjectViewModel extends ViewModel {
 			'source_department',
 			'comment',
 			'valid',
+			'depth_flag',
 		),
 		'person' => array(
 			'name' => 'person_name',

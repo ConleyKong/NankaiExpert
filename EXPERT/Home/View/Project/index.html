@@ -2,6 +2,16 @@
 <block name="content">
   <div class="container" ng-app="project" ng-controller="projectController as vm">
     <div class="col-sm-12 row">
+
+      <div class="col-sm-3 bottom-10">
+        <span class="cond-label">纵向项目：</span>
+        <div class="btn-group">
+          <label class="btn btn-default active" ng-model="vm.params.depth_flag" uib-btn-radio="''">全部</label>
+          <label class="btn btn-default" ng-model="vm.params.depth_flag" uib-btn-radio="'是'">纵向</label>
+          <label class="btn btn-default" ng-model="vm.params.depth_flag" uib-btn-radio="'否'">横向</label>
+        </div>
+      </div>
+
       <div class="col-sm-12">
           <span class="cond-label">参与单位：</span>
           <div class="btn-group">
@@ -81,6 +91,7 @@
             <th>拥有者<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.person_name"></th>
             <th>项目名称<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.name"></th>
             <th>类型<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.type_name"></th>
+            <th>纵向<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.depth_flag"></th>
             <th>资助编号<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.support_no"></th>
             <th>参与单位<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.join_unit"></th>
             <th>项目来源<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.source"></th>
@@ -102,6 +113,7 @@
             <td ng-bind="item.person_name"></td>
             <td ng-bind="item.name"></td>
             <td ng-bind="item.type_name"></td>
+            <td ng-bind="item.depth_flag"></td>
             <td ng-bind="item.support_no"></td>
             <td ng-bind="item.join_unit"></td>
             <td ng-bind="item.source"></td>
