@@ -37,6 +37,32 @@
 	 		);
 	 	}
 
+		getProjectTypeList();
+		function getProjectTypeList(){
+			var url = '/Project/getProjectTypeList/';
+			vm.projecttype_id = [];
+			sendRequest.get(url, {}, {}).then(
+				function(resp){
+					vm.projecttypeList = resp;
+					for(var i = 0; i < resp.length;i++)
+						vm.projecttype_id.push(false);
+				},
+				function(resp){
+					console.log('get projectypeList failed');
+				}
+			);
+		}
+
+		$scope.$watch('vm.projecttype_id', function(){
+			var temp = [];
+			for (var i = 1;i < vm.projecttype_id.length;i++)
+				if (vm.projecttype_id[i])
+					temp.push("project_type.id = " + i);
+			if (temp.length){
+				vm.params.projecttype_id = temp.join(' or ');
+			}else vm.params.projecttype_id = '';
+		}, true);
+
 	 	getCollegeList();
 	 	vm.collegeMap = [''];
 	 	function getCollegeList(){

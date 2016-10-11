@@ -2,7 +2,7 @@
 <block name="content">
   <div class="container" ng-app="project" ng-controller="projectController as vm">
     <div class="col-sm-12 row">
-
+      <show-more count="3">
       <div class="col-sm-3 bottom-10">
         <span class="cond-label">纵向项目：</span>
         <div class="btn-group">
@@ -11,6 +11,14 @@
           <label class="btn btn-default" ng-model="vm.params.depth_flag" uib-btn-radio="'否'">横向</label>
         </div>
       </div>
+
+        <div class="col-sm-12 bottom-10">
+          <span class="cond-label">项目类型：</span>
+          <div class="btn-group">
+            <label class="btn btn-default active" ng-click="vm.resetCheckbox(vm.projecttype_id)" ng-model="vm.params.projecttype_id" uib-btn-radio="''">全部</label>
+            <label class="btn btn-default" ng-repeat="item in vm.projecttypeList" ng-model="vm.projecttype_id[item.id]" uib-btn-checkbox data-toggle="tooltip" data-placement="top" title="{{item.name}}" ng-bind="item.name.length>9?item.name.substr(0,9) + '...':item.name"></label>
+          </div>
+        </div>
 
       <div class="col-sm-12">
           <span class="cond-label">参与单位：</span>
@@ -57,9 +65,10 @@
           <button class="btn btn-default" ng-click="vm.cancel()">取消</button>
       </div>
       <div class="col-sm-12" id="more">
-          <span class="glyphicon">
+          <span class="glyphicon glyphicon-triangle-bottom">
           </span>
       </div>
+      </show-more>
   </div>
     <div class="col-md-12">
       <div class="panel panel-default table-header">

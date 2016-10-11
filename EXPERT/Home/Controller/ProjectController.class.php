@@ -54,6 +54,10 @@ class ProjectController extends Controller {
             }
 
             $string='';
+            if ($param['projecttype_id']){
+                $string .= $string ? ' AND ('.$param['projecttype_id'].')' : '('.$param['projecttype_id'].')';
+                unset($param['projecttype_id']);
+            }
             if ($param['college_id']){
                 $string .= $string ? ' AND ('.$param['college_id'].')' : '('.$param['college_id'].')';
                 unset($param['college_id']);
@@ -76,6 +80,19 @@ class ProjectController extends Controller {
             $audit['descr'] = '查询所有字段';
             M('audit')->add($audit);
             $this->ajaxReturn($result,'json');
+        }
+    }
+
+
+    //获取项目类型
+    public function getProjectTypeList(){
+        if (! session('logged')){
+            $this->redirect('Index/index');
+        }
+        else{
+            $projecttype = M('project_type');
+            $result = $projecttype->field('id,name')->select();
+            $this->ajaxReturn($result, 'json');
         }
     }
 
@@ -193,14 +210,18 @@ class ProjectController extends Controller {
             if ($person_name)
                 $query['person_name']= array('like','%'.$person_name.'%');
 
-//            $string = '';
-//            if ($academichonor_id)
-//                $string .= $string ? ' AND ('.$academichonor_id.')' : '('.$academichonor_id.')';
-//            if ($college_id)
-//                $string .= $string ? ' AND ('.$college_id.')' : '('.$college_id.')';
-//
-//            if ($string)
-//                $query['_string'] = $string;
+            $string = '';
+
+            $projecttype_id = I('get.projecttype_id');
+            if ($projecttype_id)
+                $string .= $string ? ' AND ('.$projecttype_id.')' : '('.$projecttype_id.')';
+
+            $college_id = I('get.college_id');
+            if ($college_id)
+                $string .= $string ? ' AND ('.$college_id.')' : '('.$college_id.')';
+
+            if ($string)
+                $query['_string'] = $string;
 
             $query['valid']=true;
 
