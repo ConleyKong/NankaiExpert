@@ -54,9 +54,13 @@ class ProjectController extends Controller {
             }
 
             $string='';
-            if ($param['projecttype_id']){
-                $string .= $string ? ' AND ('.$param['projecttype_id'].')' : '('.$param['projecttype_id'].')';
-                unset($param['projecttype_id']);
+//            if ($param['projecttype_id']){
+//                $string .= $string ? ' AND ('.$param['projecttype_id'].')' : '('.$param['projecttype_id'].')';
+//                unset($param['projecttype_id']);
+//            }
+            if ($param['type_id']){
+                $string .= $string ? ' AND ('.$param['type_id'].')' : '('.$param['type_id'].')';
+                unset($param['type_id']);
             }
             if ($param['college_id']){
                 $string .= $string ? ' AND ('.$param['college_id'].')' : '('.$param['college_id'].')';
@@ -92,6 +96,17 @@ class ProjectController extends Controller {
         else{
             $projecttype = M('project_type');
             $result = $projecttype->field('id,name')->select();
+            $this->ajaxReturn($result, 'json');
+        }
+    }
+
+    public function getTypeList(){
+        if (! session('logged')){
+            $this->redirect('Index/index');
+        }
+        else{
+            $projecttype = M('project_type');
+            $result = $projecttype->field('id,name')->order('name desc')->select();
             $this->ajaxReturn($result, 'json');
         }
     }
@@ -212,9 +227,12 @@ class ProjectController extends Controller {
 
             $string = '';
 
-            $projecttype_id = I('get.projecttype_id');
-            if ($projecttype_id)
-                $string .= $string ? ' AND ('.$projecttype_id.')' : '('.$projecttype_id.')';
+//            $projecttype_id = I('get.projecttype_id');
+//            if ($projecttype_id)
+//                $string .= $string ? ' AND ('.$projecttype_id.')' : '('.$projecttype_id.')';
+            $type_id = I('get.type_id');
+            if ($type_id)
+                $string .= $string ? ' AND ('.$type_id.')' : '('.$type_id.')';
 
             $college_id = I('get.college_id');
             if ($college_id)

@@ -12,11 +12,24 @@
         </div>
       </div>
 
-        <div class="col-sm-12 bottom-10">
+        <!--<div class="col-sm-12 bottom-10">-->
+          <!--<span class="cond-label">项目类型：</span>-->
+          <!--<div class="btn-group">-->
+            <!--<label class="btn btn-default active" ng-click="vm.resetCheckbox(vm.projecttype_id)" ng-model="vm.params.projecttype_id" uib-btn-radio="''">全部</label>-->
+            <!--<label class="btn btn-default" ng-repeat="item in vm.projecttypeList" ng-model="vm.projecttype_id[item.id]" uib-btn-checkbox data-toggle="tooltip" data-placement="top" title="{{item.name}}" ng-bind="item.name.length>9?item.name.substr(0,9) + '...':item.name"></label>-->
+          <!--</div>-->
+        <!--</div>-->
+        <div class="col-sm-12">
           <span class="cond-label">项目类型：</span>
           <div class="btn-group">
-            <label class="btn btn-default active" ng-click="vm.resetCheckbox(vm.projecttype_id)" ng-model="vm.params.projecttype_id" uib-btn-radio="''">全部</label>
-            <label class="btn btn-default" ng-repeat="item in vm.projecttypeList" ng-model="vm.projecttype_id[item.id]" uib-btn-checkbox data-toggle="tooltip" data-placement="top" title="{{item.name}}" ng-bind="item.name.length>9?item.name.substr(0,9) + '...':item.name"></label>
+            <label style="margin-bottom:0;color:#eee">
+              <select class="form-control" ng-model="vm.typeSelected" ng-options="item.id as item.name for item in vm.typeList">
+                <option value="">全部</option>
+              </select>
+            </label>
+            <label style="margin-bottom:0" ng-repeat="item in vm.typeSelectedList">
+              <button tyle="button" class="btn button-link" ng-bind="vm.typeMap[item]+'   X'" ng-click="vm.removeType(item)"><b></b></button>&nbsp;
+            </label>
           </div>
         </div>
 

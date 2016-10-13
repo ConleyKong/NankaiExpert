@@ -37,32 +37,8 @@
 	 		);
 	 	}
 
-		getProjectTypeList();
-		function getProjectTypeList(){
-			var url = '/Project/getProjectTypeList/';
-			vm.projecttype_id = [];
-			sendRequest.get(url, {}, {}).then(
-				function(resp){
-					vm.projecttypeList = resp;
-					for(var i = 0; i < resp.length;i++)
-						vm.projecttype_id.push(false);
-				},
-				function(resp){
-					console.log('get projectypeList failed');
-				}
-			);
-		}
-
-		$scope.$watch('vm.projecttype_id', function(){
-			var temp = [];
-			for (var i = 1;i < vm.projecttype_id.length;i++)
-				if (vm.projecttype_id[i])
-					temp.push("project_type.id = " + i);
-			if (temp.length){
-				vm.params.projecttype_id = temp.join(' or ');
-			}else vm.params.projecttype_id = '';
-		}, true);
-
+		////////////////////////////////////////////
+		//学院类型选择
 	 	getCollegeList();
 	 	vm.collegeMap = [''];
 	 	function getCollegeList(){
@@ -113,6 +89,87 @@
  			}
 	 	}
 
+		/////////////////////////////////////
+		//项目类型筛选
+		/* 旧版
+		getProjectTypeList();
+		function getProjectTypeList(){
+			var url = '/Project/getProjectTypeList/';
+			vm.projecttype_id = [];
+			sendRequest.get(url, {}, {}).then(
+				function(resp){
+					vm.projecttypeList = resp;
+					for(var i = 0; i < resp.length;i++)
+						vm.projecttype_id.push(false);
+				},
+				function(resp){
+					console.log('get projectypeList failed');
+				}
+			);
+		}
+
+		$scope.$watch('vm.projecttype_id', function(){
+			var temp = [];
+			for (var i = 1;i < vm.projecttype_id.length;i++)
+				if (vm.projecttype_id[i])
+					temp.push("project_type.id = " + i);
+			if (temp.length){
+				vm.params.projecttype_id = temp.join(' or ');
+			}else vm.params.projecttype_id = '';
+		}, true);
+*/
+
+		getTypeList();
+		vm.typeMap = [''];
+		function getTypeList(){
+			var url = '/Project/getTypeList';
+			sendRequest.get(url, {}, {}).then(
+				function(resp){
+					vm.typeList = resp;
+					angular.forEach(resp, function(item, index){
+						vm.typeMap.push(item.name);
+					});
+				},
+				function(resp){
+					console.log('get typeList failed');
+				}
+			);
+		}
+		vm.typeSelected = '';
+		vm.typeSelectedList = [];
+		$scope.$watch('vm.typeSelected', function(){
+			console.log('vm.typeSelected', vm.typeSelected)
+			if (!vm.typeSelected){
+				vm.typeSelectedList = [];
+				vm.params.type_id = '';
+			}
+			else if (vm.typeSelectedList.indexOf(vm.typeSelected)<0){
+				vm.typeSelectedList.push(vm.typeSelected);
+				var temp = [];
+				for (var i = 0;i < vm.typeSelectedList.length;i++)
+					temp.push("project.type_id = " + vm.typeSelectedList[i]);
+				if (temp.length){
+					vm.params.type_id = temp.join(' or ');
+				}else vm.params.type_id = '';
+			}
+			//console.log('vm.typeSelectedList', vm.typeSelectedList)
+		}, true);
+
+		vm.removeType = removeType;
+		function removeType(id){
+			vm.typeSelectedList.splice(vm.typeSelectedList.indexOf(id), 1);
+			var temp = [];
+			for (var i = 0;i < vm.typeSelectedList.length;i++)
+				temp.push("project.type_id = " + vm.typeSelectedList[i]);
+			if (temp.length){
+				vm.params.type_id = temp.join(' or ');
+			}else{
+				vm.params.type_id = '';
+				vm.typeSelected = '';
+			}
+		}
+
+		////////////////////////////////////////////////////////////////////////
 	 	//条件查询
 	 	vm.params.person_name = '';
  		vm.params.name = '';
