@@ -73,8 +73,13 @@ class ProjectController extends Controller {
 
             $Project = D('ProjectView');
             $result = $Project->where($query)->page($pageNum,$itemsNum)->order('project.id')->select();
-            $totalNum = $Project->where($query)->count();
-            $result[0]['totalNum'] = $totalNum;
+            $prepData = $Project->where($query)->getField('fund',true);
+            $result[0]['totalNum'] = sizeof($prepData);
+            $result[0]['totalFund'] = number_format(array_sum($prepData),3);
+//            $result[0]['totalFund'] = $prepData[1];
+//            $totalNum = $Project->where($query)->count();
+//            $result[0]['totalNum'] = $totalNum;
+//            $result[0]['totalFund2']= $Project->where($query)->sum('fund');
             //审计日志
             $audit['name'] = session('username');
             $audit['ip'] = getIp();

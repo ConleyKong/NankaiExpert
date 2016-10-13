@@ -1,9 +1,9 @@
 <extend name="EXPERT/Templates/nav.html"/>
 <block name="content">
   <div class="container" ng-app="project" ng-controller="projectController as vm">
-    <div class="col-sm-12 row">
+    <div class="col-sm-9">
       <show-more count="3">
-      <div class="col-sm-3 bottom-10">
+      <div class="col-sm-12 bottom-10">
         <span class="cond-label">纵向项目：</span>
         <div class="btn-group">
           <label class="btn btn-default active" ng-model="vm.params.depth_flag" uib-btn-radio="''">全部</label>
@@ -83,12 +83,52 @@
       </div>
       </show-more>
   </div>
+    <div class="col-sm-3">
+      <div class="panel panel-info">
+         <div class="panel-heading">
+          <h3 class="panel-title">所选项目基本统计</h3>
+        </div>
+         <!--<div class="panel-body">-->
+          <!--<div id="c2" class="col-md-12">-->
+            <!---->
+          <!--</div>-->
+        <!--</div>-->
+        <table class="table table-bordered table-striped" style="border-bottom:1px #bce8f1 solid">
+          <thead>
+          <tr>
+            <th class="col-sm-6">项目总数(项)</th>
+            <th class="col-sm-6">基金总数(万)</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td ng-bind="vm.paginationConf.totalItems"></td>
+            <td ng-bind="vm.totalFund"></td>
+          </tr>
+          </tbody>
+        </table>
+        <!--<table class="table table-bordered table-striped">-->
+          <!--<thead>-->
+          <!--<tr>-->
+            <!--<th>资助编号</th>-->
+            <!--<th>项目总数</th>-->
+          <!--</tr>-->
+          <!--</thead>-->
+          <!--<tbody>-->
+          <!--<tr ng-repeat="item in vm.projectSupport" ng-if="$index<3">-->
+            <!--<td ng-bind="item.support_no"></td>-->
+            <!--<td ng-bind="item.supportcount"></td>-->
+          <!--</tr>-->
+          <!--</tbody>-->
+        <!--</table>-->
+      </div>
+    </div>
     <div class="col-md-12">
       <div class="panel panel-default table-header">
         <div class="panel-heading table-heading">
           <div class="row">
             <div class="col-md-4 pull-left">
-              <h3 class="panel-title table-title">论文列表</h3>
+              <h3 class="panel-title table-title">项目列表</h3>
             </div>
             <div class="col-md-8 pull-right" ng-hide="vm.showCheckbox">
                 <button type="button" class="btn btn-info pull-right right-10" ng-click="vm.showCheckbox=true">导出Excel&nbsp;&nbsp;<span class="glyphicon glyphicon-export"></span></button>

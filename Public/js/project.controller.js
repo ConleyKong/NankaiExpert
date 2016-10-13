@@ -5,6 +5,7 @@
     function projectController($scope, sendRequest){
     	var vm = this;
     	vm.params = {};
+		// vm.totalcount = 0;
     	vm.paginationConf = {
 	        currentPage: 1,
 	        totalItems: 0,
@@ -30,6 +31,9 @@
 	 			function(resp){
 	 				vm.projectList = resp;
 	 				vm.paginationConf.totalItems = resp[0]['totalNum'];
+					// vm.totalcount = resp[0]['totalCount'];
+					vm.totalFund = resp[0]['totalFund'];
+					// vm.totalFund2 = resp[0]['totalFund2'];
 	 			},
 	 			function(resp){
 	 				console.log('get projectList failed');
