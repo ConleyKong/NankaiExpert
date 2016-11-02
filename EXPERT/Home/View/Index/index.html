@@ -97,6 +97,7 @@
         var username = jQuery.trim($('#username').val());
         var password = jQuery.trim($('#password').val());
         var captcha = jQuery.trim($('#captcha').val());
+//          alert("输入的验证码："+captcha);
 //        alert('__CDN__/jquery/2.1.1/');
         $.post('{:U("Index/login")}', {account:username,password:password,captcha:captcha},function(resp){
             if (resp.code == '0') {

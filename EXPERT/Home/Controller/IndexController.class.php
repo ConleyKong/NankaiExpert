@@ -14,10 +14,12 @@ class IndexController extends Controller {
 	public function login()
 	{
 		$condition['account'] = I('post.account', null, 'string');
+		$recg = I('post.captcha');
 		$condition['password'] = md5(I('post.password', null, 'string'));
 		$condition['valid'] = 1;
 		//$condition['password'] = md5($_POST['password']);
-		if (I('post.captcha') != session('captcha'))
+		$real = session('captcha');
+		if ($recg != $real)
 		{
 			$code = 0;
 			$msg = "验证码错误";
@@ -160,7 +162,7 @@ class IndexController extends Controller {
 			$y = rand(10,20);
 			imagestring($image,$fontsize,$x,$y,$fontcontent,$fontcolor);
 		}
-		session('captcha',$result - $num);
+		session('captcha',$result-$num);
 		for ($i = 0;$i < 500;$i++)
 		{
 			$pointcolor = imagecolorallocate($image,rand(50,200),rand(50,200),rand(50,200));

@@ -1,9 +1,0 @@
-[ 2016-07-25T08:44:53+08:00 ] ::1 /Index/login
-INFO: [ app_begin ] --START--
-INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001135s ]
-INFO: [ app_begin ] --END-- [ RunTime:0.002912s ]
-SQL: SHOW COLUMNS FROM `user` [ RunTime:0.0037s ]
-SQL: SELECT * FROM `user`  [ RunTime:0.0005s ]
-SQL: SHOW COLUMNS FROM `audit` [ RunTime:0.0036s ]
-SQL: INSERT INTO `audit` (`name`,`ip`,`module`,`time`,`result`) VALUES ('nankai','::1','登录','16-07-25 08:44:53','成功') [ RunTime:0.2525s ]
-
