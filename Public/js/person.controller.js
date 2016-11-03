@@ -18,6 +18,18 @@
 	    	}
 		}
 
+		$scope.searchKeyupEvent = function(e){
+			var keycode = window.event?e.keyCode:e.which;
+			if(keycode==13){
+				vm.search();
+				// console.log("按下的按键："+keycode);
+			}
+		};
+
+		$scope.$watch('vm.showCheckbox',function () {
+			console.log("vm.showcheckbox 改变了："+vm.showCheckbox)
+		},true);
+
 		$scope.$watch('vm.params', function(){
 			console.log('params change', vm.params);
 			getPersonList(vm.params);
@@ -109,6 +121,9 @@
 	 		vm.params.name = vm.name;
 	 		vm.params.employee_no = vm.employee_no;
 	 	}
+		vm.search = function () {
+			vm.params.name = vm.name;
+		}
 	 	vm.cancel = function(){
 	 		vm.params.name = '';
 	 		vm.name = '';

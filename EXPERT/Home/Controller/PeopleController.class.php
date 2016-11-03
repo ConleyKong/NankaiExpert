@@ -47,10 +47,15 @@ class PeopleController extends Controller {
 
             $query = $param;
 
-            if($param['name'])
+            if($param['name']){
                 $query['name']=array('like','%'.$param['name'].'%');
-            if($param['employee_no'])
+                unset($param['name']);
+            }
+            if($param['employee_no']){
                 $query['employee_no']=array('like','%'.$param['employee_no'].'%');
+                unset($param['employee_no']);
+            }
+
 
             $query["valid"]=true;
 

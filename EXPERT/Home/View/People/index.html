@@ -1,302 +1,358 @@
 <extend name="EXPERT/Templates/nav.html"/>
 <block name="content">
-  <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-      <div class="modal-dialog" role="document">
-          <div class="modal-content">
-              <div class="modal-header">
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                  <h4 class="modal-title" id="myModalLabel">添加人员信息</h4>
-              </div>
-              <div class="modal-body">
-                  <form class="form-horizontal" action="__URL__/add" method="post">
-                      <div class="form-group">
-                          <label class="col-sm-2 control-label">姓名</label>
-                          <div class="col-sm-9">
-                              <input type="text" name="name" class="form-control" required>
-                          </div>
-                      </div>
-                      <div class="form-group">
-                          <label class="col-sm-2 control-label">性别</label>
-                          <div class="col-sm-9">
-                            <input type="radio" value="男" name="gender" checked>男&nbsp;&nbsp;&nbsp;
-                            <input type="radio" value="女" name="gender">女
-                          </div>
-                      </div>
-                      <div class="form-group">
-                          <label class="col-sm-2 control-label">邮箱</label>
-                          <div class="col-sm-9">
-                            <input type="email" name="email" class="form-control" required>
-                          </div>
-                      </div>
-                      <div class="form-group">
-                          <label class="col-sm-2 control-label">电话</label>
-                          <div class="col-sm-9">
-                            <input type="text" name="phone" class="form-control" required>
-                          </div>
-                      </div>
-                      <div class="form-group">
-                          <label class="col-sm-2 control-label">职工号</label>
-                          <div class="col-sm-9">
-                            <input type="text" name="employee_no" class="form-control" required>
-                          </div>
-                      </div>
-                      <div class="form-group">
-                          <label class="col-sm-2 control-label">博士后</label>
-                          <div class="col-sm-9">
-                            <input type="radio" value="1" name="postdoctor" checked>是&nbsp;&nbsp;&nbsp;
-                            <input type="radio" value="2" name="postdoctor">否
-                          </div>
-                      </div>
-                      <div class="form-group">
-                          <label class="col-sm-2 control-label">出生日期</label>
-                          <div class="col-sm-9">
-                            <input type="text" name="birthday" class="form-control" required>
-                          </div>
-                      </div>
-                      <div class="form-group">
-                          <label class="col-sm-2 control-label">一级学科</label>
-                          <div class="col-sm-9">
-                            <input type="text" name="first_class" class="form-control" required>
-                          </div>
-                      </div>
-                      <div class="form-group">
-                          <label class="col-sm-2 control-label">二级学科</label>
-                          <div class="col-sm-9">
-                            <input type="text" name="second_class" class="form-control" required>
-                          </div>
-                      </div>
-                      <div class="form-group">
-                          <div class="col-sm-offset-2 col-sm-5">
-                              <button type="submit" class="btn btn-info">确认</button>
-                              <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                          </div>
-                      </div>
-                  </form>
-              </div>
-          </div>
-      </div>
-  </div>
-  <div class="container" ng-app="person" ng-controller="personController as vm">
-    <div class="col-sm-12 row">
-      <show-more count="5">
-        <div class="col-sm-12 bottom-10">
-            <span class="cond-label">年龄段：</span>
-            <div class="btn-group">
-                <date-range start-time="vm.params.startTime" end-time="vm.params.endTime"></date-range>
-            </div>
-        </div>
-        <div class="col-sm-3 bottom-10">
-            <span class="cond-label">性别：</span>
-            <div class="btn-group">
-                <label class="btn btn-default active" ng-model="vm.params.gender" uib-btn-radio="''">全部</label>
-                <label class="btn btn-default" ng-model="vm.params.gender" uib-btn-radio="'男'">男</label>
-                <label class="btn btn-default" ng-model="vm.params.gender" uib-btn-radio="'女'">女</label>
-            </div>
-        </div>
-        <div class="col-sm-3 bottom-10">
-            <span class="cond-label">博士后：</span>
-            <div class="btn-group">
-                <label class="btn btn-default active" ng-model="vm.params.postdoctor" uib-btn-radio="''">全部</label>
-                <label class="btn btn-default" ng-model="vm.params.postdoctor" uib-btn-radio="'1'">是</label>
-                <label class="btn btn-default" ng-model="vm.params.postdoctor" uib-btn-radio="'0'">否</label>
-            </div>
-        </div>
-        <div class="col-sm-12 bottom-10">
-            <span class="cond-label">学术称号：</span>
-            <div class="btn-group">            
-                <label class="btn btn-default active" ng-click="vm.resetCheckbox(vm.academichonor_id)" ng-model="vm.params.academichonor_id" uib-btn-radio="''">全部</label>
-                <label class="btn btn-default" ng-repeat="item in vm.academichonorList" ng-model="vm.academichonor_id[item.id]" uib-btn-checkbox data-toggle="tooltip" data-placement="top" title="{{item.name}}" ng-bind="item.name.length>4?item.name.substr(0,4) + '...':item.name"></label>
-            </div>
-        </div>
-        <div class="col-sm-12">
-            <span class="cond-label">学院：</span>
-            <div class="btn-group">
-              <label style="margin-bottom:0;color:#eee">
-                <select class="select-width form-control" ng-model="vm.collegeSelected" ng-options="item.id as item.name for item in vm.collegeList">
-                  <option value="">全部</option>
-                </select>
-              </label>
-              <label style="margin-bottom:0" ng-repeat="item in vm.collegeSelectedList">
-                <button tyle="button" class="btn button-link" ng-bind="vm.collegeMap[item]+'   X'" ng-click="vm.removeCollege(item)"><b></b></button>&nbsp;
-              </label>
-            </div>
-        </div>
-        <div class="col-sm-12 bottom-10 top-10">
-            <span class="cond-label">姓名：</span>
-            <div class="btn-group">
-                <input type="text" class="form-control" ng-model="vm.name"/>
-            </div>
-        </div>
-        <div class="col-sm-12 bottom-10">
-            <span class="cond-label">职工号：</span>
-            <div class="btn-group">
-              <input type="text" class="form-control" ng-model="vm.employee_no"/>
-            </div>
-        </div>
-        <div class="col-sm-12">
-          <span class="cond-label"></span>
-            <button class="btn btn-info" ng-click="vm.submit()">确定</button>
-            <button class="btn btn-default" ng-click="vm.cancel()">取消</button>
-        </div>
-        <div class="col-sm-12" id="more">
-            <span class="glyphicon glyphicon-triangle-bottom">
-            </span>
-        </div>
-      </show-more>
-    </div>
-  	<div class="col-md-12">
-      <div class="panel panel-default table-header">
-        <div class="panel-heading table-heading">
-          <div class="row">
-            <div class="col-md-4 pull-left">
-              <h3 class="panel-title table-title">人员列表</h3>
-            </div>
-            <div class="col-md-8 pull-right" ng-hide="vm.showCheckbox">
-                <button type="button" class="btn btn-info pull-right" data-toggle="modal" data-target="#modal">新增&nbsp;&nbsp;<span class="glyphicon glyphicon-plus"></span></button>
-                <button type="button" class="btn btn-info pull-right right-10" ng-click="vm.showCheckbox=true">导出Excel&nbsp;&nbsp;<span class="glyphicon glyphicon-export"></span></button>
-                <div class="input-group col-md-4 pull-right right-10">
-                  <input type="text" class="form-control" ng-model="filter" placeholder="输入关键字">
-                  <div class="input-group-addon">筛选</div>
+    <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">添加人员信息</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal" action="__URL__/add" method="post">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">姓名</label>
+                            <div class="col-sm-9">
+                                <input type="text" name="name" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">性别</label>
+                            <div class="col-sm-9">
+                                <input type="radio" value="男" name="gender" checked>男&nbsp;&nbsp;&nbsp;
+                                <input type="radio" value="女" name="gender">女
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">邮箱</label>
+                            <div class="col-sm-9">
+                                <input type="email" name="email" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">电话</label>
+                            <div class="col-sm-9">
+                                <input type="text" name="phone" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">职工号</label>
+                            <div class="col-sm-9">
+                                <input type="text" name="employee_no" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">博士后</label>
+                            <div class="col-sm-9">
+                                <input type="radio" value="1" name="postdoctor" checked>是&nbsp;&nbsp;&nbsp;
+                                <input type="radio" value="2" name="postdoctor">否
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">出生日期</label>
+                            <div class="col-sm-9">
+                                <input type="text" name="birthday" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">一级学科</label>
+                            <div class="col-sm-9">
+                                <input type="text" name="first_class" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">二级学科</label>
+                            <div class="col-sm-9">
+                                <input type="text" name="second_class" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-5">
+                                <button type="submit" class="btn btn-info">确认</button>
+                                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
-            <div class="col-md-8" ng-show="vm.showCheckbox">
-                <button type="button" class="btn btn-default pull-right" ng-click="vm.showCheckbox=false">取消导出</span></button>
-                <button type="button" class="btn btn-primary pull-right right-10" ng-click="vm.exportExcel('all')">导出所有<span class="glyphicon glyphicon-export"></span></button>
-                <button type="button" class="btn btn-success pull-right right-10" ng-click="vm.exportExcel('current')">导出当前页<span class="glyphicon glyphicon-export"></span></button>
-                <h3 class="table-title warning-text pull-left">请选择要导出的字段</h3>
-            </div>
-          </div>
         </div>
-      </div>
-  		<table class="table table-bordered table-striped table-hover">
-        <thead>
-          <tr>
-            <th><span ng-hide="vm.showCheckbox">#</span><span ng-show="vm.showCheckbox">全选<input type="checkbox" ng-click="vm.selectAll();"></span></th>
-            <th>姓名<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.name"></th>
-            <th>性别<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.gender"></th>
-            <th>职工号<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.employee_no"></th>
-            <th>学院<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.college_name"></th>
-            <th>博士后<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.postdoctor"></th>
-            <th>学术荣誉<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.academic_name"></th>
-            <th>出生日期<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.birthday"></th>
-            <th>邮箱<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.email"></th>
-            <th>电话<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.phone"></th>
-            <th>一级学科<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.first_class"></th>
-            <th>二级学科<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.second_class"></th>
-              <th>诚信<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.credit"></th>
-             <th>操作</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr ng-if="vm.paginationConf.totalItems" ng-repeat="item in vm.personList | filter:filter">
-            <td ng-bind="item.id"></td>
-            <td><a href="__URL__/detail/?id={{item.id}}" ng-bind="item.name"></a></td>
-            <td ng-bind="item.gender"></td>
-            <td ng-bind="item.employee_no"></td>
-            <td ng-bind="item.college_name"></td>
-            <td ng-bind="item.postdoctor==1?'是':'否'"></td>
-            <td ng-bind="item.academic_name"></td>
-            <td ng-bind="item.birthday"></td>
-            <td ng-bind="item.email"></td>
-            <td ng-bind="item.phone"></td>
-            <td ng-bind="item.first_class"></td>
-            <td ng-bind="item.second_class"></td>
-            <td ng-bind="item.credit"></td>
-            <td><a href="__URL__/delete?id={{item.id}}" >删除</a></td>
-            <!-- <td width="6%"><span class="glyphicon glyphicon-edit" onclick="modify(this);"></span><span class="glyphicon glyphicon-trash pull-right" onclick="del(this);"></span></td> -->
-          </tr>
-          <tr ng-if="!vm.paginationConf.totalItems"><td colspan="12"><h2 class="text-center text-danger">无数据</h2></td></tr>
-        </tbody>
-      </table>
-        <form method="post" action="{:U('People/import')}" enctype="multipart/form-data">
-            <h3>导入Excel表：</h3><input  type="file" name="file_import" />
-            <input type="submit"  value="导入" />
-        </form>
-      <tm-pagination conf="vm.paginationConf"></tm-pagination>
     </div>
-  </div>
+    <div class="container" ng-app="person" ng-controller="personController as vm">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <span>筛选条件：</span>
+            </div>
+            <div class="panel-body">
+                <div class="col-sm-12 row">
+                    <!--<show-more count="5">-->
+                    <!--<div class="col-sm-12 bottom-10">-->
+                    <!--<span class="cond-label">年龄段：</span>-->
+                    <!--&lt;!&ndash;<div class="btn-group">&ndash;&gt;-->
+                    <!--&lt;!&ndash;<date-range start-time="vm.params.startTime" end-time="vm.params.endTime"></date-range>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                    <!--</div>-->
+                    <div class="col-sm-12 bottom-10">
+                        <div class="col-sm-1">
+                            <span>学术称号：</span>
+                        </div>
+                        <div class="btn-group">
+                            <label class="btn btn-default active" ng-click="vm.resetCheckbox(vm.academichonor_id)"
+                                   ng-model="vm.params.academichonor_id" uib-btn-radio="''">全部</label>
+                            <label class="btn btn-default" ng-repeat="item in vm.academichonorList"
+                                   ng-model="vm.academichonor_id[item.id]" uib-btn-checkbox data-toggle="tooltip"
+                                   data-placement="top" title="{{item.name}}"
+                                   ng-bind="item.name.length>4?item.name.substr(0,4) + '...':item.name"></label>
+                        </div>
+                    </div>
+
+
+                    <div class="col-sm-12 top-10">
+                        <div class="col-sm-1">
+                            <span>概要信息：</span>
+                        </div>
+                        <div class="col-sm-4">
+                            <span class="cond-label">学院：</span>
+                            <div class="btn-group">
+                                <label style="margin-bottom:0;color:#eee">
+                                    <select class="box-width form-control" ng-model="vm.collegeSelected"
+                                            ng-options="item.id as item.name for item in vm.collegeList">
+                                        <option value="">全部</option>
+                                    </select>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <span class="cond-label">性别：</span>
+                            <div class="btn-group">
+                                <label class="btn btn-default active" ng-model="vm.params.gender"
+                                       uib-btn-radio="''">全部</label>
+                                <label class="btn btn-default" ng-model="vm.params.gender" uib-btn-radio="'男'">男</label>
+                                <label class="btn btn-default" ng-model="vm.params.gender" uib-btn-radio="'女'">女</label>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <span class="cond-label">博士后：</span>
+                            <div class="btn-group">
+                                <label class="btn btn-default active" ng-model="vm.params.postdoctor"
+                                       uib-btn-radio="''">全部</label>
+                                <label class="btn btn-default" ng-model="vm.params.postdoctor" uib-btn-radio="'1'">是</label>
+                                <label class="btn btn-default" ng-model="vm.params.postdoctor" uib-btn-radio="'0'">否</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 bottom-10" ng-if="vm.collegeSelectedList.length > 0">
+                        <span class="col-sm-1">所选部门：</span>
+                        <label style="margin-bottom:0" ng-repeat="item in vm.collegeSelectedList">
+                            <button tyle="button" class="btn button-link" ng-bind="vm.collegeMap[item]+'   X'"
+                                    ng-click="vm.removeCollege(item)"><b></b></button>
+                            &nbsp;
+                        </label>
+                    </div>
+
+                    <!--<div class="col-sm-12 top-10">-->
+                        <!--<div class="col-sm-1">-->
+                            <!--<span>精确信息：</span>-->
+                        <!--</div>-->
+                        <!--<div class="col-sm-4 top-10">-->
+                            <!--<span class="cond-label">姓名：</span>-->
+                            <!--<div class="btn-group">-->
+                                <!--<input type="text" class="form-control" ng-model="vm.name"/>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <!--<div class="col-sm-4 top-10">-->
+                            <!--<span class="cond-label">职工号：</span>-->
+                            <!--<div class="btn-group">-->
+                                <!--<input type="text" class="form-control" ng-model="vm.employee_no"/>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <!--<div class="col-sm-3 top-10">-->
+                            <!--<span class="cond-label"></span>-->
+                            <!--<button class="btn btn-info" ng-click="vm.submit()">筛选</button>-->
+                            <!--<button class="btn btn-default" ng-click="vm.cancel()">取消</button>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--<div class="col-sm-12" id="more">-->
+                    <!--<span class="glyphicon glyphicon-triangle-bottom">-->
+                    <!--</span>-->
+                    <!--</div>-->
+                    <!--</show-more>-->
+                </div>
+            </div>
+
+
+        </div>
+
+        <div class="col-md-12">
+            <div class="panel panel-default table-header">
+                <div class="panel-heading table-heading">
+                    <div class="row">
+                        <div class="col-md-4 pull-left">
+                            <h3 class="panel-title table-title">人员列表</h3>
+                        </div>
+                        <div class="col-md-8 pull-right" ng-hide="vm.showCheckbox">
+                            <button type="button" class="btn btn-info pull-right" data-toggle="modal"
+                                    data-target="#modal">新增&nbsp;&nbsp;<span class="glyphicon glyphicon-plus"></span>
+                            </button>
+                            <button type="button" class="btn btn-info pull-right right-10"
+                                    ng-click="vm.showCheckbox=true">导出Excel&nbsp;&nbsp;<span
+                                    class="glyphicon glyphicon-export"></span></button>
+                            <!--<div class="input-group col-md-4 pull-right right-10">-->
+                                <!--<input type="text" class="form-control" ng-model="filter" placeholder="输入名字">-->
+                                <!--<a class="btn input-group-addon">搜索</a>-->
+                            <!--</div>-->
+                            <div class="input-group col-md-4 pull-right right-10">
+                                <input type="text" class="form-control" ng-model="vm.name" ng-blur="vm.submit()" ng-keyup="searchKeyupEvent($event)" placeholder="专家姓名">
+                                <a class="btn input-group-addon" ng-click="vm.search()">搜索</a>
+                            </div>
+                        </div>
+                        <div class="col-md-8" ng-show="vm.showCheckbox">
+                            <button type="button" class="btn btn-default pull-right" ng-click="vm.showCheckbox=false">
+                                取消导出</span></button>
+                            <button type="button" class="btn btn-primary pull-right right-10"
+                                    ng-click="vm.exportExcel('all')">导出所有<span
+                                    class="glyphicon glyphicon-export"></span></button>
+                            <button type="button" class="btn btn-success pull-right right-10"
+                                    ng-click="vm.exportExcel('current')">导出当前页<span
+                                    class="glyphicon glyphicon-export"></span></button>
+                            <h3 class="table-title warning-text pull-left">请选择要导出的字段</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <table class="table table-bordered table-striped table-hover">
+                <thead>
+                <tr>
+                    <th><span ng-hide="vm.showCheckbox">#</span><span ng-show="vm.showCheckbox">全选<input type="checkbox"
+                                                                                                         ng-click="vm.selectAll();"></span>
+                    </th>
+                    <th>姓名<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.name"></th>
+                    <th>性别<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.gender"></th>
+                    <th>职工号<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.employee_no"></th>
+                    <th>学院<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.college_name"></th>
+                    <th>博士后<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.postdoctor"></th>
+                    <th>学术荣誉<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.academic_name">
+                    </th>
+                    <th>出生日期<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.birthday"></th>
+                    <th>邮箱<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.email"></th>
+                    <th>电话<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.phone"></th>
+                    <th>一级学科<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.first_class">
+                    </th>
+                    <th>二级学科<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.second_class">
+                    </th>
+                    <th>诚信<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.credit"></th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-if="vm.paginationConf.totalItems" ng-repeat="item in vm.personList | filter:filter">
+                    <td ng-bind="item.id"></td>
+                    <td><a href="__URL__/detail/?id={{item.id}}" ng-bind="item.name"></a></td>
+                    <td ng-bind="item.gender"></td>
+                    <td ng-bind="item.employee_no"></td>
+                    <td ng-bind="item.college_name"></td>
+                    <td ng-bind="item.postdoctor==1?'是':'否'"></td>
+                    <td ng-bind="item.academic_name"></td>
+                    <td ng-bind="item.birthday"></td>
+                    <td ng-bind="item.email"></td>
+                    <td ng-bind="item.phone"></td>
+                    <td ng-bind="item.first_class"></td>
+                    <td ng-bind="item.second_class"></td>
+                    <td ng-bind="item.credit"></td>
+                    <td><a href="__URL__/delete?id={{item.id}}">删除</a></td>
+                    <!-- <td width="6%"><span class="glyphicon glyphicon-edit" onclick="modify(this);"></span><span class="glyphicon glyphicon-trash pull-right" onclick="del(this);"></span></td> -->
+                </tr>
+                <tr ng-if="!vm.paginationConf.totalItems">
+                    <td colspan="12"><h2 class="text-center text-danger">无数据</h2></td>
+                </tr>
+                </tbody>
+            </table>
+            <form method="post" action="{:U('People/import')}" enctype="multipart/form-data">
+                <h3>导入Excel表：</h3><input type="file" name="file_import"/>
+                <input type="submit" value="导入"/>
+            </form>
+            <tm-pagination conf="vm.paginationConf"></tm-pagination>
+        </div>
+    </div>
 </block>
 <block name="js">
-<script type="text/javascript" src="__PUBLIC__/js/person.controller.js"></script>
-<script type="text/javascript" src="__CDN__/angular-ui-bootstrap/0.14.3/ui-bootstrap.min.js"></script>
-<script type="text/javascript">
-  var collegeList = '', collegeName = '';
-  // getCollege();
-  // function getCollege(){
-  //   $.post('{:U("People/getCollege")}', {}, function(data){
-  //     collegeList = data;
-  //   });
-  // }
-	selectMenu('people', 0, 0);
-  function modify(f){
-    var $td = $(f).parent().siblings(':gt(0):lt(11)');
-    $($td).each(function(){
-        if(!$(this).is('textarea')){
-            // if ($(this).index() == 2)
-            //     $(this).html('<textarea type="text" class="form-control">'+ $(this).text() +'</textarea>');     
-            // else
-            if ($(this).index() != 4)
-              $(this).html('<textarea type="text" class="form-control">'+ $(this).text() +'</textarea>');      
-            else {
-              collegeName = $(this).text();
-              var str = ['<select id="college" class="form-control">'];
-              $.each(collegeList, function(index, item){
-                str.push('<option value="'+ item.id + '">' + item.name + '</option>');
-              });
-              str.join('');
-              $(this).html(str + '</select>');
-            }         
+    <script type="text/javascript" src="__PUBLIC__/js/person.controller.js"></script>
+    <script type="text/javascript" src="__CDN__/angular-ui-bootstrap/0.14.3/ui-bootstrap.min.js"></script>
+    <script type="text/javascript">
+        var collegeList = '', collegeName = '';
+        // getCollege();
+        // function getCollege(){
+        //   $.post('{:U("People/getCollege")}', {}, function(data){
+        //     collegeList = data;
+        //   });
+        // }
+        selectMenu('people', 0, 0);
+        function modify(f) {
+            var $td = $(f).parent().siblings(':gt(0):lt(11)');
+            $($td).each(function () {
+                if (!$(this).is('textarea')) {
+                    // if ($(this).index() == 2)
+                    //     $(this).html('<textarea type="text" class="form-control">'+ $(this).text() +'</textarea>');
+                    // else
+                    if ($(this).index() != 4)
+                        $(this).html('<textarea type="text" class="form-control">' + $(this).text() + '</textarea>');
+                    else {
+                        collegeName = $(this).text();
+                        var str = ['<select id="college" class="form-control">'];
+                        $.each(collegeList, function (index, item) {
+                            str.push('<option value="' + item.id + '">' + item.name + '</option>');
+                        });
+                        str.join('');
+                        $(this).html(str + '</select>');
+                    }
+                }
+            });
+            $(f).next().remove();
+            $(f).replaceWith('<span class="glyphicon glyphicon-ok" onclick="update(this);"></span><span class="glyphicon glyphicon-repeat pull-right" onclick="cancel(this);"></span>');
         }
-    });
-    $(f).next().remove();
-    $(f).replaceWith('<span class="glyphicon glyphicon-ok" onclick="update(this);"></span><span class="glyphicon glyphicon-repeat pull-right" onclick="cancel(this);"></span>');  
-  }
 
-  function update(f){
-    var $self = $(f);
-    var $td = $self.parent();
-    var option = {};
-    var list = 'name,gender,employee_no,col_id,postdoctor,academichonor, birthday,email,phone,first_class,second_class'.split(',');
-    option['id'] = parseInt($td.siblings(':eq(0)').text());
-    $td.siblings(':gt(0):lt(12)').each(function(index,element){
-      option[list[index]] = $(this).children().val();
-    });
-    //collegeName = $('#college').val();
-    $.post('{:U("People/update")}',option,function(data){
-      if (data == '1')
-      {
-        alert('修改成功');
-        window.location.reload();
-        //cancel(f.nextSibling);
-      }
-      else
-        alert('修改失败');
-    });
-  }
+        function update(f) {
+            var $self = $(f);
+            var $td = $self.parent();
+            var option = {};
+            var list = 'name,gender,employee_no,col_id,postdoctor,academichonor, birthday,email,phone,first_class,second_class'.split(',');
+            option['id'] = parseInt($td.siblings(':eq(0)').text());
+            $td.siblings(':gt(0):lt(12)').each(function (index, element) {
+                option[list[index]] = $(this).children().val();
+            });
+            //collegeName = $('#college').val();
+            $.post('{:U("People/update")}', option, function (data) {
+                if (data == '1') {
+                    alert('修改成功');
+                    window.location.reload();
+                    //cancel(f.nextSibling);
+                }
+                else
+                    alert('修改失败');
+            });
+        }
 
-  function cancel(f){
-    $self = $(f);
-    $self.parent().siblings(':gt(0):lt(12)').each(function(){
-      if ($(this).index() != 4)
-        $(this).html($(this).children('textarea').val());
-      else
-        $(this).html(collegeName);
-    });
-    $self.prev().replaceWith('<span class="glyphicon glyphicon-edit" onclick="modify(this);"></span><span class="glyphicon glyphicon-trash pull-right" onclick="del(this);"></span>');
-    $self.remove();
-  }
-  function del(f){
-    var id = parseInt($(f).parent().siblings(':eq(0)').text());
-    if(confirm('确认删除？'))
-    {
-      $.post('{:U("People/delete/")}',{id:id},function(data){
-        if (data == '1'){
-            alert('删除成功');
-            $(f).closest('tr').hide('slow');
-        }else
-            alert('删除失败，含有外键关联');
-      });
-    }
-  }
-</script>
+        function cancel(f) {
+            $self = $(f);
+            $self.parent().siblings(':gt(0):lt(12)').each(function () {
+                if ($(this).index() != 4)
+                    $(this).html($(this).children('textarea').val());
+                else
+                    $(this).html(collegeName);
+            });
+            $self.prev().replaceWith('<span class="glyphicon glyphicon-edit" onclick="modify(this);"></span><span class="glyphicon glyphicon-trash pull-right" onclick="del(this);"></span>');
+            $self.remove();
+        }
+        function del(f) {
+            var id = parseInt($(f).parent().siblings(':eq(0)').text());
+            if (confirm('确认删除？')) {
+                $.post('{:U("People/delete/")}', {id: id}, function (data) {
+                    if (data == '1') {
+                        alert('删除成功');
+                        $(f).closest('tr').hide('slow');
+                    } else
+                        alert('删除失败，含有外键关联');
+                });
+            }
+        }
+    </script>
 </block>
