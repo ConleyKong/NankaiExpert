@@ -1,4 +1,4 @@
-<extend name="EXPERT/Templates/nav.html"/>
+<extend name="EXPERT/Templates/nav.html" xmlns="http://www.w3.org/1999/html"/>
 <block name="content">
     <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog" role="document">
@@ -189,25 +189,34 @@
                         <div class="col-md-4 pull-left">
                             <h3 class="panel-title table-title">人员列表</h3>
                         </div>
-                        <div class="col-md-8 pull-right" ng-hide="vm.showCheckbox">
+                        <div class="col-md-8 pull-right" ng-hide="vm.showCheckbox||vm.showImportbox">
                             <button type="button" class="btn btn-info pull-right" data-toggle="modal"
                                     data-target="#modal">新增&nbsp;&nbsp;<span class="glyphicon glyphicon-plus"></span>
                             </button>
-                            <button type="button" class="btn btn-info pull-right right-10"
-                                    ng-click="vm.showCheckbox=true">导出Excel&nbsp;&nbsp;<span
-                                    class="glyphicon glyphicon-export"></span></button>
+                            <button type="button" class="btn btn-info pull-right right-10" ng-click="vm.showImportbox=true">
+                                导入Excel&nbsp;&nbsp;
+                                <span class="glyphicon glyphicon-import"></span>
+                            </button>
+                            <button type="button" class="btn btn-info pull-right right-10" ng-click="vm.showCheckbox=true">
+                                导出Excel&nbsp;&nbsp;
+                                <span class="glyphicon glyphicon-export"></span>
+                            </button>
                             <!--<div class="input-group col-md-4 pull-right right-10">-->
                                 <!--<input type="text" class="form-control" ng-model="filter" placeholder="输入名字">-->
                                 <!--<a class="btn input-group-addon">搜索</a>-->
                             <!--</div>-->
-                            <div class="input-group col-md-4 pull-right right-10">
-                                <input type="text" class="form-control" ng-model="vm.name" ng-blur="vm.submit()" ng-keyup="searchKeyupEvent($event)" placeholder="专家姓名">
+                            <div class="input-group col-md-3 pull-right right-10 has-feedback">
                                 <a class="btn input-group-addon" ng-click="vm.search()">搜索</a>
+                                <input type="text" class="form-control " ng-model="vm.name" ng-blur="vm.submit()" ng-keyup="searchKeyupEvent($event)" placeholder=" 专家姓名">
+                                <span class="glyphicon glyphicon-remove form-control-feedback"></span>
+                                <span style="width:30px;height:30px;position:absolute;right:2px;z-index:100;cursor: pointer;"  ng-click="vm.resetName()"></span>
+                                <!--覆盖在小图标上面的元素-->
+                                <!--<a class="btn input-group-addon" ng-click="vm.search()">搜索</a>-->
                             </div>
                         </div>
                         <div class="col-md-8" ng-show="vm.showCheckbox">
                             <button type="button" class="btn btn-default pull-right" ng-click="vm.showCheckbox=false">
-                                取消导出</span></button>
+                                取消导出</button>
                             <button type="button" class="btn btn-primary pull-right right-10"
                                     ng-click="vm.exportExcel('all')">导出所有<span
                                     class="glyphicon glyphicon-export"></span></button>
@@ -215,6 +224,19 @@
                                     ng-click="vm.exportExcel('current')">导出当前页<span
                                     class="glyphicon glyphicon-export"></span></button>
                             <h3 class="table-title warning-text pull-left">请选择要导出的字段</h3>
+                        </div>
+                        <div class="col-md-12" ng-show="vm.showImportbox">
+                            <form method="post" action="{:U('People/import')}" enctype="multipart/form-data">
+                                <div class="col-sm-7"><label class="pull-right right-10">浏览要导入的Excel文件：</label></div>
+                                <div class=" col-sm-2 well"><input type="file" class="pull-right bottom-10" name="file_import"/></div>
+                                <div class="col-sm-2" class="pull-right right-10">
+                                    <button class="btn btn-default pull-right right-10" type="button"
+                                            ng-click="vm.showImportbox=false">取消导入
+                                    </button>
+                                    <input type="submit" class="btn btn-primary pull-right right-10" value="导入所选文件"/>
+
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -266,10 +288,7 @@
                 </tr>
                 </tbody>
             </table>
-            <form method="post" action="{:U('People/import')}" enctype="multipart/form-data">
-                <h3>导入Excel表：</h3><input type="file" name="file_import"/>
-                <input type="submit" value="导入"/>
-            </form>
+
             <tm-pagination conf="vm.paginationConf"></tm-pagination>
         </div>
     </div>

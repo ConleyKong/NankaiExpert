@@ -32,6 +32,11 @@ th input[type="checkbox"]{
 .right-10{
 	margin-right: 10px;
 }
+
+.left-10{
+	margin-left: 20px;
+}
+
 .cond-label{
 	min-width: 35px;
 }
