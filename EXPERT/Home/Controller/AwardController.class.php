@@ -83,7 +83,7 @@ class AwardController extends Controller {
 	        $result = $award->field('id,name,level,time,comment,birthday,person_name,grade_name,academichonor_name,col_name')->where($query)->page($pageNum,$itemsNum)->order('award.id')->select();
             $totalNum = $award->where($query)->count();
             $result[0]['totalNum'] = $totalNum;
-            //审计日志
+            //操作记录日志
             $audit['name'] = session('username');
             $audit['ip'] = getIp();
             $audit['module'] = '获奖列表';
@@ -136,7 +136,7 @@ class AwardController extends Controller {
             $p['valid'] = false;
             $state = $award->where($condition)->save($p);
             $name = $p["name"];
-            //审计日志
+            //操作记录日志
             $audit['name'] = session('username');
             $audit['ip'] = getIp();
             $audit['module'] = '成果获奖';

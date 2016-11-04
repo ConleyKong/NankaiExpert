@@ -52,7 +52,11 @@
             <div class="col-md-4 pull-left">
               <h3 class="panel-title table-title">平台列表</h3>
             </div>
-            <div class="col-md-8 pull-right" ng-hide="vm.showCheckbox">
+            <div class="col-md-8 pull-right" ng-hide="vm.showCheckbox||vm.showImportbox">
+              <button type="button" class="btn btn-info pull-right right-10" ng-click="vm.showImportbox=true">
+                导入Excel&nbsp;&nbsp;
+                <span class="glyphicon glyphicon-import"></span>
+              </button>
               <button type="button" class="btn btn-info pull-right right-10" ng-click="vm.showCheckbox=true">导出Excel&nbsp;&nbsp;<span class="glyphicon glyphicon-export"></span></button>
               <div class="input-group col-md-4 pull-right right-10">
                 <input type="text" class="form-control" ng-model="filter" placeholder="输入关键字">
@@ -64,6 +68,22 @@
               <button type="button" class="btn btn-primary pull-right right-10" ng-click="vm.exportExcel('all')">导出所有<span class="glyphicon glyphicon-export"></span></button>
               <button type="button" class="btn btn-success pull-right right-10" ng-click="vm.exportExcel('current')">导出当前页<span class="glyphicon glyphicon-export"></span></button>
               <h3 class="table-title warning-text pull-left">请选择要导出的字段</h3>
+            </div>
+            <div class="col-md-8" ng-show="vm.showImportbox">
+              <form method="post" action="{:U('Lab/import')}" enctype="multipart/form-data">
+                <!--<div class="col-sm-6">-->
+                <!--<label class="pull-right right-10">浏览要导入的Excel文件：</label>-->
+                <!--</div>-->
+                <div class="col-sm-8">
+                  <input type="file" class="pull-right bottom-10" name="file_import"/>
+                </div>
+                <div class="col-sm-4" class="pull-right right-10">
+                  <button class="btn btn-default pull-right right-10" type="button"
+                          ng-click="vm.showImportbox=false">取消导入
+                  </button>
+                  <input type="submit" class="btn btn-primary pull-right right-10" value="导入所选文件"/>
+                </div>
+              </form>
             </div>
           </div>
         </div>
@@ -98,10 +118,10 @@
             <tr ng-if="!vm.paginationConf.totalItems"><td colspan="12"><h2 class="text-center text-danger">无数据</h2></td></tr>
           </tbody>
       </table>
-      <form method="post" action="{:U('Lab/import')}" enctype="multipart/form-data">
-        <h3>导入Excel表：</h3><input  type="file" name="file_import" />
-        <input type="submit"  value="导入" />
-      </form>
+      <!--<form method="post" action="{:U('Lab/import')}" enctype="multipart/form-data">-->
+        <!--<h3>导入Excel表：</h3><input  type="file" name="file_import" />-->
+        <!--<input type="submit"  value="导入" />-->
+      <!--</form>-->
       <tm-pagination conf="vm.paginationConf"></tm-pagination>
     </div>
   </div>

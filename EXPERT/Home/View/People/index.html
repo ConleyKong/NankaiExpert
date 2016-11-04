@@ -225,17 +225,22 @@
                                     class="glyphicon glyphicon-export"></span></button>
                             <h3 class="table-title warning-text pull-left">请选择要导出的字段</h3>
                         </div>
-                        <div class="col-md-12" ng-show="vm.showImportbox">
+                        <div class="col-md-8" ng-show="vm.showImportbox">
                             <form method="post" action="{:U('People/import')}" enctype="multipart/form-data">
-                                <div class="col-sm-7"><label class="pull-right right-10">浏览要导入的Excel文件：</label></div>
-                                <div class=" col-sm-2 well"><input type="file" class="pull-right bottom-10" name="file_import"/></div>
-                                <div class="col-sm-2" class="pull-right right-10">
+                                <!--<div class="col-sm-6">-->
+                                    <!--<label class="pull-right right-10">浏览要导入的Excel文件：</label>-->
+                                <!--</div>-->
+                                <div class="col-sm-8">
+                                    <input type="file" class="pull-right bottom-10" name="file_import"/>
+                                </div>
+
+                                <div class="col-sm-4" class="pull-right right-10">
                                     <button class="btn btn-default pull-right right-10" type="button"
                                             ng-click="vm.showImportbox=false">取消导入
                                     </button>
                                     <input type="submit" class="btn btn-primary pull-right right-10" value="导入所选文件"/>
-
                                 </div>
+
                             </form>
                         </div>
                     </div>

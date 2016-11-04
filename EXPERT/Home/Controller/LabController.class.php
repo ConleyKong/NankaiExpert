@@ -63,7 +63,7 @@ class LabController extends Controller {
             $totalNum = $Lab->where($query)->count();
 
             $result[0]['totalNum'] = $totalNum;
-            //审计日志
+            //操作记录日志
             $audit['name'] = session('username');
             $audit['ip'] = getIp();
             $audit['module'] = '科研平台列表';
@@ -89,7 +89,7 @@ class LabController extends Controller {
             $p['valid']=false;
             $state = $lab->where($condition)->save($p);
             $name = $p["name"];
-            //审计日志
+            //操作记录日志
             $audit['name'] = session('username');
             $audit['ip'] = getIp();
             $audit['module'] = '科研平台';
@@ -177,7 +177,7 @@ class LabController extends Controller {
             exportExcel($filename,$field, $result, $excelTitle);
 
 
-            //审计日志
+            //操作记录日志
             $audit['name'] = session('username');
             $audit['ip'] = getIp();
             $audit['module'] = '平台信息';

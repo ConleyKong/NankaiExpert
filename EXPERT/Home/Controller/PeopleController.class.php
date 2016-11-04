@@ -68,7 +68,7 @@ class PeopleController extends Controller {
             $totalNum = $person->where($query)->count();
             $result[0]['totalNum'] = $totalNum;
 
-            //审计日志
+            //操作记录日志
             $audit['name'] = session('username');
             $audit['ip'] = getIp();
             $audit['module'] = '人员列表';
@@ -145,7 +145,7 @@ class PeopleController extends Controller {
             $p['valid']=false;
             $state = $people->where($condition)->save($p);
             $name = $p["name"];
-            //审计日志
+            //操作记录日志
             $audit['name'] = session('username');
             $audit['ip'] = getIp();
             $audit['module'] = '人员列表';
@@ -318,7 +318,7 @@ class PeopleController extends Controller {
             }
             $filename = '人员信息';
             exportExcel($filename, $field, $result, $excelTitle);
-            //审计日志
+            //操作记录日志
             $audit['name'] = session('username');
             $audit['ip'] = getIp();
             $audit['module'] = '人员列表';

@@ -26,10 +26,10 @@ class AuditController extends Controller {
 	        $result = $Audit->page($pageNum,$itemsNum)->order('Audit.id desc')->select();
             $totalNum = $Audit->count();
             $result[0]['totalNum'] = $totalNum;
-			//审计日志
+			//操作记录日志
 			$audit['name'] = session('username');
 			$audit['ip'] = getIp();
-			$audit['module'] = '审计日志列表';
+			$audit['module'] = '操作记录日志列表';
 			$audit['time'] = date('y-m-d h:i:s',time());
 			$audit['result'] = '成功';
 			$audit['descr'] = '查询所有字段';

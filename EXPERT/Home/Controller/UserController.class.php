@@ -47,7 +47,7 @@ class UserController extends Controller {
             $result[0]['totalNum'] = $totalNum;
 
 
-            //审计日志
+            //操作记录日志
             $audit['name'] = session('username');
             $audit['ip'] = getIp();
             $audit['module'] = '用户列表';
@@ -127,7 +127,7 @@ class UserController extends Controller {
             $u['valid']=0;
             $state = $user->where($condition)->save($u);
             $name = $u["name"];
-            //审计日志
+            //操作记录日志
             $audit['name'] = session('username');
             $audit['ip'] = getIp();
             $audit['module'] = '人员列表';
@@ -162,7 +162,7 @@ class UserController extends Controller {
 
             $state = $user->where($condition)->save($u);
             $name = $u["name"];
-            //审计日志
+            //操作记录日志
             $audit['name'] = session('username');
             $audit['ip'] = getIp();
             $audit['module'] = '人员列表';

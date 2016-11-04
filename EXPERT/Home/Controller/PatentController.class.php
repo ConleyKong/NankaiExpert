@@ -64,7 +64,7 @@ class PatentController extends Controller {
 	        $result = $Patent->where($query)->page($pageNum,$itemsNum)->order('Patent.id')->select();
             $totalNum = $Patent->where($query)->count();
             $result[0]['totalNum'] = $totalNum;
-            //审计日志
+            //操作记录日志
             $audit['name'] = session('username');
             $audit['ip'] = getIp();
             $audit['module'] = '专利列表';
@@ -90,7 +90,7 @@ class PatentController extends Controller {
             $p['valid']=false;
             $state = $patent->where($condition)->save($p);
             $name = $p["name"];
-            //审计日志
+            //操作记录日志
             $audit['name'] = session('username');
             $audit['ip'] = getIp();
             $audit['module'] = '知识产权';

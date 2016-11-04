@@ -60,7 +60,7 @@ class PaperController extends Controller {
 	        $result = $paper->where($query)->page($pageNum,$itemsNum)->order('paper.id')->select();
             $totalNum = $paper->where($query)->count();
             $result[0]['totalNum'] = $totalNum;
-            //审计日志
+            //操作记录日志
             $audit['name'] = session('username');
             $audit['ip'] = getIp();
             $audit['module'] = '论文列表';
@@ -91,7 +91,7 @@ class PaperController extends Controller {
             $p['valid']=false;
             $state = $paper->where($condition)->save($p);
             $name = $p["name"];
-            //审计日志
+            //操作记录日志
             $audit['name'] = session('username');
             $audit['ip'] = getIp();
             $audit['module'] = '成果列表';
@@ -190,7 +190,7 @@ class PaperController extends Controller {
             }
             $filename = '论文信息';
             exportExcel($filename, $field, $result, $excelTitle);
-            //审计日志
+            //操作记录日志
             $audit['name'] = session('username');
             $audit['ip'] = getIp();
             $audit['module'] = '论文信息';
@@ -373,9 +373,9 @@ class PaperController extends Controller {
                 M('audit')->add($audit);
 
                 if($error_counter==0){
-                    $this->success("恭喜您，科研成果数据导入操作成功！（详情见审计模块）",'',4);
+                    $this->success("恭喜您，科研成果数据导入操作成功！（详情见操作记录模块）",'',4);
                 }else{
-                    $this->error("存在导入失败的记录，请查看审计模块的日志进行修正！",'',4);
+                    $this->error("存在导入失败的记录，请查看操作记录模块的日志进行修正！",'',4);
                 }
 
             }

@@ -29,7 +29,7 @@ class EventController extends Controller {
             session('yan',M('event')->getLastSql());
             $totalNum = $Event->count();
             $result[0]['totalNum'] = $totalNum;
-            //审计日志
+            //操作记录日志
             $audit['name'] = session('username');
             $audit['ip'] = getIp();
             $audit['module'] = ' 科技事件列表';

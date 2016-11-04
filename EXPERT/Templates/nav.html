@@ -26,18 +26,18 @@
 					<ul>
 						<!-- <li style="margin-right:50px;font-size:22px;line-height:2.5;color:#000">南开大学专家信息管理系统</li> -->
 						<li><img src="__PUBLIC__/image/logo.gif" style="vertical-align:inherit!important" width="350" height="60"></li>
-						<li class="nav-up-selected-inpage" _t_nav="home">
+						<li class="nav-up-selected-inpage nav-item-1" _t_nav="home">
 							<h2>
 								<a href="/Homepage/index">首页</a>
 							</h2>
 						</li>
-						<li class="" _t_nav="people">
+						<li class=" nav-item-2" _t_nav="people">
 							<h2>
 								<!--<a href="javascript:void(0);">科研队伍</a>-->
 								<a href="/People/index">科研队伍</a>
 							</h2>
 						</li>
-						<li class="" _t_nav="project">
+						<li class=" nav-item-2" _t_nav="project">
 							<h2>
 								<a href="/Project/index">科研项目</a>
 							</h2>
@@ -47,52 +47,42 @@
 								<a href="javascript:void(0);">科研经费</a>
 							</h2>
 						</li> -->
-						<li class="" _t_nav="paper">
+						<li class=" nav-item-2" _t_nav="paper">
 							<h2>
 								<a href="/Paper/index">科研成果</a>
 							</h2>
 						</li>
-						<li _t_nav="patent">
+						<li class=" nav-item-2" _t_nav="patent">
 							<h2>
 								<a href="/Patent/index">知识产权</a>
 							</h2>
 						</li>
-						<li _t_nav="award">
+						<li class=" nav-item-2" _t_nav="award">
 							<h2>
 								<a href="/Award/index">成果获奖</a>
 							</h2>
 						</li>
-						<li _t_nav="lab">
+						<li class=" nav-item-2" _t_nav="lab">
 							<h2>
 								<a href="/Lab/index">科研平台</a>
 							</h2>
 						</li>
-						<li _t_nav="event">
+						<li class=" nav-item-2" _t_nav="event">
 							<h2>
 								<a href="/Event/index">科技事件</a>
 							</h2>
 						</li>
-						<li _t_nav="audit">
+						<li class=" nav-item-2" _t_nav="audit">
 							<h2>
-								<a href="/Audit/index">审计日志</a>
+								<a href="/Audit/index">操作日志</a>
 							</h2>
 						</li>
-						<li class="pull-right" _t_nav="logout">
+						<li class=" nav-item-2" _t_nav="account">
 							<h2>
-								<a href="/Index/logout">退出</a>
+								<a href="">账户管理</a>
 							</h2>
 						</li>
-						<li class="pull-right" _t_nav="user">
-							<h2>
-								<?php $link='#';
-								 if($_SESSION['role_num']==2){
-								 	$link=U('User/index');
-								 }
-								?>
-								<a href="{$link}" style="padding:0 10px">欢迎：<?php echo $_SESSION['username'];?></a>
-								<?php echo $_SESSION['abstract'];?>
-							</h2>
-						</li>
+
 					</ul>
 				</div>
 			</div>
@@ -423,7 +413,7 @@
 			</div>
 			<div id="lab" class="nav-down-menu menu-1" style="display: none;" _t_nav="lab">
 				<div class="navigation-down-inner">
-					<dl style="margin-left: 950px;">
+					<dl style="margin-left: 650px;">
 						<dt>科研平台</dt>
 						<dd>
 							<a href="/Lab/index">科研平台列表</a>
@@ -432,6 +422,25 @@
 							<a href="/Lab/import">平台批量导入</a>
 						</dd>
 
+					</dl>
+				</div>
+			</div>
+			<div id="account" class="nav-down-menu menu-1" style="display: none;" _t_nav="account">
+				<div class="navigation-down-inner">
+					<dl style="margin-left: 650px;">
+						<dt>账户管理</dt>
+						<dd>
+							<?php $link='#';
+								 if($_SESSION['role_num']==2){
+								 	$link=U('User/index');
+								 }
+								?>
+							<a href="{$link}" style="padding:0 10px">欢迎：<?php echo $_SESSION['username'];?></a>
+							<?php echo $_SESSION['abstract'];?>
+						</dd>
+						<dd>
+							<a href="/Index/logout">退出当前账号</a>
+						</dd>
 					</dl>
 				</div>
 			</div>

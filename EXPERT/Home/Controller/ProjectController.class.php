@@ -80,7 +80,7 @@ class ProjectController extends Controller {
 //            $totalNum = $Project->where($query)->count();
 //            $result[0]['totalNum'] = $totalNum;
 //            $result[0]['totalFund2']= $Project->where($query)->sum('fund');
-            //审计日志
+            //操作记录日志
             $audit['name'] = session('username');
             $audit['ip'] = getIp();
             $audit['module'] = '项目列表';
@@ -162,7 +162,7 @@ class ProjectController extends Controller {
             $p['valid']=false;
             $state = $project->where($condition)->save($p);
             $name = $p["name"];
-            //审计日志
+            //操作记录日志
             $audit['name'] = session('username');
             $audit['ip'] = getIp();
             $audit['module'] = '项目列表';
@@ -268,7 +268,7 @@ class ProjectController extends Controller {
             }
             $filename = '项目信息';
             exportExcel($filename, $field, $result, $excelTitle);
-            //审计日志
+            //操作记录日志
             $audit['name'] = session('username');
             $audit['ip'] = getIp();
             $audit['module'] = '项目列表';
