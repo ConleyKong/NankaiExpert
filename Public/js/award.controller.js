@@ -152,32 +152,78 @@
 	 		//console.log('vm.collegeSelectedList', vm.collegeSelectedList)
 	 	}
 
-	 	//条件查询
+		////////////////////////////////////////////////////////////////////////
+		//条件查询															  //
+		////////////////////////////////////////////////////////////////////////
 	 	vm.params.level = '';
 	 	vm.level = [false, false, false];
 	 	vm.params.grade_id = '';
 	 	vm.params.academichonor_id = '';
 	 	// vm.params.startTime = [];
 	 	// vm.params.endTime = [];
-		vm.params.startTime = '';
-		vm.params.endTime = '';
-	 	vm.params.person_startTime = '';
-	 	vm.params.person_endTime = '';
+		// vm.params.startTime = '';
+		// vm.params.endTime = '';
+	 	// vm.params.person_startTime = '';
+	 	// vm.params.person_endTime = '';
 	 	vm.params.college_id = '';
-	 	vm.submit = function(){
-	 		vm.params.name = vm.name;
-	 		vm.params.person_name = vm.person_name;
-			vm.params.startTime = vm.startTime;
-			vm.params.endTime = vm.endTime;
-	 	}
-	 	vm.cancel = function(){
-	 		vm.params.name = '';
-	 		vm.name = '';
-	 		vm.params.person_name = '';
-	 		vm.person_name = '';
-			vm.startTime='';
-			vm.endTime='';
-	 	}
+		vm.params.start_time = '';
+		vm.params.end_time = '';
+		vm.params.keyword='';
+
+		vm.setStart = function () {
+			vm.params.start_time = vm.start_time;
+		}
+
+		vm.setEnd = function () {
+			vm.params.end_time = vm.end_time;
+		}
+
+		vm.search = function () {
+			console.log("关键词"+vm.keyword)
+			vm.params.keyword = vm.keyword;
+		}
+		$scope.searchKeyupEvent = function(e){
+			var keycode = window.event?e.keyCode:e.which;
+			if(keycode==13){
+				vm.search();
+				// console.log("按下的按键："+keycode);
+			}
+		};
+
+
+		$scope.setStartKeyupEvent = function(e){
+			var keycode = window.event?e.keyCode:e.which;
+			if(keycode==13){
+				vm.setStart();
+				// console.log("按下的按键："+keycode);
+			}
+		};
+		$scope.setEndKeyupEvent = function(e){
+			var keycode = window.event?e.keyCode:e.which;
+			if(keycode==13){
+				vm.setEnd();
+				// console.log("按下的按键："+keycode);
+			}
+		};
+
+		vm.resetKeyword=function () {
+			vm.keyword="";
+			vm.params.keyword="";
+		}
+	 	// vm.submit = function(){
+	 	// 	vm.params.name = vm.name;
+	 	// 	vm.params.person_name = vm.person_name;
+			// vm.params.startTime = vm.startTime;
+			// vm.params.endTime = vm.endTime;
+	 	// }
+	 	// vm.cancel = function(){
+	 	// 	vm.params.name = '';
+	 	// 	vm.name = '';
+	 	// 	vm.params.person_name = '';
+	 	// 	vm.person_name = '';
+			// vm.startTime='';
+			// vm.endTime='';
+	 	// }
 
 	 	vm.resetCheckbox = function(param){
 	 		for (var i = 0; i < param.length;i++)

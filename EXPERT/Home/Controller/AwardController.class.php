@@ -23,13 +23,18 @@ class AwardController extends Controller {
 	    	$pageNum = $param['page'] ? $param['page'] : 1;  //当前页
             $itemsNum =  $param['items'] ? $param['items'] : 10; //每页个数
 
-            $startTime = $param['startTime'];
-            $endTime = $param['endTime'];
+            $startTime = $param['start_time'];
+            $endTime = $param['end_time'];
             $date = array();
-            if ($startTime)
+            if ($startTime){
                 $date = array('gt',$startTime);
-            if ($endTime)
+                unset($param['start_time']);
+
+            }
+            if ($endTime){
                 $date = array('lt',$endTime);
+                unset($param['end_time']);
+            }
             if($date)
                 $query['date']=$date;
 
@@ -66,15 +71,18 @@ class AwardController extends Controller {
                 $string .= $string ? ' AND ('.$param['college_id'].')' : '('.$param['college_id'].')';
                 unset($param['college_id']);
             }
-
+            if($param['keyword']){
+                $keyword = $param['keyword'];
+                $ts = " (award.name like '%$keyword%' OR person.name like '%$keyword%') ";
+                $string .= $string?' AND '.$ts:$ts;
+                unset($param['keyword']);
+            }
             if ($string)
                 $query['_string'] = $string;
 
 	        $award = D('AwardView');
             unset($param['page']);
             unset($param['items']);
-            unset($param['startTime']);
-            unset($param['endTime']);
             unset($param['person_startTime']);
             unset($param['person_endTime']);
             
@@ -182,8 +190,8 @@ class AwardController extends Controller {
             $itemsNum =  $items ? $items : 10; //每页个数
 
 
-            $startTime = I('get.startTime');
-            $endTime = I('get.endTime');
+            $startTime = I('get.start_time');
+            $endTime = I('get.end_time');
             $date = array();
             if ($startTime)
                 $date = array('gt',$startTime);
@@ -231,7 +239,11 @@ class AwardController extends Controller {
             if ($college_id){
                 $string .= $string ? ' AND ('.$college_id.')' : '('.$college_id.')';
             }
-
+            $keyword = I('get.keyword');
+            if($keyword){
+                $ts = " (award.name like '%$keyword%' OR person.name like '%$keyword%') ";
+                $string .= $string?' AND '.$ts:$ts;
+            }
             if ($string)
                 $query['_string'] = $string;
 

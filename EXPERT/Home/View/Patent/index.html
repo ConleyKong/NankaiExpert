@@ -1,63 +1,84 @@
 <extend name="EXPERT/Templates/nav.html"/>
 <block name="content">
   <div class="container" ng-app="patent" ng-controller="patentController as vm">
-    <div class="col-sm-12 row">
-      <show-more count="2">
-        <div class="col-sm-12">
-            <span class="cond-label"> 拥 有 单 位 ：</span>
-            <div class="btn-group">
-              <label style="margin-bottom:0;color:#eee">
-                <select class="box-width form-control" ng-model="vm.collegeSelected1" ng-options="item.id as item.name for item in vm.collegeList">
-                  <option value="">全部</option>
-                </select>
-              </label>
-              <label style="margin-bottom:0" ng-repeat="item in vm.collegeSelectedList1">
-                <button tyle="button" class="btn button-link" ng-bind="vm.collegeMap1[item]+'   X'" ng-click="vm.removeCollege1(item)"><b></b></button>&nbsp;
-              </label>
-            </div>
-        </div>
-        <div class="col-sm-12 bottom-10 top-10">
-            <span class="cond-label">发明人单位：</span>
-            <div class="btn-group">
-              <label style="margin-bottom:0;color:#eee">
-                <select class="select-width form-control" ng-model="vm.collegeSelected2" ng-options="item.id as item.name for item in vm.collegeList">
-                  <option value="">全部</option>
-                </select>
-              </label>
-              <label style="margin-bottom:0" ng-repeat="item in vm.collegeSelectedList2">
-                <button tyle="button" class="btn button-link" ng-bind="vm.collegeMap2[item]+'   X'" ng-click="vm.removeCollege2(item)"><b></b></button>&nbsp;
-              </label>
-            </div>
-        </div>
-        <div class="col-sm-12 bottom-10">
-            <span class="cond-label">专利名称：</span>
-            <div class="btn-group">
-              <input type="text" class="form-control" ng-model="vm.name"/>
-            </div>
-        </div>
-        <div class="col-sm-12 bottom-10">
-            <span class="cond-label">拥有人：</span>
-            <div class="btn-group">
-              <input type="text" class="form-control" ng-model="vm.owner_name"/>
-            </div>
-        </div>
-        <div class="col-sm-12 bottom-10">
-            <span class="cond-label">发明人：</span>
-            <div class="btn-group">
-              <input type="text" class="form-control" ng-model="vm.firstinventor_name"/>
-            </div>
-        </div>
-        <div class="col-sm-12">
-          <span class="cond-label"></span>
-            <button class="btn btn-info" ng-click="vm.submit()">确定</button>
-            <button class="btn btn-default" ng-click="vm.cancel()">取消</button>
-        </div>
-        <div class="col-sm-12" id="more">
-            <span class="glyphicon glyphicon-triangle-bottom">
-            </span>
-        </div>
-      </show-more>
-  </div>
+      <div class="panel panel-default">
+          <div class="panel-heading">
+              <span>筛选条件：</span>
+          </div>
+          <div class="panel-body">
+              <div class="col-sm-12 bottom-10 top-10">
+                  <!--<show-more count="2">-->
+                      <!--<div class="col-sm-5">-->
+                          <!--<span class="cond-label"> 拥 有 单 位 ：</span>-->
+                          <!--<div class="btn-group">-->
+                              <!--<label style="margin-bottom:0;color:#eee">-->
+                                  <!--<select class="box-width form-control" ng-model="vm.collegeSelected1"-->
+                                          <!--ng-options="item.id as item.name for item in vm.collegeList">-->
+                                      <!--<option value="">全部</option>-->
+                                  <!--</select>-->
+                              <!--</label>-->
+
+                          <!--</div>-->
+                      <!--</div>-->
+                      <div class="col-sm-5 ">
+                          <span class="cond-label">发明人单位：</span>
+                          <div class="btn-group">
+                              <label style="margin-bottom:0;color:#eee">
+                                  <select class="select-width form-control" ng-model="vm.collegeSelected2"
+                                          ng-options="item.id as item.name for item in vm.collegeList">
+                                      <option value="">全部</option>
+                                  </select>
+                              </label>
+
+                          </div>
+                      </div>
+                  <!--<div class="col-sm-12 top-10" ng-if="vm.collegeSelectedList1.length > 0">-->
+                      <!--<span class="col-sm-1">所选拥有单位：</span>-->
+                      <!--<label style="margin-bottom:0" ng-repeat="item in vm.collegeSelectedList1">-->
+                          <!--<button tyle="button" class="btn button-link" ng-bind="vm.collegeMap1[item]+'   X'"-->
+                                  <!--ng-click="vm.removeCollege1(item)"><b></b></button>-->
+                          <!--&nbsp;-->
+                      <!--</label>-->
+                  <!--</div>-->
+                  <div class="col-sm-12 top-10"
+                       ng-if="vm.collegeSelectedList2.length > 0">
+                      <span class="col-sm-1">所选发明单位：</span>
+                      <label style="margin-bottom:0" ng-repeat="item in vm.collegeSelectedList2">
+                          <button tyle="button" class="btn button-link" ng-bind="vm.collegeMap2[item]+'   X'"
+                                  ng-click="vm.removeCollege2(item)"><b></b></button>
+                          &nbsp;
+                      </label>
+                  </div>
+                      <!--<div class="col-sm-12 bottom-10">-->
+                          <!--<span class="cond-label">专利名称：</span>-->
+                          <!--<div class="btn-group">-->
+                              <!--<input type="text" class="form-control" ng-model="vm.name"/>-->
+                          <!--</div>-->
+                      <!--</div>-->
+                      <!--<div class="col-sm-12 bottom-10">-->
+                          <!--<span class="cond-label">拥有人：</span>-->
+                          <!--<div class="btn-group">-->
+                              <!--<input type="text" class="form-control" ng-model="vm.owner_name"/>-->
+                          <!--</div>-->
+                      <!--</div>-->
+                      <!--<div class="col-sm-12 bottom-10">-->
+                          <!--<span class="cond-label">发明人：</span>-->
+                          <!--<div class="btn-group">-->
+                              <!--<input type="text" class="form-control" ng-model="vm.firstinventor_name"/>-->
+                          <!--</div>-->
+                      <!--</div>-->
+                      <!--<div class="col-sm-12">-->
+                          <!--<span class="cond-label"></span>-->
+                          <!--<button class="btn btn-info" ng-click="vm.submit()">确定</button>-->
+                          <!--<button class="btn btn-default" ng-click="vm.cancel()">取消</button>-->
+                      <!--</div>-->
+                      <!--<div class="col-sm-12" id="more">-->
+            <!--<span class="glyphicon glyphicon-triangle-bottom">-->
+            <!--</span>-->
+                      <!--</div>-->
+                  <!--</show-more>-->
+              </div>
+          </div>
   	<div class="col-md-12">
       <div class="panel panel-default table-header">
         <div class="panel-heading table-heading">
@@ -71,9 +92,18 @@
                     <span class="glyphicon glyphicon-import"></span>
                 </button>
                 <button type="button" class="btn btn-info pull-right right-10" ng-click="vm.showCheckbox=true">导出Excel&nbsp;&nbsp;<span class="glyphicon glyphicon-export"></span></button>
-                <div class="input-group col-md-4 pull-right right-10">
-                  <input type="text" class="form-control" ng-model="filter" placeholder="输入关键字">
-                  <div class="input-group-addon">筛选</div>
+                <!--<div class="input-group col-md-4 pull-right right-10">-->
+                  <!--<input type="text" class="form-control" ng-model="filter" placeholder="输入关键字">-->
+                  <!--<div class="input-group-addon">筛选</div>-->
+                <!--</div>-->
+                <div class="input-group col-md-4 pull-right right-10 has-feedback">
+                    <a class="btn input-group-addon" ng-click="vm.search()">搜索</a>
+                    <input type="text" class="form-control " ng-model="vm.keyword" ng-blur="vm.search()" ng-keyup="searchKeyupEvent($event)"
+                           placeholder="发明人/专利名称">
+                    <span class="glyphicon glyphicon-remove form-control-feedback"></span>
+                    <span style="width:30px;height:30px;position:absolute;right:2px;z-index:100;cursor: pointer;"  ng-click="vm.resetKeyword()"></span>
+                    <!--覆盖在小图标上面的元素-->
+                    <!--<a class="btn input-group-addon" ng-click="vm.search()">搜索</a>-->
                 </div>
             </div>
             <div class="col-md-8" ng-show="vm.showCheckbox">

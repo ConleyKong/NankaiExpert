@@ -130,24 +130,39 @@
         }
 
 	 	//条件查询
-	 	vm.params.name = '';
- 		vm.params.owner_name = '';
- 		vm.params.firstinventor_name = '';
+	 	vm.params.keyword = '';
+ 		// vm.params.owner_name = '';
+ 		// vm.params.firstinventor_name = '';
 	 	vm.params.ownercollege_id = '';
         vm.params.inventorcollege_id = '';
-	 	vm.submit = function(){
-	 		vm.params.firstinventor_name = vm.firstinventor_name;
-	 		vm.params.owner_name = vm.owner_name;
-	 		vm.params.name = vm.name;
-	 	}
-	 	vm.cancel = function(){
-	 		vm.params.name = '';
-            vm.params.owner_name = '';
-            vm.params.firstinventor_name = '';
-	 		vm.name = '';
-            vm.owner_name = '';
-            vm.firstinventor_name = '';
-	 	}
+		vm.search = function () {
+			console.log("关键词"+vm.keyword)
+			vm.params.keyword = vm.keyword;
+		}
+		$scope.searchKeyupEvent = function(e){
+			var keycode = window.event?e.keyCode:e.which;
+			if(keycode==13){
+				vm.search();
+				// console.log("按下的按键："+keycode);
+			}
+		};
+		vm.resetKeyword=function () {
+			vm.keyword="";
+			vm.params.keyword="";
+		}
+	 	// vm.submit = function(){
+	 	// 	vm.params.firstinventor_name = vm.firstinventor_name;
+	 	// 	vm.params.owner_name = vm.owner_name;
+	 	// 	vm.params.name = vm.name;
+	 	// }
+	 	// vm.cancel = function(){
+	 	// 	vm.params.name = '';
+          //   vm.params.owner_name = '';
+          //   vm.params.firstinventor_name = '';
+	 	// 	vm.name = '';
+          //   vm.owner_name = '';
+          //   vm.firstinventor_name = '';
+	 	// }
 
 	 	vm.resetCheckbox = function(param){
 	 		for (var i = 0; i < param.length;i++)

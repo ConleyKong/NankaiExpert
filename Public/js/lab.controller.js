@@ -90,22 +90,66 @@
 
 		//条件查询
 		vm.params.manager_name = '';
-		vm.params.formed_start = '';
-		vm.params.formed_end = '';
+		// vm.params.formed_start = '';
+		// vm.params.formed_end = '';
 		vm.params.college_id = '';
-		vm.submit = function(){
-			vm.params.manager_name = vm.manager_name;
-			vm.params.formed_start = vm.formed_start;
-			vm.params.formed_end = vm.formed_end;
+		vm.params.start_time = '';
+		vm.params.end_time = '';
+		vm.params.keyword='';
+
+		vm.setStart = function () {
+			vm.params.start_time = vm.start_time;
 		}
-		vm.cancel = function(){
-			vm.params.manager_name = '';
-			vm.params.formed_start = '';
-			vm.params.formed_end = '';
-			vm.manager_name = '';
-			vm.formed_start = '';
-			vm.formed_end = '';
+
+		vm.setEnd = function () {
+			vm.params.end_time = vm.end_time;
 		}
+
+		vm.search = function () {
+			console.log("关键词"+vm.keyword)
+			vm.params.keyword = vm.keyword;
+		}
+		$scope.searchKeyupEvent = function(e){
+			var keycode = window.event?e.keyCode:e.which;
+			if(keycode==13){
+				vm.search();
+				// console.log("按下的按键："+keycode);
+			}
+		};
+
+
+		$scope.setStartKeyupEvent = function(e){
+			var keycode = window.event?e.keyCode:e.which;
+			if(keycode==13){
+				vm.setStart();
+				// console.log("按下的按键："+keycode);
+			}
+		};
+		$scope.setEndKeyupEvent = function(e){
+			var keycode = window.event?e.keyCode:e.which;
+			if(keycode==13){
+				vm.setEnd();
+				// console.log("按下的按键："+keycode);
+			}
+		};
+
+		vm.resetKeyword=function () {
+			vm.keyword="";
+			vm.params.keyword="";
+		}
+		// vm.submit = function(){
+		// 	vm.params.manager_name = vm.manager_name;
+		// 	vm.params.formed_start = vm.formed_start;
+		// 	vm.params.formed_end = vm.formed_end;
+		// }
+		// vm.cancel = function(){
+		// 	vm.params.manager_name = '';
+		// 	vm.params.formed_start = '';
+		// 	vm.params.formed_end = '';
+		// 	vm.manager_name = '';
+		// 	vm.formed_start = '';
+		// 	vm.formed_end = '';
+		// }
 
 		vm.resetCheckbox = function(param){
 			for (var i = 0; i < param.length;i++)
@@ -114,7 +158,7 @@
 
 		//导入导出
 		vm.showCheckbox = false;
-		vm.exportParams = {name:false,manager_name:false,location:false,formed_time:false,college_name:false,member:false};
+		vm.exportParams = {name:false,manager_name:false,contact_name:false,location:false,formed_time:false,college_name:false,member:false};
 
 		vm.exportExcel = exportExcel;
 		function exportExcel(type){

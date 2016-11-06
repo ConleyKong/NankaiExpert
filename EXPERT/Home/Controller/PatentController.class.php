@@ -54,6 +54,12 @@ class PatentController extends Controller {
                 $string .= $string ? ' AND ('.$param['inventorcollege_id'].')' : '('.$param['inventorcollege_id'].')';
                 unset($param['inventorcollege_id']);
             }
+            if($param['keyword']){
+                $keyword = $param['keyword'];
+                $ts = " (patent.name like '%$keyword%' OR inventor.name like '%$keyword%')";
+                $string .= $string?' AND '.$ts:$ts;
+                unset($param['keyword']);
+            }
             if ($string)
                 $query['_string'] = $string;
 
@@ -131,9 +137,6 @@ class PatentController extends Controller {
 
             $name = urldecode(I('get.name'));
             $owner_name = I('get.owner_name');
-            $firstinventor_name = I('get.firstinventor_name');
-            $ownercollege_id = I('get.ownercollege_id');
-            $inventorcollege_id = I('get.inventorcollege_id');
 
             $page = I('get.page');
             $items = I('get.items');
@@ -141,6 +144,7 @@ class PatentController extends Controller {
             $pageNum = $page? $page : 1;
             $itemsNum =  $items? $items : 10;
 
+            $firstinventor_name = I('get.firstinventor_name');
             if($firstinventor_name)
                 $query['firstinventor_name'] = array('like','%'.$firstinventor_name.'%');
             if($name)
@@ -149,11 +153,18 @@ class PatentController extends Controller {
                 $query['owner_name']=array('like','%'.$owner_name.'%');
 
             $string = '';
+            $ownercollege_id = I('get.ownercollege_id');
             if ($ownercollege_id){
                 $string .= $string ? ' AND ('.$ownercollege_id.')' : '('.$ownercollege_id.')';
             }
+            $inventorcollege_id = I('get.inventorcollege_id');
             if ($inventorcollege_id){
                 $string .= $string ? ' AND ('.$inventorcollege_id.')' : '('.$inventorcollege_id.')';
+            }
+            $keyword = I('get.keyword');
+            if($keyword){
+                $ts = " (patent.name like '%$keyword%' OR inventor.name like '%$keyword%')";
+                $string .= $string?' AND '.$ts:$ts;
             }
             if ($string)
                 $query['_string'] = $string;

@@ -1,48 +1,50 @@
 <extend name="EXPERT/Templates/nav.html"/>
 <block name="content">
   <div class="container" ng-app="lab" ng-controller="labController as vm">
-    <div class="col-sm-12 row">
-      <div class="col-sm-12">
-        <span class="cond-label">所属单位：</span>
-        <div class="btn-group">
-          <label style="margin-bottom:0;color:#eee">
-            <select class="box-width form-control" ng-model="vm.collegeSelected" ng-options="item.id as item.name for item in vm.collegeList">
-              <option value="">全部</option>
-            </select>
-          </label>
-          <label style="margin-bottom:0" ng-repeat="item in vm.collegeSelectedList">
-            <button tyle="button" class="btn button-link" ng-bind="vm.collegeMap[item]+'   X'" ng-click="vm.removeCollege(item)"><b></b></button>&nbsp;
-          </label>
-        </div>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <span>筛选条件：</span>
       </div>
-      <div class="col-sm-12 bottom-10 top-10">
-        <span class="cond-label">负 责 人 ：</span>
-        <div class="btn-group">
-          <input type="text" class="box-width form-control" ng-model="vm.manager_name"/>
+      <div class="panel-body">
+        <div class="col-sm-12 row">
+          <div class="col-sm-5">
+              <span class="cond-label">所属学院：</span>
+              <div class="btn-group">
+                <label style="margin-bottom:0;color:#eee">
+                  <select class="box-width form-control" ng-model="vm.collegeSelected"
+                          ng-options="item.id as item.name for item in vm.collegeList">
+                    <option value="">全部</option>
+                  </select>
+                </label>
+              </div>
+          </div>
+          <div class="col-sm-7">
+              <span class="cond-label">成立时间：</span>
+              <div class="btn-group">
+                <form class="form-inline">
+                  <div class="form-group">
+                    <input type="text" class="form-control" ng-model="vm.start_time" ng-blur=" vm.setStart()" ng-keyup="setStartKeyupEvent($event)"
+                           placeholder="时间格式：1919-10-17"/>
+                    至
+                  </div>
+                  <div class="form-group">
+                    <input type="text" class="form-control" ng-model="vm.end_time" ng-blur="vm.setEnd()" ng-keyup="setEndKeyupEvent($event)"
+                           placeholder="时间格式：2019-10-17"/>
+                  </div>
+                </form>
+              </div>
+          </div>
         </div>
-      </div>
-      <div class="col-sm-12 bottom-10">
-        <span class="cond-label">成立时间：</span>
-        <div class="btn-group">
-          <form class="form-inline">
-            <div class="form-group">
-              <input type="text" class="form-control" ng-model="vm.formed_start" placeholder="时间格式：2000-10-10"/>
-              至
+            <div class="col-sm-12 top-10" ng-if="vm.collegeSelectedList.length > 0">
+              <span class="cond-label">所选单位：</span>
+              <label style="margin-bottom:0" ng-repeat="item in vm.collegeSelectedList">
+                <button tyle="button" class="btn button-link" ng-bind="vm.collegeMap[item]+'   X'"
+                        ng-click="vm.removeCollege(item)"><b></b></button>
+                &nbsp;
+              </label>
             </div>
-            <div class="form-group">
-              <input type="text" class="form-control" ng-model="vm.formed_end" placeholder="时间格式：2015-10-10"/>
-            </div>
-          </form>
-        </div>
-      </div>
-      <div class="col-sm-12">
-        <span class="cond-label"></span>
-        <button class="btn btn-info" ng-click="vm.submit()">确定</button>
-        <button class="btn btn-default" ng-click="vm.cancel()">取消</button>
-      </div>
-      <div class="col-sm-12" id="more">
-          <span class="glyphicon">
-          </span>
+
+
       </div>
     </div>
   	<div class="col-md-12">
@@ -58,9 +60,16 @@
                 <span class="glyphicon glyphicon-import"></span>
               </button>
               <button type="button" class="btn btn-info pull-right right-10" ng-click="vm.showCheckbox=true">导出Excel&nbsp;&nbsp;<span class="glyphicon glyphicon-export"></span></button>
-              <div class="input-group col-md-4 pull-right right-10">
-                <input type="text" class="form-control" ng-model="filter" placeholder="输入关键字">
-                <div class="input-group-addon">筛选</div>
+              <div class="input-group col-md-4 pull-right right-10 has-feedback">
+                <a class="btn input-group-addon" ng-click="vm.search()">搜索</a>
+                <input type="text" class="form-control " ng-model="vm.keyword"
+                       ng-blur="vm.search()" ng-keyup="searchKeyupEvent($event)"
+                       placeholder="平台/负责人/联系人名">
+                <span class="glyphicon glyphicon-remove form-control-feedback"></span>
+                <span style="width:30px;height:30px;position:absolute;right:2px;z-index:100;cursor: pointer;"
+                      ng-click="vm.resetKeyword()"></span>
+                <!--覆盖在小图标上面的元素-->
+                <!--<a class="btn input-group-addon" ng-click="vm.search()">搜索</a>-->
               </div>
             </div>
             <div class="col-md-8" ng-show="vm.showCheckbox">
@@ -95,6 +104,7 @@
               <th><span ng-hide="vm.showCheckbox">#</span><span ng-show="vm.showCheckbox">全选<input type="checkbox" ng-click="vm.selectAll();"></span></th>
               <th>实验室名<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.name"></th>
               <th>负责人<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.manager_name"></th>
+              <th>联系人<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.contact_name"></th>
               <th>地址<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.location"></th>
               <th>成立时间<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.formed_date"></th>
               <th>所属院系<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.college_name"></th>
@@ -108,6 +118,7 @@
               <td ng-bind="item.id"></td>
               <td ng-bind="item.name"></td>
               <td ng-bind="item.manager_name"></td>
+              <td ng-bind="item.contact_name"></td>
               <td ng-bind="item.location"></td>
               <td ng-bind="item.formed_date"></td>
               <td ng-bind="item.college_name"></td>

@@ -25,21 +25,6 @@
 		}, true);
 
 
-		$scope.setStartKeyupEvent = function(e){
-			var keycode = window.event?e.keyCode:e.which;
-			if(keycode==13){
-				vm.setStart();
-				// console.log("按下的按键："+keycode);
-			}
-		};
-		$scope.setEndKeyupEvent = function(e){
-			var keycode = window.event?e.keyCode:e.which;
-			if(keycode==13){
-				vm.setEnd();
-				// console.log("按下的按键："+keycode);
-			}
-		};
-
 		function getProjectList(params){
 	 		var url = '/project/ProjectList/';
 	 		sendRequest.post(url, {}, jQuery.param(params)).then(
@@ -190,8 +175,8 @@
 
 		////////////////////////////////////////////////////////////////////////
 	 	//条件查询
-	 	vm.params.person_name = '';
- 		vm.params.name = '';
+	 	// vm.params.person_name = '';
+ 		// vm.params.name = '';
  		vm.params.start_time = '';
  		vm.params.end_time = '';
 		vm.params.keyword='';
@@ -208,6 +193,22 @@
 			console.log("关键词"+vm.keyword)
 			vm.params.keyword = vm.keyword;
 		}
+
+
+		$scope.setStartKeyupEvent = function(e){
+			var keycode = window.event?e.keyCode:e.which;
+			if(keycode==13){
+				vm.setStart();
+				// console.log("按下的按键："+keycode);
+			}
+		};
+		$scope.setEndKeyupEvent = function(e){
+			var keycode = window.event?e.keyCode:e.which;
+			if(keycode==13){
+				vm.setEnd();
+				// console.log("按下的按键："+keycode);
+			}
+		};
 		$scope.searchKeyupEvent = function(e){
 			var keycode = window.event?e.keyCode:e.which;
 			if(keycode==13){

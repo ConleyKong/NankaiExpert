@@ -25,11 +25,13 @@
                         <div class="btn-group">
                             <form class="form-inline">
                                 <div class="form-group">
-                                    <input type="text" class="box-width form-control" ng-model="vm.start_time" ng-blur="vm.setStart" ng-keyup="setStartKeyupEvent($event)" placeholder="时间格式：2010-10-10"/>
+                                    <input type="text" class="box-width form-control"
+                                           ng-model="vm.start_time" ng-blur="vm.setStart()" ng-keyup="setStartKeyupEvent($event)" placeholder="时间格式：2010-10-10"/>
                                     至
                                 </div>
                                 <div class="form-group">
-                                    <input type="text" class="box-width form-control" ng-model="vm.end_time" ng-blur="vm.setEnd" ng-keyup="setEndKeyupEvent($event)" placeholder="时间格式：2010-10-10"/>
+                                    <input type="text" class="box-width form-control"
+                                           ng-model="vm.end_time" ng-blur="vm.setEnd()" ng-keyup="setEndKeyupEvent($event)" placeholder="时间格式：2010-10-10"/>
                                 </div>
                             </form>
                         </div>

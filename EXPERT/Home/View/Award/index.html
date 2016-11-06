@@ -77,88 +77,110 @@
       </div>
   </div> -->
   <div class="container" ng-app="award" ng-controller="awardController as vm">
-    <div class="col-sm-12 row">
-      <show-more count="5">
-        <div class="col-sm-12 bottom-10">
-            <span class="cond-label">人员年龄：</span>
-            <div class="btn-group">
-                <date-range start-time="vm.params.person_startTime" end-time="vm.params.person_endTime"></date-range>
-            </div>
-        </div>
-        <div class="col-sm-12 bottom-10">
-            <span class="cond-label">获奖级别：</span>
-            <div class="btn-group">
-                <label class="btn btn-default active" ng-model="vm.params.level" ng-click="vm.resetCheckbox(vm.level)" uib-btn-radio="''">全部</label>
-                <label class="btn btn-default" ng-model="vm.level[0]" uib-btn-checkbox>国家级</label>
-                <label class="btn btn-default" ng-model="vm.level[1]" uib-btn-checkbox>省级奖</label>
-                <label class="btn btn-default" ng-model="vm.level[2]" uib-btn-checkbox>部级奖</label>
-                <label class="btn btn-default" ng-model="vm.level[3]" uib-btn-checkbox>其他</label>
-            </div>
-        </div>
-        <div class="col-sm-12 bottom-10">
-            <span class="cond-label">人员职称：</span>
-            <div class="btn-group">
-                <label class="btn btn-default active" ng-click="vm.resetCheckbox(vm.grade_id)" ng-model="vm.params.grade_id" uib-btn-radio="''">全部</label>
-                <label class="btn btn-default" ng-repeat="item in vm.gradeList" ng-model="vm.grade_id[item.id]" uib-btn-checkbox ng-bind="item.name"></label>
-            </div>
-        </div>
-        <div class="col-sm-12 bottom-10">
-            <span class="cond-label">学术称号：</span>
-            <div class="btn-group">            
-                <label class="btn btn-default active" ng-click="vm.resetCheckbox(vm.academichonor_id)" ng-model="vm.params.academichonor_id" uib-btn-radio="''">全部</label>
-                <label class="btn btn-default" ng-repeat="item in vm.academichonorList" ng-model="vm.academichonor_id[item.id]" uib-btn-checkbox data-toggle="tooltip" data-placement="top" title="{{item.name}}" ng-bind="item.name.length>4?item.name.substr(0,4) + '...':item.name"></label>
-            </div>
-        </div>
-        <div class="col-sm-12">
-            <span class="cond-label">学院：</span>
-            <div class="btn-group">
-              <label style="margin-bottom:0;color:#eee">
-                <select class="box-width form-control" ng-model="vm.collegeSelected" ng-options="item.id as item.name for item in vm.collegeList">
-                  <option value="">全部</option>
-                </select>
-              </label>
-              <label style="margin-bottom:0" ng-repeat="item in vm.collegeSelectedList">
-                <button tyle="button" class="btn button-link" ng-bind="vm.collegeMap[item]+'   X'" ng-click="vm.removeCollege(item)"><b></b></button>&nbsp;
-              </label>
-            </div>
-        </div>
-        <div class="col-sm-12 bottom-10 top-10">
-            <span class="cond-label">人员姓名：</span>
-            <div class="btn-group">
-              <input type="text" class="form-control" ng-model="vm.person_name"/>
-            </div>
-        </div>
-        <div class="col-sm-12 bottom-10">
-            <span class="cond-label">奖励名称：</span>
-            <div class="btn-group">
-              <input type="text" class="form-control" ng-model="vm.name"/>
-            </div>
-        </div>
-          <div class="col-sm-12 bottom-10">
-              <span class="cond-label">奖励时间：</span>
-              <div class="btn-group">
-                  <form class="form-inline">
-                      <div class="form-group">
-                          <input type="text" class="form-control" ng-model="vm.startTime" placeholder="时间格式：1919-10-17"/>
-                          至
+      <div class="panel panel-default">
+          <div class="panel-heading">
+              <span>筛选条件：</span>
+          </div>
+          <div class="panel-body">
+              <div class="col-sm-12 row">
+                  <!--<show-more count="5">-->
+                  <!--<div class="col-sm-12 bottom-10">-->
+                  <!--<span class="cond-label">人员年龄：</span>-->
+                  <!--<div class="btn-group">-->
+                  <!--<date-range start-time="vm.params.person_startTime" end-time="vm.params.person_endTime"></date-range>-->
+                  <!--</div>-->
+                  <!--</div>-->
+                  <div class="col-sm-6 bottom-10">
+                      <span class="cond-label">获奖级别：</span>
+                      <div class="btn-group">
+                          <label class="btn btn-default active" ng-model="vm.params.level"
+                                 ng-click="vm.resetCheckbox(vm.level)" uib-btn-radio="''">全部</label>
+                          <label class="btn btn-default" ng-model="vm.level[0]" uib-btn-checkbox>国家级</label>
+                          <label class="btn btn-default" ng-model="vm.level[1]" uib-btn-checkbox>省级奖</label>
+                          <label class="btn btn-default" ng-model="vm.level[2]" uib-btn-checkbox>部级奖</label>
+                          <label class="btn btn-default" ng-model="vm.level[3]" uib-btn-checkbox>其他</label>
                       </div>
-                      <div class="form-group">
-                          <input type="text" class="form-control" ng-model="vm.endTime" placeholder="时间格式：2019-10-17"/>
+                  </div>
+                  <!--<div class="col-sm-12 bottom-10">-->
+                      <!--<span class="cond-label">人员职称：</span>-->
+                      <!--<div class="btn-group">-->
+                          <!--<label class="btn btn-default active" ng-click="vm.resetCheckbox(vm.grade_id)"-->
+                                 <!--ng-model="vm.params.grade_id" uib-btn-radio="''">全部</label>-->
+                          <!--<label class="btn btn-default" ng-repeat="item in vm.gradeList"-->
+                                 <!--ng-model="vm.grade_id[item.id]" uib-btn-checkbox ng-bind="item.name"></label>-->
+                      <!--</div>-->
+                  <!--</div>-->
+                  <!--<div class="col-sm-12 bottom-10">-->
+                      <!--<span class="cond-label">学术称号：</span>-->
+                      <!--<div class="btn-group">-->
+                          <!--<label class="btn btn-default active" ng-click="vm.resetCheckbox(vm.academichonor_id)"-->
+                                 <!--ng-model="vm.params.academichonor_id" uib-btn-radio="''">全部</label>-->
+                          <!--<label class="btn btn-default" ng-repeat="item in vm.academichonorList"-->
+                                 <!--ng-model="vm.academichonor_id[item.id]" uib-btn-checkbox data-toggle="tooltip"-->
+                                 <!--data-placement="top" title="{{item.name}}"-->
+                                 <!--ng-bind="item.name.length>4?item.name.substr(0,4) + '...':item.name"></label>-->
+                      <!--</div>-->
+                  <!--</div>-->
+                  <!--<div class="col-sm-12 bottom-10 top-10">-->
+                      <!--<span class="cond-label">人员姓名：</span>-->
+                      <!--<div class="btn-group">-->
+                          <!--<input type="text" class="form-control" ng-model="vm.person_name"/>-->
+                      <!--</div>-->
+                  <!--</div>-->
+                  <!--<div class="col-sm-12 bottom-10">-->
+                      <!--<span class="cond-label">奖励名称：</span>-->
+                      <!--<div class="btn-group">-->
+                          <!--<input type="text" class="form-control" ng-model="vm.name"/>-->
+                      <!--</div>-->
+                  <!--</div>-->
+                  <div class="col-sm-6 bottom-10">
+                      <span class="cond-label">获奖时间：</span>
+                      <div class="btn-group">
+                          <form class="form-inline">
+                              <div class="form-group">
+                                  <input type="text" class="form-control" ng-model="vm.start_time" ng-blur="vm.setStart()" ng-keyup="setStartKeyupEvent($event)"
+                                         placeholder="时间格式：1919-10-17"/>
+                                  至
+                              </div>
+                              <div class="form-group">
+                                  <input type="text" class="form-control" ng-model="vm.end_time" ng-blur="vm.setEnd()" ng-keyup="setEndKeyupEvent($event)"
+                                         placeholder="时间格式：2019-10-17"/>
+                              </div>
+                          </form>
                       </div>
-                  </form>
+                  </div>
+                  <div class="col-sm-5 row">
+                      <span class="cond-label">所属学院：</span>
+                      <div class="btn-group">
+                          <label style="margin-bottom:0;color:#eee">
+                              <select class="box-width form-control" ng-model="vm.collegeSelected"
+                                      ng-options="item.id as item.name for item in vm.collegeList">
+                                  <option value="">全部</option>
+                              </select>
+                          </label>
+                      </div>
+                  </div>
+                  <div class="col-sm-12 top-10" ng-if="vm.collegeSelectedList.length > 0">
+                      <span class="cond-label">所选单位：</span>
+                      <label style="margin-bottom:0" ng-repeat="item in vm.collegeSelectedList">
+                          <button tyle="button" class="btn button-link" ng-bind="vm.collegeMap[item]+'   X'"
+                                  ng-click="vm.removeCollege(item)"><b></b></button>
+                          &nbsp;
+                      </label>
+                  </div>
+                  <!--<div class="col-sm-12">-->
+                      <!--<span class="cond-label"></span>-->
+                      <!--<button class="btn btn-info" ng-click="vm.submit()">确定</button>-->
+                      <!--<button class="btn btn-default" ng-click="vm.cancel()">取消</button>-->
+                  <!--</div>-->
+                  <!--<div class="col-sm-12" id="more">-->
+                  <!--<span class="glyphicon glyphicon-triangle-bottom">-->
+                  <!--</span>-->
+                  <!--</div>-->
+                  <!--</show-more>-->
               </div>
           </div>
-        <div class="col-sm-12">
-          <span class="cond-label"></span>
-            <button class="btn btn-info" ng-click="vm.submit()">确定</button>
-            <button class="btn btn-default" ng-click="vm.cancel()">取消</button>
-        </div>
-        <div class="col-sm-12" id="more">
-            <span class="glyphicon glyphicon-triangle-bottom">
-            </span>
-        </div>
-      </show-more>
-  </div>
+      </div>
   	<div class="col-md-12">
       <div class="panel panel-default table-header">
         <div class="panel-heading table-heading">
@@ -173,9 +195,17 @@
                     <span class="glyphicon glyphicon-import"></span>
                 </button>
                 <button type="button" class="btn btn-info pull-right right-10" ng-click="vm.showCheckbox=true">导出Excel&nbsp;&nbsp;<span class="glyphicon glyphicon-export"></span></button>
-                <div class="input-group col-md-4 pull-right right-10">
-                  <input type="text" class="form-control" ng-model="filter" placeholder="输入关键字">
-                  <div class="input-group-addon">筛选</div>
+                <!--<div class="input-group col-md-4 pull-right right-10">-->
+                  <!--<input type="text" class="form-control" ng-model="filter" placeholder="输入关键字">-->
+                  <!--<div class="input-group-addon">筛选</div>-->
+                <!--</div>-->
+                <div class="input-group col-md-4 pull-right right-10 has-feedback">
+                    <a class="btn input-group-addon" ng-click="vm.search()">搜索</a>
+                    <input type="text" class="form-control " ng-model="vm.keyword" ng-blur="vm.search()" ng-keyup="searchKeyupEvent($event)" placeholder="获奖人/奖励名">
+                    <span class="glyphicon glyphicon-remove form-control-feedback"></span>
+                    <span style="width:30px;height:30px;position:absolute;right:2px;z-index:100;cursor: pointer;"  ng-click="vm.resetKeyword()"></span>
+                    <!--覆盖在小图标上面的元素-->
+                    <!--<a class="btn input-group-addon" ng-click="vm.search()">搜索</a>-->
                 </div>
             </div>
             <div class="col-md-8" ng-show="vm.showCheckbox">

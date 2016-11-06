@@ -68,7 +68,7 @@ class ProjectController extends Controller {
             }
             if($param['keyword']){
                 $keyword = $param['keyword'];
-                $ts = "( project.name like '%$keyword%' OR person.name like '%$keyword%')";
+                $ts = " (project.name like '%$keyword%' OR person.name like '%$keyword%') ";
                 $string .= $string?' AND '.$ts:$ts;
                 unset($param['keyword']);
             }
@@ -251,7 +251,7 @@ class ProjectController extends Controller {
                 $string .= $string ? ' AND ('.$college_id.')' : '('.$college_id.')';
             $keyword = I('get.keyword');
             if($keyword){
-                $ts = "( project.name like '%$keyword%' OR person.name like '%$keyword%')";
+                $ts = " (project.name like '%$keyword%' OR person.name like '%$keyword%') ";
                 $string .= $string?' AND '.$ts:$ts;
             }
             if ($string)

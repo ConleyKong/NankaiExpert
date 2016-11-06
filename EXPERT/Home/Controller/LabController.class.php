@@ -29,27 +29,31 @@ class LabController extends Controller {
                 unset($param['manager_name']);
             }
 
-            $formed_start = $param['formed_start'];
-            $formed_end = $param['formed_end'];
+            $formed_start = $param['start_time'];
+            $formed_end = $param['end_time'];
             $formed_date = array();
             if($formed_start){
                 $formed_date = array('gt',$formed_start);
-                unset($param['formed_start']);
+                unset($param['start_time']);
             }
             if($formed_end){
                 $formed_date = array('lt',$formed_end);
-                unset($param['formed_end']);
+                unset($param['end_time']);
             }
             if($formed_date)
                 $query['formed_date']=$formed_date;
-
 
             $string = '';
             if ($param['college_id']){
                 $string .= $string ? ' AND ('.$param['college_id'].')' : '('.$param['college_id'].')';
                 unset($param['college_id']);
             }
-
+            if($param['keyword']){
+                $keyword = $param['keyword'];
+                $ts = " (lab.name like '%$keyword%' OR person.name like '%$keyword%' OR contact.name like '%$keyword%') ";
+                $string .= $string?' AND '.$ts:$ts;
+                unset($param['keyword']);
+            }
             if ($string)
                 $query['_string'] = $string;
 
@@ -133,8 +137,8 @@ class LabController extends Controller {
                 $query['manager_name']=array('like','%'.$manager_name.'%');
             }
 
-            $formed_start = I('get.formed_start');
-            $formed_end = I('get.formed_end');
+            $formed_start = I('get.start_time');
+            $formed_end = I('get.end_time');
             $formed_date = array();
             if($formed_start){
                 $formed_date = array('gt',$formed_start);
@@ -150,7 +154,11 @@ class LabController extends Controller {
             if ($college_id){
                 $string .= $string ? ' AND ('.$college_id.')' : '('.$college_id.')';
             }
-
+            $keyword = I('get.keyword');
+            if($keyword){
+                $ts = " (lab.name like '%$keyword%' OR person.name like '%$keyword%' OR contact.name like '%$keyword%') ";
+                $string .= $string?' AND '.$ts:$ts;
+            }
             if ($string)
                 $query['_string'] = $string;
 
@@ -167,7 +175,7 @@ class LabController extends Controller {
             else
                 return '未知错误';
 
-            $titleMap = array('name'=>'平台名称','manager_name'=>'负责人姓名','location'=>'地址','formed_date'=>'成立时间','college_name'=>'所属院系','member'=>'成员','description'=>'描述');
+            $titleMap = array('name'=>'平台名称','manager_name'=>'负责人姓名','contact_name'=>'联系人姓名','location'=>'地址','formed_date'=>'成立时间','college_name'=>'所属院系','member'=>'成员','description'=>'描述');
             $field = split(',', $field);
             $excelTitle = array();
             foreach ($field as $value) {
