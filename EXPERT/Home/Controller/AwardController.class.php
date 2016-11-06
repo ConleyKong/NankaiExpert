@@ -114,7 +114,8 @@ class AwardController extends Controller {
         }
         else{
             $academichonor = M('academic_honor');
-            $result = $academichonor->field('id,name')->select();
+//            由于需要把id为1的和id为2的作为一个整体进行搜索，而1,2的abbr_name相同因此从2开始显示，选二的时候同时选择1
+            $result = $academichonor->field('id,abbr_name')->where('id>1')->select();
             $this->ajaxReturn($result, 'json');
         }
     }

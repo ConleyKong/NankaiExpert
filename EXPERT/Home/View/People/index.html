@@ -100,8 +100,8 @@
                                    ng-model="vm.params.academichonor_id" uib-btn-radio="''">全部</label>
                             <label class="btn btn-default" ng-repeat="item in vm.academichonorList"
                                    ng-model="vm.academichonor_id[item.id]" uib-btn-checkbox data-toggle="tooltip"
-                                   data-placement="top" title="{{item.name}}"
-                                   ng-bind="item.name.length>4?item.name.substr(0,4) + '...':item.name"></label>
+                                   data-placement="top" title="{{item.abbr_name}}"
+                                   ng-bind="item.abbr_name"></label>
                         </div>
                     </div>
 
@@ -205,9 +205,9 @@
                                 <!--<input type="text" class="form-control" ng-model="filter" placeholder="输入名字">-->
                                 <!--<a class="btn input-group-addon">搜索</a>-->
                             <!--</div>-->
-                            <div class="input-group col-md-3 pull-right right-10 has-feedback">
+                            <div class="input-group col-md-4 pull-right right-10 has-feedback">
                                 <a class="btn input-group-addon" ng-click="vm.search()">搜索</a>
-                                <input type="text" class="form-control " ng-model="vm.name" ng-blur="vm.submit()" ng-keyup="searchKeyupEvent($event)" placeholder=" 专家姓名">
+                                <input type="text" class="form-control " ng-model="vm.name" ng-blur="vm.search()" ng-keyup="searchKeyupEvent($event)" placeholder=" 专家姓名">
                                 <span class="glyphicon glyphicon-remove form-control-feedback"></span>
                                 <span style="width:30px;height:30px;position:absolute;right:2px;z-index:100;cursor: pointer;"  ng-click="vm.resetName()"></span>
                                 <!--覆盖在小图标上面的元素-->

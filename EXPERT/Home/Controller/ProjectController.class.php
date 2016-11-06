@@ -66,6 +66,12 @@ class ProjectController extends Controller {
                 $string .= $string ? ' AND ('.$param['college_id'].')' : '('.$param['college_id'].')';
                 unset($param['college_id']);
             }
+            if($param['keyword']){
+                $keyword = $param['keyword'];
+                $ts = "( project.name like '%$keyword%' OR person.name like '%$keyword%')";
+                $string .= $string?' AND '.$ts:$ts;
+                unset($param['keyword']);
+            }
             if ($string)
                 $query['_string'] = $string;
 
@@ -74,6 +80,7 @@ class ProjectController extends Controller {
             $Project = D('ProjectView');
             $result = $Project->where($query)->page($pageNum,$itemsNum)->order('project.id')->select();
             $prepData = $Project->where($query)->getField('fund',true);
+            $Project->getLastSql();
             $result[0]['totalNum'] = sizeof($prepData);
             $result[0]['totalFund'] = number_format(array_sum($prepData),3);
 //            $result[0]['totalFund'] = $prepData[1];
@@ -111,7 +118,7 @@ class ProjectController extends Controller {
         }
         else{
             $projecttype = M('project_type');
-            $result = $projecttype->field('id,name')->order('name desc')->select();
+            $result = $projecttype->field('id,name')->select();
             $this->ajaxReturn($result, 'json');
         }
     }
@@ -230,8 +237,8 @@ class ProjectController extends Controller {
             if ($person_name)
                 $query['person_name']= array('like','%'.$person_name.'%');
 
-            $string = '';
 
+            $string = '';
 //            $projecttype_id = I('get.projecttype_id');
 //            if ($projecttype_id)
 //                $string .= $string ? ' AND ('.$projecttype_id.')' : '('.$projecttype_id.')';
@@ -242,7 +249,11 @@ class ProjectController extends Controller {
             $college_id = I('get.college_id');
             if ($college_id)
                 $string .= $string ? ' AND ('.$college_id.')' : '('.$college_id.')';
-
+            $keyword = I('get.keyword');
+            if($keyword){
+                $ts = "( project.name like '%$keyword%' OR person.name like '%$keyword%')";
+                $string .= $string?' AND '.$ts:$ts;
+            }
             if ($string)
                 $query['_string'] = $string;
 

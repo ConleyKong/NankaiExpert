@@ -23,8 +23,8 @@ class PaperController extends Controller {
 	    	$pageNum = $param['page'] ? $param['page'] : 1;  //当前页
             $itemsNum =  $param['items'] ? $param['items'] : 10; //每页个数
 
-            $pub_start = $param['pub_start'];
-            $pub_end = $param['pub_end'];
+            $pub_start = $param['start_time'];
+            $pub_end = $param['end_time'];
             $publish_date = array();
             if ($pub_start)
                 $publish_date = array('gt',$pub_start);
@@ -45,6 +45,12 @@ class PaperController extends Controller {
             if ($param['college_id']){
                 $string .= $string ? ' AND ('.$param['college_id'].')' : '('.$param['college_id'].')';
                 unset($param['college_id']);
+            }
+            if($param['keyword']){
+                $keyword = $param['keyword'];
+                $ts = "( paper.name like '%$keyword%' OR paper.conference_name like '%$keyword%' OR person.name like '%$keyword%')";
+                $string .= $string?' AND '.$ts:$ts;
+                unset($param['keyword']);
             }
             if ($string)
                 $query['_string'] = $string;
@@ -138,8 +144,8 @@ class PaperController extends Controller {
             $itemsNum =  $items? $items : 10;
 
 
-            $pub_start = I('get.pub_start');
-            $pub_end = I('get.pub_end');
+            $pub_start = I('get.start_time');
+            $pub_end = I('get.end_time');
             $publish_date = array();
             if ($pub_start)
                 $publish_date = array('gt',$pub_start);
@@ -162,7 +168,11 @@ class PaperController extends Controller {
             $string = '';
             if ($college_id)
                 $string .= $string ? ' AND ('.$college_id.')' : '('.$college_id.')';
-
+            $keyword = I('get.keyword');
+            if($keyword){
+                $ts = " (paper.name like '%$keyword%' OR paper.conference_name like '%$keyword%' OR person.name like '%$keyword%')";
+                $string .= $string?' AND '.$ts:$ts;
+            }
             if ($string)
                 $query['_string'] = $string;
 

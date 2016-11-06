@@ -30,21 +30,17 @@
 		$scope.$watch('vm.academichonor_id', function(){
 			var temp = [];
  			for (var i = 1;i < vm.academichonor_id.length;i++)
- 				if (vm.academichonor_id[i])
- 					temp.push("academic_honor.id = " + i);
+ 				if (vm.academichonor_id[i]){
+					temp.push("academic_honor.id = " + i);
+					// id为1和id为2作为一个整体进行搜索，选择2就同时将1加入
+					if(i==2){
+						temp.push("academic_honor.id = " + 1);
+					}
+				}
  			if (temp.length){
  			 	vm.params.academichonor_id = temp.join(' or ');
  			}else vm.params.academichonor_id = '';
 		}, true);
-
-		$scope.searchKeyupEvent = function(e){
-			var keycode = window.event?e.keyCode:e.which;
-			if(keycode==13){
-				vm.search();
-				// console.log("按下的按键："+keycode);
-			}
-		};
-
 
 		function getPersonList(params){
 	 		var url = '/People/personList/';
@@ -130,6 +126,15 @@
 			vm.params.name="";
 		}
 
+
+		$scope.searchKeyupEvent = function(e){
+			var keycode = window.event?e.keyCode:e.which;
+			if(keycode==13){
+				vm.search();
+				// console.log("按下的按键："+keycode);
+			}
+		};
+
 	 	vm.cancel = function(){
 	 		vm.params.name = '';
 	 		vm.name = '';
@@ -197,6 +202,7 @@
 	 		sendRequest.get(url, {}, {}).then(
 	 			function(resp){
 	 				vm.academichonorList = resp;
+					// console.log("头衔列表："+vm.academichonorList)
 	 				for(var i = 0; i < resp.length;i++)
 	 					vm.academichonor_id.push(false);
 	 			},

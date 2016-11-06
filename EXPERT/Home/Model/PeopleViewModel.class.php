@@ -58,6 +58,7 @@ class PeopleViewModel extends ViewModel {
 		'academic_honor' => array(
 			'id' => 'academichonor_id',
 			'name' => 'academic_name',
+			'abbr_name'=>'academic_abbr_name',
 			'_on' => 'academic_honor.id=person_honor.honor_id',
 		),
 

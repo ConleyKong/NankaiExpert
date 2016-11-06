@@ -1,138 +1,158 @@
 <extend name="EXPERT/Templates/nav.html"/>
 <block name="content">
-  <div class="container" ng-app="paper" ng-controller="paperController as vm">
-    <div class="col-sm-12 row">
-      <div class="col-sm-12">
-          <span class="cond-label">作者单位：</span>
-          <div class="btn-group">
-            <label style="margin-bottom:0;color:#eee">
-              <select class="box-width form-control" ng-model="vm.collegeSelected" ng-options="item.id as item.name for item in vm.collegeList">
-                <option value="">全部</option>
-              </select>
-            </label>
-            <label style="margin-bottom:0" ng-repeat="item in vm.collegeSelectedList">
-              <button tyle="button" class="btn button-link" ng-bind="vm.collegeMap[item]+'   X'" ng-click="vm.removeCollege(item)"><b></b></button>&nbsp;
-            </label>
-          </div>
-      </div>
-      <div class="col-sm-12 bottom-10 top-10">
-          <span class="cond-label">人员姓名：</span>
-          <div class="btn-group">
-            <input type="text" class="box-width form-control" ng-model="vm.person_name"/>
-          </div>
-      </div>
-      <div class="col-sm-12 bottom-10">
-          <span class="cond-label">期刊名称：</span>
-          <div class="btn-group">
-            <input type="text" class="box-width form-control" ng-model="vm.conference_name"/>
-          </div>
-      </div>
-      <div class="col-sm-12 bottom-10">
-          <span class="cond-label">发表时间：</span>
-          <div class="btn-group">
-            <form class="form-inline">
-              <div class="form-group">
-                <input type="text" class="box-width form-control" ng-model="vm.pub_start" placeholder="时间格式：2010-10-10"/>
-                至
-              </div>
-              <div class="form-group">
-                <input type="text" class="box-width form-control" ng-model="vm.pub_end" placeholder="时间格式：2010-10-10"/>
-              </div>
-            </form>
-          </div>
-      </div>
-      <div class="col-sm-12">
-        <span class="cond-label"></span>
-          <button class="btn btn-info" ng-click="vm.submit()">确定</button>
-          <button class="btn btn-default" ng-click="vm.cancel()">取消</button>
-      </div>
-      <div class="col-sm-12" id="more">
-          <span class="glyphicon">
-          </span>
-      </div>
-  </div>
-  	<div class="col-md-12">
-      <div class="panel panel-default table-header">
-        <div class="panel-heading table-heading">
-          <div class="row">
-            <div class="col-md-4 pull-left">
-              <h3 class="panel-title table-title">论文列表</h3>
+    <div class="container" ng-app="paper" ng-controller="paperController as vm">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <span>筛选条件：</span>
             </div>
-            <div class="col-md-8 pull-right" ng-hide="vm.showCheckbox||vm.showImportbox">
-                <button type="button" class="btn btn-info pull-right right-10" ng-click="vm.showImportbox=true">
-                    导入Excel&nbsp;&nbsp;
-                    <span class="glyphicon glyphicon-import"></span>
-                </button>
-                <button type="button" class="btn btn-info pull-right right-10" ng-click="vm.showCheckbox=true">导出Excel&nbsp;&nbsp;<span class="glyphicon glyphicon-export"></span></button>
-                <div class="input-group col-md-4 pull-right right-10">
-                  <input type="text" class="form-control" ng-model="filter" placeholder="输入关键字">
-                  <div class="input-group-addon">筛选</div>
+            <div class="panel-body">
+                <!--筛选条件-->
+                <div class="col-sm-12">
+                    <div class="col-sm-5 bottom-10">
+                        <span class="cond-label">作者单位：</span>
+                        <div class="btn-group">
+                            <label style="margin-bottom:0;color:#eee">
+                                <select class="box-width form-control" ng-model="vm.collegeSelected"
+                                        ng-options="item.id as item.name for item in vm.collegeList">
+                                    <option value="">全部</option>
+                                </select>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-7 bottom-10">
+                        <span class="cond-label">发表时间：</span>
+                        <div class="btn-group">
+                            <form class="form-inline">
+                                <div class="form-group">
+                                    <input type="text" class="box-width form-control" ng-model="vm.start_time" ng-blur="vm.setStart" ng-keyup="setStartKeyupEvent($event)" placeholder="时间格式：2010-10-10"/>
+                                    至
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" class="box-width form-control" ng-model="vm.end_time" ng-blur="vm.setEnd" ng-keyup="setEndKeyupEvent($event)" placeholder="时间格式：2010-10-10"/>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <!--所选筛选单位-->
+                <div class="col-sm-12 bottom-10" ng-if="vm.collegeSelectedList.length > 0">
+                    <span class="col-sm-1">所选单位：</span>
+                    <label style="margin-bottom:0" ng-repeat="item in vm.collegeSelectedList">
+                        <button tyle="button" class="btn button-link" ng-bind="vm.collegeMap[item]+'   X'"
+                                ng-click="vm.removeCollege(item)"><b></b></button>
+                        &nbsp;
+                    </label>
                 </div>
             </div>
-            <div class="col-md-8" ng-show="vm.showCheckbox">
-                <button type="button" class="btn btn-default pull-right" ng-click="vm.showCheckbox=false">取消导出</span></button>
-                <button type="button" class="btn btn-primary pull-right right-10" ng-click="vm.exportExcel('all')">导出所有<span class="glyphicon glyphicon-export"></span></button>
-                <button type="button" class="btn btn-success pull-right right-10" ng-click="vm.exportExcel('current')">导出当前页<span class="glyphicon glyphicon-export"></span></button>
-                <h3 class="table-title warning-text pull-left">请选择要导出的字段</h3>
-            </div>
-              <div class="col-md-8" ng-show="vm.showImportbox">
-                  <form method="post" action="{:U('Project/import')}" enctype="multipart/form-data">
-                      <!--<div class="col-sm-6">-->
-                      <!--<label class="pull-right right-10">浏览要导入的Excel文件：</label>-->
-                      <!--</div>-->
-                      <div class="col-sm-8">
-                          <input type="file" class="pull-right bottom-10" name="file_import"/>
-                      </div>
-                      <div class="col-sm-4" class="pull-right right-10">
-                          <button class="btn btn-default pull-right right-10" type="button"
-                                  ng-click="vm.showImportbox=false">取消导入
-                          </button>
-                          <input type="submit" class="btn btn-primary pull-right right-10" value="导入所选文件"/>
-                      </div>
-                  </form>
-              </div>
-          </div>
         </div>
-      </div>
-  		<table class="table table-bordered table-striped table-hover">
-        <thead>
-          <tr>
-            <th><span ng-hide="vm.showCheckbox">#</span><span ng-show="vm.showCheckbox">全选<input type="checkbox" ng-click="vm.selectAll();"></span></th>
-            <th>第一作者<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.person_name"></th>
-            <th>第一作者单位<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.col_name"></th>
-            <th>论文名<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.name"></th>
-            <th>期刊/会议名称<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.conference_name"></th>
-            <th>发表时间<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.publish_date"></th>
-            <th>备注<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.comment"></th>
-            <th>操作</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr ng-if="vm.paginationConf.totalItems" ng-repeat="item in vm.paperList | filter:filter">
-            <td ng-bind="item.id"></td>
-            <td ng-bind="item.person_name"></td>
-            <td ng-bind="item.col_name"></td>
-            <td ng-bind="item.name"></td>
-            <td ng-bind="item.conference_name"></td>
-            <td ng-bind="item.publish_date"></td>
-            <td ng-bind="item.comment"></td>
-            <td><a href="__URL__/delete?id={{item.id}}">删除</a> </td>
-          </tr>
-          <tr ng-if="!vm.paginationConf.totalItems"><td colspan="12"><h2 class="text-center text-danger">无数据</h2></td></tr>
-        </tbody>
-      </table>
-        <!--<form method="post" action="{:U('Paper/import')}" enctype="multipart/form-data">-->
+        <div class="col-md-12">
+            <div class="panel panel-default table-header">
+                <div class="panel-heading table-heading">
+                    <div class="row">
+                        <div class="col-md-4 pull-left">
+                            <h3 class="panel-title table-title">论文列表</h3>
+                        </div>
+                        <div class="col-md-8 pull-right" ng-hide="vm.showCheckbox||vm.showImportbox">
+                            <button type="button" class="btn btn-info pull-right right-10"
+                                    ng-click="vm.showImportbox=true">
+                                导入Excel&nbsp;&nbsp;
+                                <span class="glyphicon glyphicon-import"></span>
+                            </button>
+                            <button type="button" class="btn btn-info pull-right right-10"
+                                    ng-click="vm.showCheckbox=true">导出Excel&nbsp;&nbsp;<span
+                                    class="glyphicon glyphicon-export"></span></button>
+                            <!--<div class="input-group col-md-4 pull-right right-10">-->
+                                <!--<input type="text" class="form-control" ng-model="filter" placeholder="输入关键字">-->
+                                <!--<div class="input-group-addon">搜索</div>-->
+                            <!--</div>-->
+                            <div class="input-group col-md-4 pull-right right-10 has-feedback">
+                                <a class="btn input-group-addon" ng-click="vm.search()">搜索</a>
+                                <input type="text" class="form-control " ng-model="vm.keyword"
+                                       ng-blur="vm.search()" ng-keyup="searchKeyupEvent($event)"
+                                       placeholder="作者/论文/期刊名">
+                                <span class="glyphicon glyphicon-remove form-control-feedback"></span>
+                                <span style="width:30px;height:30px;position:absolute;right:2px;z-index:100;cursor: pointer;"  ng-click="vm.resetKeyword()"></span>
+                                <!--覆盖在小图标上面的元素-->
+                                <!--<a class="btn input-group-addon" ng-click="vm.search()">搜索</a>-->
+                            </div>
+                        </div>
+                        <div class="col-md-8" ng-show="vm.showCheckbox">
+                            <button type="button" class="btn btn-default pull-right" ng-click="vm.showCheckbox=false">
+                                取消导出</span></button>
+                            <button type="button" class="btn btn-primary pull-right right-10"
+                                    ng-click="vm.exportExcel('all')">导出所有<span
+                                    class="glyphicon glyphicon-export"></span></button>
+                            <button type="button" class="btn btn-success pull-right right-10"
+                                    ng-click="vm.exportExcel('current')">导出当前页<span
+                                    class="glyphicon glyphicon-export"></span></button>
+                            <h3 class="table-title warning-text pull-left">请选择要导出的字段</h3>
+                        </div>
+                        <div class="col-md-8" ng-show="vm.showImportbox">
+                            <form method="post" action="{:U('Project/import')}" enctype="multipart/form-data">
+                                <!--<div class="col-sm-6">-->
+                                <!--<label class="pull-right right-10">浏览要导入的Excel文件：</label>-->
+                                <!--</div>-->
+                                <div class="col-sm-8">
+                                    <input type="file" class="pull-right bottom-10" name="file_import"/>
+                                </div>
+                                <div class="col-sm-4" class="pull-right right-10">
+                                    <button class="btn btn-default pull-right right-10" type="button"
+                                            ng-click="vm.showImportbox=false">取消导入
+                                    </button>
+                                    <input type="submit" class="btn btn-primary pull-right right-10" value="导入所选文件"/>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <table class="table table-bordered table-striped table-hover">
+                <thead>
+                <tr>
+                    <th><span ng-hide="vm.showCheckbox">#</span><span ng-show="vm.showCheckbox">全选<input type="checkbox"
+                                                                                                         ng-click="vm.selectAll();"></span>
+                    </th>
+                    <th>论文名<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.name"></th>
+                    <th>第一作者单位<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.col_name"></th>
+                    <th>第一作者<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.person_name">
+                    </th>
+                    <th>期刊/会议名称<input type="checkbox" ng-show="vm.showCheckbox"
+                                      ng-model="vm.exportParams.conference_name"></th>
+                    <th>发表时间<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.publish_date">
+                    </th>
+                    <th>备注<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.comment"></th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-if="vm.paginationConf.totalItems" ng-repeat="item in vm.paperList | filter:filter">
+                    <td ng-bind="item.id"></td>
+                    <td ng-bind="item.name"></td>
+                    <td ng-bind="item.col_name"></td>
+                    <td ng-bind="item.person_name"></td>
+                    <td ng-bind="item.conference_name"></td>
+                    <td ng-bind="item.publish_date"></td>
+                    <td ng-bind="item.comment"></td>
+                    <td><a href="__URL__/delete?id={{item.id}}">删除</a></td>
+                </tr>
+                <tr ng-if="!vm.paginationConf.totalItems">
+                    <td colspan="12"><h2 class="text-center text-danger">无数据</h2></td>
+                </tr>
+                </tbody>
+            </table>
+            <!--<form method="post" action="{:U('Paper/import')}" enctype="multipart/form-data">-->
             <!--<h3>导入Excel表：</h3><input  type="file" name="file_import" />-->
             <!--<input type="submit"  value="导入" />-->
-        <!--</form>-->
-      <tm-pagination conf="vm.paginationConf"></tm-pagination>
+            <!--</form>-->
+            <tm-pagination conf="vm.paginationConf"></tm-pagination>
+        </div>
     </div>
-  </div>
 </block>
 <block name="js">
-<script type="text/javascript" src="__PUBLIC__/js/paper.controller.js"></script>
-<script type="text/javascript" src="__CDN__/angular-ui-bootstrap/0.14.3/ui-bootstrap.min.js"></script>
-<script>
-  selectMenu('paper', 3, 0);
-</script>
+    <script type="text/javascript" src="__PUBLIC__/js/paper.controller.js"></script>
+    <script type="text/javascript" src="__CDN__/angular-ui-bootstrap/0.14.3/ui-bootstrap.min.js"></script>
+    <script>
+        selectMenu('paper', 3, 0);
+    </script>
 </block>

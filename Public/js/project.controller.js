@@ -25,6 +25,21 @@
 		}, true);
 
 
+		$scope.setStartKeyupEvent = function(e){
+			var keycode = window.event?e.keyCode:e.which;
+			if(keycode==13){
+				vm.setStart();
+				// console.log("按下的按键："+keycode);
+			}
+		};
+		$scope.setEndKeyupEvent = function(e){
+			var keycode = window.event?e.keyCode:e.which;
+			if(keycode==13){
+				vm.setEnd();
+				// console.log("按下的按键："+keycode);
+			}
+		};
+
 		function getProjectList(params){
 	 		var url = '/project/ProjectList/';
 	 		sendRequest.post(url, {}, jQuery.param(params)).then(
@@ -179,22 +194,31 @@
  		vm.params.name = '';
  		vm.params.start_time = '';
  		vm.params.end_time = '';
-	 	vm.submit = function(){
-	 		vm.params.person_name = vm.person_name;
- 			vm.params.name = vm.name;
- 			vm.params.start_time = vm.start_time;
- 			vm.params.end_time = vm.end_time;
-	 	}
-	 	vm.cancel = function(){
-	 		vm.params.person_name = '';
- 			vm.params.name = '';
- 			vm.person_name = '';
- 			vm.name = '';
- 			vm.params.start_time = '';
- 			vm.params.end_time = '';
- 			vm.start_time = '';
- 			vm.end_time = '';
-	 	}
+		vm.params.keyword='';
+
+		vm.setStart = function () {
+			vm.params.start_time = vm.start_time;
+		}
+
+		vm.setEnd = function () {
+			vm.params.end_time = vm.end_time;
+		}
+
+		vm.search = function () {
+			console.log("关键词"+vm.keyword)
+			vm.params.keyword = vm.keyword;
+		}
+		$scope.searchKeyupEvent = function(e){
+			var keycode = window.event?e.keyCode:e.which;
+			if(keycode==13){
+				vm.search();
+				// console.log("按下的按键："+keycode);
+			}
+		};
+		vm.resetKeyword=function () {
+			vm.keyword="";
+			vm.params.keyword="";
+		}
 
 	 	vm.resetCheckbox = function(param){
 	 		for (var i = 0; i < param.length;i++)

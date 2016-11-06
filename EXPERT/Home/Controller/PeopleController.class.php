@@ -286,6 +286,10 @@ class PeopleController extends Controller {
             if ($postdoctor)
                 $query['postdoctor']=$postdoctor;
 
+            $username = I('get.name');
+            if($username){
+                $query['name']=array('like','%'.$username.'%');
+            }
 
             $academichonor_id = I('get.academichonor_id');
             $college_id = I('get.college_id');
