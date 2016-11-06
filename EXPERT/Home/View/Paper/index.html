@@ -132,7 +132,7 @@
                     <td ng-bind="item.id"></td>
                     <td ng-bind="item.name"></td>
                     <td ng-bind="item.col_name"></td>
-                    <td ng-bind="item.person_name"></td>
+                    <td><a ng-bind="item.person_name" href="__APP__/People/detail/?id={{item.author_id}}"></a></td>
                     <td ng-bind="item.conference_name"></td>
                     <td ng-bind="item.publish_date"></td>
                     <td ng-bind="item.comment"></td>

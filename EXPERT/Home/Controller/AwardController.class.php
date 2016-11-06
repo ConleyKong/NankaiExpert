@@ -88,7 +88,7 @@ class AwardController extends Controller {
             
             $query["valid"]=true;
             
-	        $result = $award->field('id,name,level,time,comment,birthday,person_name,grade_name,academichonor_name,col_name')->where($query)->page($pageNum,$itemsNum)->order('award.id')->select();
+	        $result = $award->field('id,name,first_id,level,time,comment,birthday,person_name,grade_name,academichonor_name,col_name')->where($query)->page($pageNum,$itemsNum)->order('award.id')->select();
             $totalNum = $award->where($query)->count();
             $result[0]['totalNum'] = $totalNum;
             //操作记录日志

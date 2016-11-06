@@ -18,7 +18,7 @@ class PatentViewModel extends ViewModel {
 		),
 		'inventor' => array(
 			'_table' => 'person',
-			'id'=>'inventorid',
+			'id'=>'inventor_id',
 			'name' => 'firstinventor_name',
 			'_on' => 'inventor.id=patent.first_inventor_id',
 			'_type' => 'LEFT'

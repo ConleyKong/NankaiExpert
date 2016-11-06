@@ -211,7 +211,7 @@
         <tbody>
           <tr ng-if="vm.paginationConf.totalItems" ng-repeat="item in vm.projectList | filter:filter">
             <td ng-bind="item.id"></td>
-            <td ng-bind="item.person_name"></td>
+            <td ><a ng-bind="item.person_name" href="__APP__/People/detail/?id={{item.manager_id}}"></a></td>
             <td ng-bind="item.name"></td>
             <td ng-bind="item.type_name"></td>
             <td ng-bind="item.depth_flag"></td>

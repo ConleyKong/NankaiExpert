@@ -117,8 +117,8 @@
             <tr ng-if="vm.paginationConf.totalItems" ng-repeat="item in vm.labList | filter:filter">
               <td ng-bind="item.id"></td>
               <td ng-bind="item.name"></td>
-              <td ng-bind="item.manager_name"></td>
-              <td ng-bind="item.contact_name"></td>
+              <td><a ng-bind="item.manager_name" href="__APP__/People/detail/?id={{item.manager_id}}"></a></td>
+              <td><a ng-bind="item.contact_name" href="__APP__/People/detail/?id={{item.contact_id}}"></a></td>
               <td ng-bind="item.location"></td>
               <td ng-bind="item.formed_date"></td>
               <td ng-bind="item.college_name"></td>

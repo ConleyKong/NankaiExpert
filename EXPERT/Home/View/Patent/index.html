@@ -154,7 +154,7 @@
             <td ng-bind="item.name"></td>
             <td ng-bind="item.owner_name"></td>
             <td ng-bind="item.ownercollege_name"></td>
-            <td ng-bind="item.firstinventor_name"></td>
+            <td><a ng-bind="item.firstinventor_name" href="__APP__/People/detail/?id={{item.inventor_id}}"></a></td>
             <td ng-bind="item.inventorcollege_name"></td>
             <td ng-bind="item.type"></td>
             <td ng-bind="item.apply_no"></td>

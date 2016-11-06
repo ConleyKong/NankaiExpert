@@ -252,7 +252,7 @@
         <tbody>
           <tr ng-if="vm.paginationConf.totalItems" ng-repeat="item in vm.awardList | filter:filter">
             <td ng-bind="item.id"></td>
-            <td ng-bind="item.person_name"></td>
+            <td><a ng-bind="item.person_name" href="__APP__/People/detail/?id={{item.first_id}}"></a></td>
             <td ng-bind="item.birthday"></td>
             <td ng-bind="item.col_name"></td>
             <td ng-bind="item.grade_name"></td>
