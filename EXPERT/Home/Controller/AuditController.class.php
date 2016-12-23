@@ -27,13 +27,13 @@ class AuditController extends Controller {
             $totalNum = $Audit->count();
             $result[0]['totalNum'] = $totalNum;
 			//操作记录日志
-			$audit['name'] = session('username');
-			$audit['ip'] = getIp();
-			$audit['module'] = '操作记录日志列表';
-			$audit['time'] = date('y-m-d h:i:s',time());
-			$audit['result'] = '成功';
-			$audit['descr'] = '查询所有字段';
-			M('audit')->add($audit);
+//			$audit['name'] = session('username');
+//			$audit['ip'] = getIp();
+//			$audit['module'] = '操作记录日志列表';
+//			$audit['time'] = date('y-m-d h:i:s',time());
+//			$audit['result'] = '成功';
+//			$audit['descr'] = '查询所有字段';
+//			M('audit')->add($audit);
             $this->ajaxReturn($result,'json');
 	    }
     }

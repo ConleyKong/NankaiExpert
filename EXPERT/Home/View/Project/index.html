@@ -189,47 +189,54 @@
         <thead>
           <tr>
             <th><span ng-hide="vm.showCheckbox">#</span><span ng-show="vm.showCheckbox">全选<input type="checkbox" ng-click="vm.selectAll();"></span></th>
-            <th>拥有者<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.person_name"></th>
-            <th>项目名称<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.name"></th>
-            <th>类型<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.type_name"></th>
-            <th>纵向<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.depth_flag"></th>
-            <th>资助编号<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.support_no"></th>
-            <th>参与单位<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.join_unit"></th>
-            <th>项目来源<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.source"></th>
-            <th>来源单位<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.source_department"></th>
-            <th>子类<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.subtype"></th>
-            <th>开始时间<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.start_time"></th>
-            <th>结束时间<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.end_time"></th>
-            <th>经费<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.fund"></th>
-            <th>直接经费<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.direct_fund"></th>
-            <th>间接经费<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.indirect_fund"></th>
-            <th>金融账户<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.financial_account"></th>
-            <th>备注<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.comment"></th>
+            <th width="10em">名称<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.name"></th>
+            <th >负责人<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.person_name"></th>
+            <th width="6em">单位<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.join_unit"></th>
+            <th >纵向<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.depth_flag"></th>
+            <th width="6em">类型<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.type_name"></th>
+            <th width="10em">起始<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.start_time"></th>
+            <th width="10em">结束<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.end_time"></th>
+            <th width="6em">来源<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.source"></th>
+
+            <!--<th>资助编号<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.support_no"></th>-->
+
+            <!--<th>来源单位<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.source_department"></th>-->
+            <!--<th>子类<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.subtype"></th>-->
+
+            <th width="4em">经费<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.fund"></th>
+            <th width="3em">直接经费<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.direct_fund"></th>
+            <th width="3em">间接经费<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.indirect_fund"></th>
+            <!--<th width="6em">金融账户<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.financial_account"></th>-->
+            <!--<th>备注<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.comment"></th>-->
             <th>操作</th>
           </tr>
         </thead>
         <tbody>
-          <tr ng-if="vm.paginationConf.totalItems" ng-repeat="item in vm.projectList | filter:filter">
+          <tr ng-if="vm.paginationConf.totalItems>0" ng-repeat="item in vm.projectList | filter:filter">
             <td ng-bind="item.id"></td>
+            <td class="long-text" ng-bind="item.name"></td>
             <td ><a ng-bind="item.person_name" href="__APP__/People/detail/?id={{item.manager_id}}"></a></td>
-            <td ng-bind="item.name"></td>
-            <td ng-bind="item.type_name"></td>
+            <td class="long-text" ng-bind="item.join_unit" ></td>
             <td ng-bind="item.depth_flag"></td>
-            <td ng-bind="item.support_no"></td>
-            <td ng-bind="item.join_unit"></td>
-            <td ng-bind="item.source"></td>
-            <td ng-bind="item.source_department"></td>
-            <td ng-bind="item.subtype"></td>
+            <td class="long-text" ng-bind="item.type_name"></td>
             <td ng-bind="item.start_time"></td>
             <td ng-bind="item.end_time"></td>
+            <td class="long-text" ng-bind="item.source"></td>
             <td ng-bind="item.fund"></td>
             <td ng-bind="item.direct_fund"></td>
             <td ng-bind="item.indirect_fund"></td>
-            <td ng-bind="item.financial_account"></td>
-            <td ng-bind="item.comment"></td>
+            <!--<td ng-bind="item.support_no"></td>-->
+
+
+            <!--<td ng-bind="item.source_department"></td>-->
+            <!--<td ng-bind="item.subtype"></td>-->
+
+
+            <!--<td class="long-text" ng-bind="item.financial_account"></td>-->
+            <!--<td ng-bind="item.comment"></td>-->
             <td><a href="__URL__/delete?id={{item.id}}">删除</a> </td>
           </tr>
-          <tr ng-if="!vm.paginationConf.totalItems"><td colspan="15"><h2 class="text-center text-danger">无数据</h2></td></tr>
+          <tr ng-if="vm.paginationConf.totalItems==0"><td colspan="15"><h2 class="text-center text-danger">无数据</h2></td></tr>
         </tbody>
       </table>
       <!--<form method="post" action="{:U('Project/import')}" enctype="multipart/form-data">-->

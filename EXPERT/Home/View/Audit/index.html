@@ -20,7 +20,7 @@
             <th>模块</th>
             <th>时间</th>
             <th>结果</th>
-            <th>描述</th>
+            <th style="text-align: left">描述</th>
           </tr>
         </thead>
         <tbody>
@@ -31,7 +31,7 @@
             <td ng-bind="item.module"></td>
             <td ng-bind="item.time"></td>
             <td ng-bind="item.result"></td>
-            <td ng-bind="item.descr"></td>
+            <td style="text-align: left" ng-bind="item.descr"></td>
           </tr>
           <tr ng-if="!vm.paginationConf.totalItems"><td colspan="12"><h2 class="text-center text-danger">无数据</h2></td></tr>
         </tbody>
