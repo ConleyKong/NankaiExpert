@@ -29,11 +29,14 @@
 	 		var url = '/project/ProjectList/';
 	 		sendRequest.post(url, {}, jQuery.param(params)).then(
 	 			function(resp){
-	 				vm.projectList = resp;
-	 				vm.paginationConf.totalItems = resp[0]['totalNum'];
-					// vm.totalcount = resp[0]['totalCount'];
-					vm.totalFund = resp[0]['totalFund'];
-					// vm.totalFund2 = resp[0]['totalFund2'];
+					var num = resp[0]['totalNum'];
+					vm.paginationConf.totalItems = num;
+					vm.projectList={};
+					vm.totalFund=0;
+					if(num>0){
+						vm.projectList = resp;
+						vm.totalFund = resp[0]['totalFund'];
+					}
 	 			},
 	 			function(resp){
 	 				console.log('get projectList failed');
