@@ -69,13 +69,13 @@ class PeopleController extends Controller {
             $result[0]['totalNum'] = $totalNum;
 
             //操作记录日志
-            $audit['name'] = session('username');
-            $audit['ip'] = getIp();
-            $audit['module'] = '人员列表';
-            $audit['time'] = date('y-m-d h:i:s',time());
-            $audit['result'] = '成功';
-            $audit['descr'] = '查询所有字段';
-            M('audit')->add($audit);
+//            $audit['name'] = session('username');
+//            $audit['ip'] = getIp();
+//            $audit['module'] = '人员列表';
+//            $audit['time'] = date('y-m-d h:i:s',time());
+//            $audit['result'] = '成功';
+//            $audit['descr'] = '查询所有字段';
+//            M('audit')->add($audit);
             $this->ajaxReturn($result,'json');
 	    }
     }
@@ -438,7 +438,8 @@ class PeopleController extends Controller {
                         $college_name = trim($v[13]);
                         $postdoctor = trim($v[14]);
                         $person_honor_names=trim($v[15]);
-                        $credit = $v[16];
+//                        $credit = $v[16];
+                        $credit = 50;//默认设置为50分
                         $data['credit'] = $credit;
 
                         ///////////////////////////////////////////////////////////////////////
@@ -448,18 +449,20 @@ class PeopleController extends Controller {
                             $degree_id = getForeignKey($degree_name,"person_degree",$degree_buffer);
                             if($degree_id>0){
                                 $data["degree_id"] = $degree_id;
-                            }else{
+                            }
+                            if($degree_id==-1){
                                 $error_counter++;
                                 $errored_name[]=$data["name"]."（用户学历信息不存在）";
                                 continue;
-                            }
+                            }                            
 
 
                         //处理导师类型信息 person_mentor_type
                             $mentor_type_id = getForeignKey($mentor_type_name,"person_mentor_type",$mentor_buffer);
                             if($mentor_type_id>0){
                                 $data["mentor_type_id"] = $mentor_type_id;
-                            }else{
+                            }
+                            if($mentor_type_id==-1){
                                 $error_counter++;
                                 $errored_name[]=$data["name"]."（用户导师类型信息不存在）";
                                 continue;
@@ -469,7 +472,8 @@ class PeopleController extends Controller {
                             $type_id = getForeignKey($type_name,"person_type",$type_buffer);
                             if($type_id>0){
                                 $data["type_id"] = $type_id;
-                            }else{
+                            }
+                            if($type_id==-1){
                                 $error_counter++;
                                 $errored_name[]=$data["name"]."（用户人员类型不存在）";
                                 continue;
@@ -478,9 +482,10 @@ class PeopleController extends Controller {
 
                         //处理人员职称信息 person_title
                             $title_id = getForeignKey($title_name,"person_title",$title_buffer);
-                            if($type_id>0){
+                            if($title_id>0){
                                 $data["title_id"] = $title_id;
-                            }else{
+                            }
+                            if($title_id==-1){
                                 $error_counter++;
                                 $errored_name[]=$data["name"]."（职称信息不存在）";
                                 continue;
@@ -491,7 +496,8 @@ class PeopleController extends Controller {
                             $college_id = getForeignKey($college_name,"college",$college_buffer);
                             if($college_id>0){
                                 $data["college_id"] = $college_id;
-                            }else{
+                            }
+                            if($college_id==-1){
                                 $error_counter++;
                                 $errored_name[]=$data["name"]."（学院信息不存在）";
                                 continue;
@@ -530,7 +536,7 @@ class PeopleController extends Controller {
                             $inserted_id[]=$result;
                         }
 
-
+                        //若未插入数据则是更新数据，因此需要连带更新关联表
                         if (empty($result))
                         {
                             $error_counter++;
@@ -544,7 +550,7 @@ class PeopleController extends Controller {
                             $person_id = (int)$result;
                             $honor_list = explode('；',$person_honor_names);//此处分隔符需要选用全角分号，因为Excel中输入的可能是用的中文输入法
                             foreach($honor_list as $honor_name){
-                                $honor_id = getForeignKey($honor_name,'academic_honor',$honor_buffer);
+                                $honor_id = getHonorIdByName($honor_name);
                                 //可能获取不到这个外键的id
                                 if($honor_id>0){
                                     $token["person_id"] = $person_id ;
@@ -554,7 +560,8 @@ class PeopleController extends Controller {
                                         //插入honor数据
                                         $honor_result = M('person_honor')->add($token);
                                     }
-                                }else{
+                                }
+                                if($honor_id==-1){
                                     $error_counter++;
                                     $errored_name[]=$data["name"]."（学术称号 $honor_name 不存在）";
                                     continue;
@@ -602,9 +609,10 @@ class PeopleController extends Controller {
 
                 if($error_counter==0){
 //                    $this->success("恭喜您，成功导入或更新数据"+($insert_counter+$update_counter)+"条！（详情见日志）",'',5);
-                    $this->success("导入工作成功（详情见日志）",'',3);
+                    $this->success("导入工作成功（详情见日志）",'/Audit/index',2);
+//                    $this->redirect("Audit/index");
                 }else{
-                    $this->error("存在导入失败的记录，请查看日志进行修正！",'',30);
+                    $this->error("存在导入失败的记录，请查看日志进行修正！",'/Audit/index',2);
                 }
 
             }

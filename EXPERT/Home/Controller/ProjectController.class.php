@@ -88,13 +88,13 @@ class ProjectController extends Controller {
 //            $result[0]['totalNum'] = $totalNum;
 //            $result[0]['totalFund2']= $Project->where($query)->sum('fund');
             //操作记录日志
-            $audit['name'] = session('username');
-            $audit['ip'] = getIp();
-            $audit['module'] = '项目列表';
-            $audit['time'] = date('y-m-d h:i:s',time());
-            $audit['result'] = '成功';
-            $audit['descr'] = '查询所有字段';
-            M('audit')->add($audit);
+//            $audit['name'] = session('username');
+//            $audit['ip'] = getIp();
+//            $audit['module'] = '项目列表';
+//            $audit['time'] = date('y-m-d h:i:s',time());
+//            $audit['result'] = '成功';
+//            $audit['descr'] = '查询所有字段';
+//            M('audit')->add($audit);
             $this->ajaxReturn($result,'json');
         }
     }
@@ -346,16 +346,22 @@ class ProjectController extends Controller {
                 /*对生成的数组进行数据库的写入*/
                 foreach ( $res as $k => $v )
                 {
-                    if ($k != 0)
-                    {
-
+                    if ($k != 0){
 
                         $project = M("project");
                         $data = array();
+                        if(trim($v[0]==null || $v[0]=='')){
+                            continue;
+                        }
                         $data["name"]=$v[0];//项目名
                         $data["project_no"]= $v[1];//项目编号
-                        $manager_eno = $v[2];//项目负责人职工号//TODO
-                        $college_name = trim($v[3]);//所属学院名//TODO
+                        $manager_name = trim($v[2]);//项目负责人姓名
+                        $college_name = trim($v[3]);//所属学院名
+                        //不录入文科院系信息
+                        if($college_name=="文科院系"){
+                            continue;
+                        }
+
                         $data["source"]=$v[4];//项目来源
                         $data["start_time"]=$v[5];//起始时间
                         $data["end_time"]=$v[6];//截止时间
@@ -364,49 +370,64 @@ class ProjectController extends Controller {
                         $data["fund"]=$v[9];//经费
 
                         $data["financial_account"]=$v[10];//金融帐号
-                        $type_name = trim($v[11]);//项目类型//TODO
+                        $type_name = convertStrType(trim($v[11]),'TODBC');//项目类型//使用convertStrType转化为全角字符串，tosbc
                         $data["support_no"]=$v[12];//资助编号
                         $data["source_department"]=$v[13];//来源单位
                         $data["depth_flag"] = $v[14];//纵向标记，汉字
-
+                        $data["approval_time"] = $v[15];//立项时间
+                        $data["complete_time"] = $v[16];//结项时间
+                        $orign_participants = explode(",",$v[17]);
+                        $expert_participants = null;
+                        foreach ($orign_participants as $participant) {
+                            if(strpos($participant,"(学)")==false){//不存在(学)，是专家
+                                $expert_participants.$participant."；";
+                            }
+                        }
+                        $data["participants"] = $expert_participants;//参与教职工，使用；号分隔
+                        $data["unique_code"] = md5(trim($v[0].$v[1].$v[2]));//项目名+项目编号+项目负责人的md5码，用于比较
 
                         ///////////////////////////////////////////////////////////////////////
                         //\\\\\涉及外键的操作////\\
 
-                        // 处理项目负责人职工号$manager_eno
-                            $manager_id = getPersonIdByEmployeeNo(trim($manager_eno));
+                        //处理所属学院名
+                        $college_id = getForeignKeyFromDB($college_name,"college");
+                        if($college_id>0){
+                            $data["college_id"] = $college_id;
+                        }
+                        if($college_id==-1){
+                            $error_counter++;
+                            $errored_name[]=$data["name"]."（学院信息不存在）";
+                            continue;
+                        }
+
+                        // 处理项目负责人名称$manager_name
+                            $manager_id = getPidByNameAndCollege($manager_name,$college_id);
                             if($manager_id>0){
                                 $data["manager_id"] = $manager_id;
-                            }else{
-                                $error_counter++;
-                                $errored_name[]=$data["name"]."（项目负责人职工号不存在）";
-                                continue;
                             }
-
-
-                        //处理所属学院名
-                            $college_id = getForeignKey($college_name,"college",$college_buffer);
-                            if($college_id>0){
-                                $data["college_id"] = $college_id;
-                            }else{
+                        //结果为0时为表明入参存在空值，不影响本条数据的插入，因此不continue
+                            if($manager_id==-1){//真的出错时
                                 $error_counter++;
-                                $errored_name[]=$data["name"]."（学院信息不存在）";
+                                $errored_name[]=$data["name"]."（".$college_name." 学院项目负责人"." $manager_name"."不存在）";
                                 continue;
                             }
 
                         //处理项目类型
-                            $type_id = getForeignKey($type_name,"project_type",$type_buffer);
+                            $type_id = getForeignKeyFromDB($type_name,"project_type");
                             if($type_id>0){
                                 $data["type_id"] = $type_id;
-                            }else{
+                            }
+                            if($type_id==-1){
                                 $error_counter++;
-                                $errored_name[]=$data["name"]."（项目类型不存在）";
+                                $errored_name[]=$data["name"]."（项目类型".$type_name."不存在）";
                                 continue;
                             }
 
                         $condition["manager_id"] =$data["manager_id"];
-                        $condition["name"]=$data["name"];
+                        $condition["unique_code"]=$data["unique_code"];
                         $isduplicated = $project->where($condition)->find();
+//                        $isduplicated = $project->where($condition)->select();//使用name做检索时此处使用find会出现bug，需要使用select
+
                         if((int)$isduplicated['id']>0){//数据库中存在相同数据，使用更新操作
                             $num = $project->where($condition)->save($data);
                             $result = $isduplicated['id'];
@@ -436,7 +457,9 @@ class ProjectController extends Controller {
                 $audit['module'] = '科研项目';
                 $audit['time'] = date('y-m-d h:i:s', time());
                 $error_counter>0?$audit['result'] ='警告':$audit['result'] = '成功';
-                $descr = "\n 记录导入失败".$error_counter."条；\n ";
+                $descr = "\n 成功插入记录".$insert_counter."条；\n";
+                $descr .= "\n 成功更新记录".$update_counter."条；\n";
+                $descr .= "\n 记录导入失败".$error_counter."条；\n ";
                 if($error_counter>0){
                     //将插入失败的用户姓名记录下来
                     $descr .= "导入失败的项目名： ";
@@ -444,7 +467,7 @@ class ProjectController extends Controller {
                         $descr .= $e_name.",";
                     }
                 }
-                $descr .= "\n 成功插入记录".$insert_counter."条；\n";
+
                 if($insert_counter>0){
                     //将插入成功的用户id记录下来
                     $descr .= "成功插入的项目id： ";
@@ -452,7 +475,7 @@ class ProjectController extends Controller {
                         $descr .= $id.",";
                     }
                 }
-                $descr .= "\n 成功更新记录".$update_counter."条；\n";
+
                 if($update_counter>0){
                     //将更新成功的用户id记录下来
                     $descr .= "成功更新的项目id： ";
@@ -464,9 +487,9 @@ class ProjectController extends Controller {
                 M('audit')->add($audit);
 
                 if($error_counter==0){
-                    $this->success("导入工作成功（详情见日志）",'',3);
+                    $this->success("导入工作成功（详情见日志）",'/Audit/index',2);
                 }else{
-                    $this->error("存在导入失败的记录，请查看日志进行修正！",'',30);
+                    $this->error("存在导入失败的记录，请查看日志进行修正！",'/Audit/index',2);
                 }
 
             }
