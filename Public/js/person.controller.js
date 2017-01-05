@@ -27,23 +27,45 @@
 			getPersonList(vm.params);
 		}, true);
 
+		getAcademichonorList();
+		function getAcademichonorList(){
+			var url = '/Award/getAcademichonorList/';
+			vm.academichonor_id = [];
+			sendRequest.get(url, {}, {}).then(
+				function(resp){
+					// id,abbr_name
+					vm.academichonorList = resp;
+					// console.log("头衔列表："+vm.academichonorList.toString())
+
+					for(var i = 0; i < resp.length;i++){
+						// var aname = vm.academichonorList[i].name;
+						// console.log(aname);
+						vm.academichonor_id.push(false);
+						console.log(vm.academichonor_id[i]);
+					}
+				},
+				function(resp){
+					console.log('get AcademichonorList failed');
+				}
+			);
+		}
 		
 		$scope.$watch('vm.academichonor_id', function(){
 			var temp = [];
- 			for (var i = 1;i < vm.academichonor_id.length;i++)
- 				if (vm.academichonor_id[i]){
-                    console.log(vm.academichonor_id[i])
-					if(i!=2){
-						temp.push(" (academic_honor.id = " + i+") ");
-					}else {
-						// id为2作为一个整体进行搜索，选择2就同时将1加入
-						temp.push(" (academic_honor.id = 1 or academic_honor.id = 2) ");
-					}
-				}
+ 			for (var i = 0;i < vm.academichonor_id.length;i++){
+                if (vm.academichonor_id[i]){
+					 // var aname = JSON.stringify(vm.academichonorList[i+1].name).replace(/\"/g, "");
+					var aname = vm.academichonorList[i-1].name;
+					console.log("选中的学术称号为："+aname);
+                    temp.push(" honor_records like '%"+aname+"%'");
+                }
+            }
+
  			if (temp.length){
  			 	vm.params.academichonor_id = temp.join(' and ');
  			}else vm.params.academichonor_id = '';
 		}, true);
+
 
 		function getPersonList(params){
 	 		var url = '/People/personList/';
@@ -158,7 +180,7 @@
 
 	 	//导入导出
 	 	vm.showCheckbox = false;
-	 	vm.exportParams = {name:false,gender:false,employee_no:false,college_name:false,postdoctor:false,academic_name:false,birthday:false,email:false,phone:false,first_class:false,second_class:false,credit:false};
+	 	vm.exportParams = {name:false,gender:false,employee_no:false,college_name:false,postdoctor:false,academic_name:false,birthday:false,email:false,phone:false,first_class:false,second_class:false,credit:false,honor_records:false};
 
 	 	vm.exportExcel = exportExcel;
 	 	function exportExcel(type){
@@ -203,24 +225,6 @@
 		// }
 		// 	return $array;
 		// }
-
-	 	getAcademichonorList();
-	 	function getAcademichonorList(){
-	 		var url = '/Award/getAcademichonorList/';
-	 		vm.academichonor_id = [];
-	 		sendRequest.get(url, {}, {}).then(
-	 			function(resp){
-	 				vm.academichonorList = resp;
-					// console.log("头衔列表："+vm.academichonorList)
-	 				for(var i = 0; i < resp.length;i++)
-	 					vm.academichonor_id.push(false);
-	 			},
-	 			function(resp){
-	 				console.log('get AcademichonorList failed');
-	 			}
-	 		);
-	 	}
-
 
 	 	vm.selectAll = selectAll;
 	 	function selectAll(){

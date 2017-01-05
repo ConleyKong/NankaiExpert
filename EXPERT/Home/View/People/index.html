@@ -101,7 +101,9 @@
                             <label class="btn btn-default" ng-repeat="item in vm.academichonorList"
                                    ng-model="vm.academichonor_id[item.id]" uib-btn-checkbox data-toggle="tooltip"
                                    data-placement="top" title="{{item.abbr_name}}"
-                                   ng-bind="item.abbr_name"></label>
+                                   ng-bind="item.abbr_name">
+
+                            </label>
                         </div>
                     </div>
 
@@ -276,7 +278,7 @@
                     <td ng-bind="item.employee_no"></td>
                     <td ng-bind="item.college_name" class="long-text"></td>
                     <td ng-bind="item.postdoctor==1?'是':'否'"></td>
-                    <td ng-bind="item.academic_name" class="long-text"></td>
+                    <td ng-bind="item.honor_records" class="long-text"></td>
                     <td ng-bind="item.birthday"></td>
                     <td ng-bind="item.email" class="long-text"></td>
                     <td ng-bind="item.phone"></td>
