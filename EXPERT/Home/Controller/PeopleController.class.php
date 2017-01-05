@@ -60,7 +60,7 @@ class PeopleController extends Controller {
             $query["valid"]=true;
 
 	        $result = $person
-                ->field('id,name,gender,employee_no,postdoctor,birthday,email,phone,first_class,second_class,college_name,academic_name,credit')
+//                ->field('id,name,gender,employee_no,postdoctor,birthday,email,phone,first_class,second_class,college_name,academic_name,credit')
                 ->where($query)
                 ->page($pageNum,$itemsNum)
                 ->order('person.id')
@@ -339,8 +339,7 @@ class PeopleController extends Controller {
             $this->redirect('Index/index');
         } else {
             //如果文件非空
-            if (! empty ( $_FILES ['file_import'] ['name'] ))
-            {
+            if (! empty ( $_FILES ['file_import'] ['name'] )){
                 //导入person表
                 $tmp_file = $_FILES ['file_import'] ['tmp_name'];
                 $file_types = explode ( ".", $_FILES ['file_import'] ['name'] );
@@ -354,6 +353,9 @@ class PeopleController extends Controller {
                 }
                 /*设置上传路径*/
                 $savePath = './Public/upfile/Excel/';
+                if(!is_dir($savePath)){
+                    mkdir($savePath, $recursive=true);
+                }
                 /*以时间来命名上传的文件*/
                 $str = date ( 'Ymdhis' );
                 $file_name = "people_info_".$str . "." . $file_type;
@@ -452,7 +454,7 @@ class PeopleController extends Controller {
                             }
                             if($degree_id==-1){
                                 $error_counter++;
-                                $errored_name[]=$data["name"]."（用户学历信息不存在）";
+                                $errored_name[]=$data["name"]."（用户学历信息".$degree_name."不存在）";
                                 continue;
                             }                            
 
@@ -499,7 +501,7 @@ class PeopleController extends Controller {
                             }
                             if($college_id==-1){
                                 $error_counter++;
-                                $errored_name[]=$data["name"]."（学院信息不存在）";
+                                $errored_name[]=$data["name"]."（".$college_name."不存在）";
                                 continue;
                             }
 
@@ -613,6 +615,11 @@ class PeopleController extends Controller {
 //                    $this->redirect("Audit/index");
                 }else{
                     $this->error("存在导入失败的记录，请查看日志进行修正！",'/Audit/index',2);
+                }
+
+                //删除临时文件
+                if(file_exists($file_name)){
+                    unlink($file_name);
                 }
 
             }

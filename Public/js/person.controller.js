@@ -27,18 +27,21 @@
 			getPersonList(vm.params);
 		}, true);
 
+		
 		$scope.$watch('vm.academichonor_id', function(){
 			var temp = [];
  			for (var i = 1;i < vm.academichonor_id.length;i++)
  				if (vm.academichonor_id[i]){
-					temp.push("academic_honor.id = " + i);
-					// id为1和id为2作为一个整体进行搜索，选择2就同时将1加入
-					if(i==2){
-						temp.push("academic_honor.id = " + 1);
+                    console.log(vm.academichonor_id[i])
+					if(i!=2){
+						temp.push(" (academic_honor.id = " + i+") ");
+					}else {
+						// id为2作为一个整体进行搜索，选择2就同时将1加入
+						temp.push(" (academic_honor.id = 1 or academic_honor.id = 2) ");
 					}
 				}
  			if (temp.length){
- 			 	vm.params.academichonor_id = temp.join(' or ');
+ 			 	vm.params.academichonor_id = temp.join(' and ');
  			}else vm.params.academichonor_id = '';
 		}, true);
 

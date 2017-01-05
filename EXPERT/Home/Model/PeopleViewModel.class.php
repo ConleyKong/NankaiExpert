@@ -16,6 +16,7 @@ class PeopleViewModel extends ViewModel {
 			'phone',
 			'first_class',
 			'second_class',
+			'honor_records',
 			'credit',
 			'degree_id',
 			'mentor_type_id',

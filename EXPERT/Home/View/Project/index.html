@@ -189,13 +189,13 @@
         <thead>
           <tr>
             <th><span ng-hide="vm.showCheckbox">#</span><span ng-show="vm.showCheckbox">全选<input type="checkbox" ng-click="vm.selectAll();"></span></th>
-            <th width="10em">名称<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.name"></th>
+            <th width="6em">名称<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.name"></th>
             <th >负责人<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.person_name"></th>
-            <th width="6em">单位<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.join_unit"></th>
+            <th width="4em">单位<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.join_unit"></th>
             <th >纵向<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.depth_flag"></th>
-            <th width="6em">类型<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.type_name"></th>
-            <th width="10em">起始<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.start_time"></th>
-            <th width="10em">结束<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.end_time"></th>
+            <th width="4em">类型<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.type_name"></th>
+            <th width="6em">起始<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.start_time"></th>
+            <th width="6em">结束<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.end_time"></th>
             <th width="6em">来源<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.source"></th>
 
             <!--<th>资助编号<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.support_no"></th>-->
@@ -226,12 +226,8 @@
             <td ng-bind="item.direct_fund"></td>
             <td ng-bind="item.indirect_fund"></td>
             <!--<td ng-bind="item.support_no"></td>-->
-
-
             <!--<td ng-bind="item.source_department"></td>-->
             <!--<td ng-bind="item.subtype"></td>-->
-
-
             <!--<td class="long-text" ng-bind="item.financial_account"></td>-->
             <!--<td ng-bind="item.comment"></td>-->
             <td><a href="__URL__/delete?id={{item.id}}">删除</a> </td>
@@ -239,10 +235,6 @@
           <tr ng-if="vm.paginationConf.totalItems==0"><td colspan="15"><h2 class="text-center text-danger">无数据</h2></td></tr>
         </tbody>
       </table>
-      <!--<form method="post" action="{:U('Project/import')}" enctype="multipart/form-data">-->
-        <!--<h3>导入Excel表：</h3><input  type="file" name="file_import" />-->
-        <!--<input type="submit"  value="导入" />-->
-      <!--</form>-->
       <tm-pagination conf="vm.paginationConf"></tm-pagination>
     </div>
   </div>
