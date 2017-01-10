@@ -26,8 +26,12 @@
             var url = '/Event/eventList/';
             sendRequest.post(url, {}, jQuery.param(params)).then(
                 function(resp){
-                    vm.eventList = resp;
-                    vm.paginationConf.totalItems = resp[0]['totalNum'];
+                    var num = resp[0]['totalNum'];
+                    vm.paginationConf.totalItems = num;
+                    console.log("返回的结果数量为："+num);
+                    if(num>0){
+                        vm.eventList = resp;
+                    }
                 },
                 function(resp){
                     console.log('get eventList failed');

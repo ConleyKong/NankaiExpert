@@ -14,6 +14,7 @@
 <link media="screen" rel="stylesheet" type="text/css" href="__PUBLIC__/css/base.css">
 <link media="screen" rel="stylesheet" type="text/css" href="__PUBLIC__/css/dateRange.css">
 <link media="screen" rel="stylesheet" type="text/css" href="__PUBLIC__/showLoading/css/showLoading.css">
+<!--<link rel="stylesheet" type="text/css" href="__PUBLIC__/css/tooltipster.bundle.min.css" >-->
 
 <block name="css"></block>
 
@@ -49,7 +50,7 @@
 						</li> -->
 						<li class=" nav-item-2" _t_nav="paper">
 							<h2>
-								<a href="/Paper/index">科研成果</a>
+								<a href="/Paper/index">论文专著</a>
 							</h2>
 						</li>
 						<li class=" nav-item-2" _t_nav="patent">
@@ -77,12 +78,18 @@
 								<a href="/Audit/index">操作日志</a>
 							</h2>
 						</li>
-						<li class=" nav-item-2" _t_nav="account">
+						<li class=" nav-item-2 dropdown" _t_nav="account">
 							<h2>
-								<a href="">账户管理</a>
+								<?php $link='#';
+								 if($_SESSION['role_num']==2){
+								 	$link=U('User/index');
+								 }
+								?>
+								<a href="{$link}">账户管理</a>
+								<!--<a href="" style="padding:0 10px">欢迎：<?php echo $_SESSION['username'];?></a>-->
+								<!--<?php echo $_SESSION['abstract'];?>-->
 							</h2>
 						</li>
-
 					</ul>
 				</div>
 			</div>
@@ -459,6 +466,8 @@
 <script type="text/javascript" src="__PUBLIC__/js/dateRange.js"></script>
 <script type="text/javascript" src="__PUBLIC__/js/utils.directive.js"></script>
 <script type="text/javascript" src="__PUBLIC__/js/tm.pagination.js"></script>
+<!--<script type="text/javascript" src="__PUBLIC__/tooltipster/js/tooltipster.bundle.min.js"></script>-->
+
 <script type="text/javascript">
 jQuery(document).ready(function(){
 	var qcloud={};

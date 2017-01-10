@@ -471,7 +471,7 @@ $strPrompt = sprintf("文件%s上传成功<br>"
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-if="vm.paginationConf.totalItems" ng-repeat="item in vm.eventList | filter:filter">
+                <tr ng-if="vm.paginationConf.totalItems>0" ng-repeat="item in vm.eventList | filter:filter">
                     <td ng-bind="item.time_start"></td>
                     <td ng-bind="item.time_end"></td>
                     <td ng-bind="item.name"></td>
@@ -483,7 +483,7 @@ $strPrompt = sprintf("文件%s上传成功<br>"
                     <td><a href="__URL__/delete?id={{item.id}}" >删除</a></td>
 
                 </tr>
-                <tr ng-if="!vm.paginationConf.totalItems"><td colspan="12"><h2 class="text-center text-danger">无数据</h2></td></tr>
+                <tr ng-if="vm.paginationConf.totalItems==0"><td colspan="12"><h2 class="text-center text-danger">无数据</h2></td></tr>
                 </tbody>
             </table>
             <tm-pagination conf="vm.paginationConf"></tm-pagination>

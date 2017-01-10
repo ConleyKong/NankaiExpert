@@ -95,34 +95,25 @@ button.button-link:hover{
 .table th, .table td {
 	text-align: center;
 	vertical-align: middle!important;
+	table-layout: fixed;
 }
 
 .box-width{
 	width: 240px;
 }
 
-/*鼠标掠过显示详细*/
-td { text-overflow:ellipsis; white-space:nowrap; overflow:hidden; }
-
-.long-th{
-	width:10em;
+table{
+	table-layout: fixed;
+}
+/*!*鼠标掠过显示详细*!*/
+td {
+	text-overflow:ellipsis; /*溢出的文字显示为省略号*/
+	white-space:nowrap;  /*规定段落中的文本不进行换行*/
+	overflow:hidden;  /*关闭滚动条*/
 }
 
-td .long-text{
-	margin:0;
-	padding:0;
-	width:10em;
-	height: 3em;
-	display: inline-block;/*内联对象需加*/
-	word-break:keep-all;/* 不换行 */
-	white-space:nowrap;/* 不换行 */
-	overflow:hidden;/* 内容超出宽度时隐藏超出部分的内容 */
-	text-overflow:ellipsis;/* 当对象内文本溢出时显示省略标记(...) ；需与overflow:hidden;一起使用。*/
+td:hover{
+	white-space:pre-wrap;
+    word-wrap:break-word;
 }
-.long-text:hover{
-	text-align:center;
-	vertical-align: middle!important;
-	/*width:auto;*/
-	width:20em;
-}
-s
+

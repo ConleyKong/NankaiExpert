@@ -88,7 +88,7 @@ class AwardController extends Controller {
             
             $query["valid"]=true;
             
-	        $result = $award->field('id,name,first_id,level,time,comment,birthday,person_name,grade_name,academichonor_name,col_name')->where($query)->page($pageNum,$itemsNum)->order('award.id')->select();
+	        $result = $award->where($query)->page($pageNum,$itemsNum)->order('award.id')->select();
             $totalNum = $award->where($query)->count();
             $result[0]['totalNum'] = $totalNum;
             //操作记录日志
@@ -337,35 +337,38 @@ class AwardController extends Controller {
                         $award = M("award");
                         $data = array();
                         $data["name"]= $v[0];//奖励名称
-                        $data["achievement"]= $v[1];//成就（获奖具体）
+                        $data["achievement"]= $v[1];//成就（作品名称）
                         $data["date"]=$v[2];//获奖日期
-                        $first_no =trim($v[3]);//第一获奖人职工号
-                        $others_nos =trim($v[4]);//其他获奖人职工号(中文分号分隔)
+                        $first_name =trim($v[3]);//第一获奖人姓名
+                        $others_names =trim($v[4]);//其他完成人姓名(中文逗号分隔，只收录不带括号的)
                         $data["level"]=$v[5];//等级（省部级、国家级等）
-                        $college_name=$v[6];//奖励所属学院（全称）
+                        $data["sub_level"]=$v[6];//子等级（一等，二等……）
+                        $college_name=trim($v[7]);//奖励所属学院（全称）
 
                         ///////////////////////////////////////////////////////////////////////
                         //\\\\\涉及外键的操作////\\
 
-                        // 处理第一获奖人职工号
-                            $first_id = getPersonIdByEmployeeNo($first_no);
-                            if($first_id>0){
-                                $data["first_id"] = $first_id;
-                            }else{
-                                $error_counter++;
-                                $errored_name[]=$data["name"]."（第一获奖人职工号不存在）";
-                                continue;
-                            }
-
                         //处理学院信息 college_id
-                            $college_id = getForeignKey($college_name,"college",$college_buffer);
-                            if($college_id>0){
-                                $data["college_id"] = $college_id;
-                            }else{
-                                $error_counter++;
-                                $errored_name[]=$data["name"]."（学院信息不存在）";
-                                continue;
-                            }
+                        $college_id = getForeignKeyFromDB($college_name,"college");
+                        if($college_id>0){
+                            $data["college_id"] = $college_id;
+                        }
+                        if($college_id==-1){
+                            $error_counter++;
+                            $errored_name[]=$data["achievement"]."（ $college_name 学院不存在）";
+                            continue;
+                        }
+
+                        // 处理第一获奖人职工号
+                        $first_id = getPidByNameAndCollege($first_name,$college_id);
+                        if($first_id>0){
+                            $data["first_id"] = $first_id;
+                        }
+                        if($first_id==-1){
+                            $error_counter++;
+                            $errored_name[]=$data["achievement"]."（第一获奖人".$first_name."不存在）";
+                            continue;
+                        }
 
                         $condition["achievement"] =$data["achievement"];
                         $condition["name"]=$data["name"];
@@ -394,12 +397,17 @@ class AwardController extends Controller {
                         {
                             $error_counter++;
                             $errored_name[]=$data["name"];
-                        }else if($others_nos!=''){
+                        }else if($others_names!=''){
                             // 插入其他奖励人职工号
                             $award_id = (int)$result;
-                            $others_no_list = explode('；',$others_nos);//此处分隔符需要选用全角分号，因为Excel中输入的可能是用的中文输入法
-                            foreach($others_no_list as $person_no){
-                                $person_id = getPersonIdByEmployeeNo($person_no);
+                            $others_no_list = explode(',',$others_names);//半角逗号为分隔符
+                            $other_experts = "";
+                            foreach($others_no_list as $person_name){
+                                if( strpos($person_name,'(' ) != false ){//字符串带有括号，即不是本校老师则不处理
+                                    continue;
+                                }
+                                $other_experts .= "$person_name".'.';
+                                $person_id = getPidByNameAndCollege($person_name,$college_id);
 
                                 if($person_id>0){
                                     $token["award_id"] = $award_id ;
@@ -409,11 +417,17 @@ class AwardController extends Controller {
                                         //插入patent_other_inventor数据
                                         $award_other_person_result = M('award_other_person')->add($token);
                                     }//若更新的数据少于上次的数据如何处理？
-                                }else{//可能获取不到这个外键的id
+                                }
+                                if($person_id==-1){//获取id失败
                                     $error_counter++;
-                                    $errored_name[]=$data["name"]."（其他获奖人职工号 $person_no 不存在）";
+                                    $errored_name[]=$data["achievement"]."（其他参与人 $person_name 职工号不存在）";
                                     continue;
                                 }
+                            }
+                            if($other_experts!=""){
+                                //最后补充合作人信息
+                                $data["cooperator"]=$other_experts;
+                                $award->where($condition)->save($data);
                             }
                         }
                     }
@@ -427,7 +441,9 @@ class AwardController extends Controller {
                 $audit['module'] = '人员信息';
                 $audit['time'] = date('y-m-d h:i:s', time());
                 $error_counter>0?$audit['result'] ='警告':$audit['result'] = '成功';
-                $descr = "\n 记录导入失败".$error_counter."条；\n ";
+                $descr = "\n 成功插入记录".$insert_counter."条；\n";
+                $descr .= "\n 成功更新记录".$update_counter."条；\n";
+                $descr .= "\n 记录导入失败".$error_counter."条；\n ";
                 if($error_counter>0){
                     //将插入失败的用户姓名记录下来
                     $descr .= "导入失败的用户名： ";
@@ -435,7 +451,7 @@ class AwardController extends Controller {
                         $descr .= $e_name.",";
                     }
                 }
-                $descr .= "\n 成功插入记录".$insert_counter."条；\n";
+
                 if($insert_counter>0){
                     //将插入成功的用户id记录下来
                     $descr .= "成功插入的用户id： ";
@@ -443,7 +459,6 @@ class AwardController extends Controller {
                         $descr .= $id.",";
                     }
                 }
-                $descr .= "\n 成功更新记录".$update_counter."条；\n";
                 if($update_counter>0){
                     //将更新成功的用户id记录下来
                     $descr .= "成功更新的用户id： ";
@@ -456,9 +471,10 @@ class AwardController extends Controller {
 
                 if($error_counter==0){
 //                    $this->success("恭喜您，成功导入或更新数据"+($insert_counter+$update_counter)+"条！（详情见日志）",'',5);
-                    $this->success("导入工作成功（详情见日志）",'',3);
+                    $this->success("导入工作成功（详情见日志）",'/Audit/index',2);
+//                    $this->redirect("Audit/index");
                 }else{
-                    $this->error("存在导入失败的记录，请查看日志进行修正！",'',30);
+                    $this->error("存在导入失败的记录，请查看日志进行修正！",'/Audit/index',2);
                 }
 
             }

@@ -396,7 +396,7 @@ class ProjectController extends Controller {
                         }
                         if($college_id==-1){
                             $error_counter++;
-                            $errored_name[]=$data["name"]."（学院信息不存在）";
+                            $errored_name[]=$data["name"]."（".$college_name."不存在）";
                             continue;
                         }
 
@@ -408,7 +408,7 @@ class ProjectController extends Controller {
                         //结果为0时为表明入参存在空值，不影响本条数据的插入，因此不continue
                             if($manager_id==-1){//真的出错时
                                 $error_counter++;
-                                $errored_name[]=$data["name"]."（".$college_name." 学院项目负责人"." $manager_name"."不存在）";
+                                $errored_name[]=$data["name"]."（".$college_name."负责人"." $manager_name"."不存在）";
                                 continue;
                             }
 

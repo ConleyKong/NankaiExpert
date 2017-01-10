@@ -44,7 +44,7 @@
 		}, true);
 
 		$scope.$watch('vm.level', function(){
-			var level = ['国家级', '省级奖', '部级奖','其它'], temp = [];
+			var level = ['国家级', '省级奖', '部级奖','学校级','其它'], temp = [];
  			for (var i = 0;i < vm.level.length;i++)
  				if (vm.level[i])
  					temp.push("level = '" + level[i] + "'");
@@ -60,8 +60,12 @@
 	 		var url = '/Award/awardList/';
 	 		sendRequest.post(url, {}, jQuery.param(params)).then(
 	 			function(resp){
-	 				vm.awardList = resp;
-	 				vm.paginationConf.totalItems = resp[0]['totalNum'];
+					var num = resp[0]['totalNum'];
+					vm.paginationConf.totalItems = num;
+					console.log("返回的结果数量为："+num);
+					if(num>0){
+						vm.awardList = resp;
+					}
 	 			},
 	 			function(resp){
 	 				console.log('get awardList failed');

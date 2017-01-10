@@ -29,8 +29,12 @@
 	 		var url = '/paper/PaperList/';
 	 		sendRequest.post(url, {}, jQuery.param(params)).then(
 	 			function(resp){
-	 				vm.paperList = resp;
-	 				vm.paginationConf.totalItems = resp[0]['totalNum'];
+	 				vm.paperList = resp;var num = resp[0]['totalNum'];
+					vm.paginationConf.totalItems = num;
+					console.log("返回的结果数量为："+num);
+					if(num>0){
+						vm.paperList = resp;
+					}
 	 			},
 	 			function(resp){
 	 				console.log('get paperList failed');

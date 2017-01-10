@@ -141,22 +141,27 @@ function readExcel($filename, $extension='xls', $encode = 'utf-8')
  * $i_data,需要插入外表的真实数据
  * $i_table,外表的名称
  * 返回值：
- * 获得的外表的id
+ * 若查询成功：
+ * 		获得的外表的id
+ * 若查询失败：
+ *  	传入的为空值，返回0
+ * 		无法找到信息：返回-1
  */
 function getForeignKeyFromDB($i_data,$i_table){
 	if($i_data!=null){
 		$t_id = null;
-			//缓存中不存在当前的学历
-//			$condition["name"]=$i_data;
 			$d_array = M($i_table)->where("name='%s' ",$i_data)->field('id')->find();
 			$t_id = (int)$d_array['id'];
 		if($t_id!=null){
 			return  $t_id;
+		}else{
+			return -1;
 		}
+	}else{
+		//空值返回0
+		return 0;
 	}
-	//外键获取失败
-//  $this->error ( $i_table.' 的外键id获取失败，无法插入' );
-	return -1;
+
 }
 
 
@@ -241,9 +246,9 @@ function getPersonIdByEmployeeNo($employee_no)
  */
 function getPidByNameAndCollege($employee_name,$college_id)
 {
-	$id = null;
-	$equ_colleges = array(array('7','12'));//  (计控=软件学院)
+	$equ_colleges = array(array('13','12'));//  (计控=软件学院)
 	if ($employee_name != null) {
+		$id = null;
 		$p = D("person")->where("name='%s' ", $employee_name)->select();
 		$dupNum = count($p);
 		if($dupNum==1){//单例情况，直接返回id值
@@ -269,12 +274,15 @@ function getPidByNameAndCollege($employee_name,$college_id)
 				}
 			}
 		}
-	}
-	if ($id != null) {
-		return $id;
+		if ($id != null) {
+			return $id;
+		}else{
+			return -1;
+		}
 	}else{
-		return -1;
+		return 0;
 	}
+
 
 }
 
@@ -364,4 +372,11 @@ function rmdirs($dir){
 				unlink($dir.'/'.$val);
 		}
 	}
+}
+
+/*
+ * 将字符串根据指定分隔符分割，然后去除末尾带括号的
+ */
+function getExperts(){
+
 }

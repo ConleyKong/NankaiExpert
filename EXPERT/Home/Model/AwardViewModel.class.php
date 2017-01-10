@@ -9,8 +9,10 @@ class AwardViewModel extends ViewModel {
 			'first_id',
 			'name',
 			'level',
+			'sub_level',
 			'achievement',
 			'date' => 'time',
+			'cooperator',
 			'comment',
 			'valid',
 		),
@@ -31,11 +33,11 @@ class AwardViewModel extends ViewModel {
 			'_on' => 'person.id=person_honor.person_id',
 			'_type' => 'LEFT',
 		),
-		'academic_honor' => array(
-			'id' => 'academichonor_id',
-			'name' => 'academichonor_name',
-			'_on' => 'person_honor.honor_id=academic_honor.id',
-		),
+//		'academic_honor' => array(
+//			'id' => 'academichonor_id',
+//			'name' => 'academichonor_name',
+//			'_on' => 'person_honor.honor_id=academic_honor.id',
+//		),
 		'college' => array(
 			'id' => 'college_id',
 			'name' => 'col_name',

@@ -28,8 +28,12 @@
 	 		var url = '/Lab/labList/';
 	 		sendRequest.post(url, {}, jQuery.param(params)).then(
 	 			function(resp){
-	 				vm.labList = resp;
-	 				vm.paginationConf.totalItems = resp[0]['totalNum'];
+					var num = resp[0]['totalNum'];
+					vm.paginationConf.totalItems = num;
+					console.log("返回的结果数量为："+num);
+					if(num>0){
+						vm.labList = resp;
+					}
 	 			},
 	 			function(resp){
 	 				console.log('get labList failed');

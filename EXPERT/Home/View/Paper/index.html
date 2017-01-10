@@ -112,23 +112,18 @@
             <table class="table table-bordered table-striped table-hover">
                 <thead>
                 <tr>
-                    <th><span ng-hide="vm.showCheckbox">#</span><span ng-show="vm.showCheckbox">全选<input type="checkbox"
-                                                                                                         ng-click="vm.selectAll();"></span>
-                    </th>
-                    <th>论文名<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.name"></th>
-                    <th>第一作者单位<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.col_name"></th>
-                    <th>第一作者<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.person_name">
-                    </th>
-                    <th>期刊/会议名称<input type="checkbox" ng-show="vm.showCheckbox"
-                                      ng-model="vm.exportParams.conference_name"></th>
-                    <th>发表时间<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.publish_date">
-                    </th>
-                    <th>备注<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.comment"></th>
-                    <th>操作</th>
+                    <th width="4%"><span ng-hide="vm.showCheckbox">#</span><span ng-show="vm.showCheckbox">全选<input type="checkbox" ng-click="vm.selectAll();"></span></th>
+                    <th width="28%">论文名<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.name"></th>
+                    <th width="16%">第一作者单位<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.col_name"></th>
+                    <th width="8%">第一作者<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.person_name"></th>
+                    <th width="16%">期刊/会议名称<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.conference_name"></th>
+                    <th width="8%">发表时间<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.publish_date"></th>
+                    <th width="16%">备注<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.comment"></th>
+                    <th width="4%">操作</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-if="vm.paginationConf.totalItems" ng-repeat="item in vm.paperList | filter:filter">
+                <tr ng-if="vm.paginationConf.totalItems>0" ng-repeat="item in vm.paperList | filter:filter">
                     <td ng-bind="item.id"></td>
                     <td ng-bind="item.name"></td>
                     <td ng-bind="item.col_name"></td>
@@ -138,7 +133,7 @@
                     <td ng-bind="item.comment"></td>
                     <td><a href="__URL__/delete?id={{item.id}}">删除</a></td>
                 </tr>
-                <tr ng-if="!vm.paginationConf.totalItems">
+                <tr ng-if="vm.paginationConf.totalItems==0">
                     <td colspan="12"><h2 class="text-center text-danger">无数据</h2></td>
                 </tr>
                 </tbody>
