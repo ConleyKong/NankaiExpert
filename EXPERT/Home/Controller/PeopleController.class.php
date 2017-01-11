@@ -55,8 +55,6 @@ class PeopleController extends Controller {
                 $query['employee_no']=array('like','%'.$param['employee_no'].'%');
                 unset($param['employee_no']);
             }
-
-
             $query["valid"]=true;
 
 	        $result = $person
@@ -67,6 +65,15 @@ class PeopleController extends Controller {
                 ->select();
             $totalNum = $person->where($query)->count();
             $result[0]['totalNum'] = $totalNum;
+            /*
+             * 添加统计结果
+             */
+            //根据学院统计
+            $itemCollegeCount = $person->field('college_name,count(*) enum')->where($query)->group('college_name')->select();
+            //根据学术称号统计
+//            $itemHonorCount = $person->field('college_name,count(*) enum')->where($query)->group('college_name')->select();
+            $result[0]['itemCollegeCount']=$itemCollegeCount;
+//            $result[0]['itemHonorCount']=$itemHonorCount;
 
             //操作记录日志
 //            $audit['name'] = session('username');
@@ -191,7 +198,7 @@ class PeopleController extends Controller {
         }
     }
 
-    function queryAPI(){
+    function countQuery(){
         if (! session('logged')){
             $this->redirect('Index/index');
         }
@@ -201,7 +208,22 @@ class PeopleController extends Controller {
             $person = D('PeopleView');
             $condition['valid']=true;
             $result = $person->where($condition)->field($field)->group($group)->select();
-            $this->result = $result;
+            $this->ajaxReturn($result, 'json');
+        }
+    }
+
+    function queryAPI(){
+        if (! session('logged')){
+            $this->redirect('Index/index');
+        }
+        else{
+
+            $field = I('post.field', null, 'string');
+            $group = I('post.group', null, 'string');
+            $person = D('PeopleView');
+            $condition['valid']=true;
+            $result = $person->where($condition)->field($field)->group($group)->select();
+//            $this->result = $result;
             $this->ajaxReturn($result, 'json');
         }
     }
@@ -439,8 +461,8 @@ class PeopleController extends Controller {
                         $title_name = trim($v[12]);
                         $college_name = trim($v[13]);
                         $postdoctor = trim($v[14]);
-//                        $person_honor_names=trim($v[15]);
-                        $data['honor_records']=trim($v[15]);
+                        $person_honor_names=trim($v[15]);
+                        $data['honor_records']=$person_honor_names;
 //                        $credit = $v[16];
                         $credit = 50;//默认设置为50分
                         $data['credit'] = $credit;
@@ -539,38 +561,38 @@ class PeopleController extends Controller {
                             $inserted_id[]=$result;
                         }
 
-//                        //若未插入数据则是更新数据，因此需要连带更新关联表
-//                        if (empty($result))
-//                        {
-//                            $error_counter++;
-//                            $errored_name[]=$data["name"];
-//                        }else if($person_honor_names!=''){
-//                            /* honor的插入需要特别注意，由于是一对多关系，因此会涉及三张表：
-//                             * 插入的主表为person_honor  涉及到 person中的id   和  academic_honor中的id
-//                             * $u_honor = $v[15];
-//                             */
-////                            dump($data);//显示添加的数据
-//                            $person_id = (int)$result;
-//                            $honor_list = explode('；',$person_honor_names);//此处分隔符需要选用全角分号，因为Excel中输入的可能是用的中文输入法
-//                            foreach($honor_list as $honor_name){
-//                                $honor_id = getHonorIdByName($honor_name);
-//                                //可能获取不到这个外键的id
-//                                if($honor_id>0){
-//                                    $token["person_id"] = $person_id ;
-//                                    $token["honor_id"]  = $honor_id  ;
-//                                    $existed = M('person_honor')->where($token)->find();
-//                                    if($existed==null){
-//                                        //插入honor数据
-//                                        $honor_result = M('person_honor')->add($token);
-//                                    }
-//                                }
-//                                if($honor_id==-1){
-//                                    $error_counter++;
-//                                    $errored_name[]=$data["name"]."（学术称号 $honor_name 不存在）";
-//                                    continue;
-//                                }
-//                            }
-//                        }
+                        //若未插入数据则是更新数据，因此需要连带更新关联表
+                        if (empty($result)){
+                            $error_counter++;
+                            $errored_name[]=$data["name"];
+                        }else if($person_honor_names!=''){
+                            /* honor的插入需要特别注意，由于是一对多关系，因此会涉及三张表：
+                             * 插入的主表为person_honor  涉及到 person中的id   和  academic_honor中的id
+                             * $u_honor = $v[15];
+                             */
+//                            dump($data);//显示添加的数据
+                            $person_id = (int)$result;
+                            //分隔符选用半角逗号
+                            $honor_list = explode(',',$person_honor_names);
+                            foreach($honor_list as $honor_name){
+                                $honor_id = getHonorIdByName($honor_name);
+                                //可能获取不到这个外键的id
+                                if($honor_id>0){
+                                    $token["person_id"] = $person_id ;
+                                    $token["honor_id"]  = $honor_id  ;
+                                    $existed = M('person_honor')->where($token)->find();
+                                    if($existed==null){
+                                        //插入honor数据
+                                        $honor_result = M('person_honor')->add($token);
+                                    }
+                                }
+                                if($honor_id==-1){
+                                    $error_counter++;
+                                    $errored_name[]=$data["name"]."（学术称号 $honor_name 不存在）";
+                                    continue;
+                                }
+                            }
+                        }
 
                     }
 

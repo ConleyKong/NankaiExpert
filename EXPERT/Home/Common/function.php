@@ -276,7 +276,7 @@ function getPidByNameAndCollege($employee_name,$college_id)
 		}
 		if ($id != null) {
 			return $id;
-		}else{
+		}else if($college_id!=null){
 			return -1;
 		}
 	}else{

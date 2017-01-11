@@ -285,7 +285,8 @@ class PaperController extends Controller {
                         $contact_author_no = $v[3];//联系作者id//联系作者职工号(contact_author_id->person(employee_num))
                         $data["paper_type"]=$v[4];//论文类型(paper_type)
                         $data["conference_name"]=$v[5];//期刊/会议名称(conference_name)
-                        $data["other_author"]=$v[6];//其他作者（学院），多个作者中间用分号隔开(other_author)
+                        $other_authors = $v[6];
+                        $data["other_authors"]=$other_authors;//其他作者（学院），多个作者中间用中文逗号隔开(other_author)
                         $college_name = $v[7];//学院名(college_id->college(name))
 
                         ///////////////////////////////////////////////////////////////////////
@@ -330,6 +331,10 @@ class PaperController extends Controller {
                             //将成功更新的数据记录到日志中
                             $update_counter++;
                             $updated_id[]=$result;
+
+                            //删除所有paper_other_authors相关记录
+                            $flag["paper_id"]=(int)$result;
+                            M('paper_other_authors')->where($flag)->delete();
                         }else{
                             //插入数据
                             $result = $paper->add($data);
@@ -342,6 +347,21 @@ class PaperController extends Controller {
 //                            $this->error ( '数据插入/更新失败！' );
                             $error_counter++;
                             $errored_name[]=$data["name"];
+                        }else if($other_authors!=''){
+                            $paper_id = (int)$result;
+                            //分隔符选用半角逗号
+                            $author_list = explode(',',$other_authors);
+                            foreach($author_list as $author_name){
+                                $author_id = getPidByNameAndCollege($author_name,null);
+                                //上边已经删除了重复记录，因此此处直接插入
+                                $token["paper_id"] = $paper_id;
+                                $token["person_name"]=$author_name;
+                                //可能获取不到这个外键的id
+                                if($author_id>0){
+                                    $token["person_id"] = $author_id;
+                                }
+                                $honor_result = M('paper_other_authors')->add($token);
+                            }
                         }
 
                     }

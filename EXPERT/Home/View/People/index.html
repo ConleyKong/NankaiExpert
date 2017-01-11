@@ -83,19 +83,12 @@
                 <span>筛选条件：</span>
             </div>
             <div class="panel-body">
-                <div class="col-sm-12 row">
-                    <!--<show-more count="5">-->
-                    <!--<div class="col-sm-12 bottom-10">-->
-                    <!--<span class="cond-label">年龄段：</span>-->
-                    <!--&lt;!&ndash;<div class="btn-group">&ndash;&gt;-->
-                    <!--&lt;!&ndash;<date-range start-time="vm.params.startTime" end-time="vm.params.endTime"></date-range>&ndash;&gt;-->
-                    <!--&lt;!&ndash;</div>&ndash;&gt;-->
-                    <!--</div>-->
+                <div class="col-sm-12">
                     <div class="col-sm-12 bottom-10">
                         <div class="col-sm-1">
                             <span>学术称号：</span>
                         </div>
-                        <div class="btn-group">
+                        <div class="btn-group col-sm-11">
                             <label class="btn btn-default active" ng-click="vm.resetCheckbox(vm.academichonor_id)"
                                    ng-model="vm.params.academichonor_id" uib-btn-radio="''">全部</label>
                             <label class="btn btn-default" ng-repeat="item in vm.academichonorList"
@@ -109,11 +102,8 @@
 
 
                     <div class="col-sm-12 top-10">
-                        <!--<div class="col-sm-1">-->
-                            <!--<span>概要信息：</span>-->
-                        <!--</div>-->
-                        <div class="col-sm-4">
-                            <span class="cond-label">学&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;院：&nbsp;&nbsp;&nbsp;</span>
+                        <div class="col-sm-5">
+                            <span class="cond-label">学&nbsp;&nbsp;&nbsp;&nbsp;院：&nbsp;</span>
                             <div class="btn-group">
                                 <label style="margin-bottom:0;color:#eee">
                                     <select class="box-width form-control" ng-model="vm.collegeSelected"
@@ -178,16 +168,19 @@
                     <!--</span>-->
                     <!--</div>-->
                     <!--</show-more>-->
+                    <a class="btn btn-primary top-10" ng-click="vm.showChart()" ng-hide="vm.chartFlag">显示统计图</a>
+                </div>
+                <div  class="col-sm-12 top-10" ng-show="vm.chartFlag" ng-cloak>
+                    <hr/>
+                    <div id="p1" style="height: 300px;width:1126px;"></div>
+                    <a class="btn btn-primary" ng-click="vm.chartFlag=false">关闭统计图</a>
                 </div>
             </div>
-
-
         </div>
-
         <div class="col-md-12">
             <div class="panel panel-default table-header">
-                <div class="panel-heading table-heading">
-                    <div class="row">
+                <div class="panel-heading table-heading"  ng-cloak>
+                    <div class="row" >
                         <div class="col-md-4 pull-left">
                             <h3 class="panel-title table-title">人员列表</h3>
                         </div>
@@ -298,20 +291,10 @@
         </div>
     </div>
 </block>
-<block name="js">
-    <script type="text/javascript" src="__PUBLIC__/js/person.controller.js"></script>
-    <script type="text/javascript" src="__CDN__/angular-ui-bootstrap/0.14.3/ui-bootstrap.min.js"></script>
-    <script type="text/javascript">
-//        激活tooltip插件
-        $(document).ready(function() {
-            $('.tooltip').tooltip();
-        });
-//        $(function(){
-////            $("[data-toggle='tooltip']").tooltip();
-//            $(".longtext").tooltip();//显示tittle
-//        });
 
-    </script>
+<block name="js">
+    <script type="text/javascript" src="__CDN__/angular-ui-bootstrap/0.14.3/ui-bootstrap.min.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/js/person.controller.js"></script>
     <script type="text/javascript">
         var collegeList = '', collegeName = '';
         // getCollege();

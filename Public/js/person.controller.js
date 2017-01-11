@@ -17,6 +17,14 @@
 	       		//console.log('page change', vm.params);
 	    	}
 		}
+		vm.chartFlag = false;//是否显示统计图表
+
+		vm.showChart = function () {
+			vm.chartFlag = true;
+			// angular.element("#pi").style('cursor','default');
+			makeChart('p1', vm.option);
+		}
+
 
 		$scope.$watch('vm.showCheckbox',function () {
 			console.log("vm.showcheckbox 改变了："+vm.showCheckbox)
@@ -75,6 +83,20 @@
 	 		sendRequest.post(url, {}, jQuery.param(params)).then(
 	 			function(resp){
 					var num = resp[0]['totalNum'];
+
+					//更新统计信息
+					vm.option = $.extend(true, {}, pieOption);
+					var college_data = resp[0]['itemCollegeCount'];
+					angular.forEach(college_data,function (item,index) {
+						if(item.college_name!=null){
+							// console.log(item.college_name);
+							vm.option.legend.data.push(item.college_name);
+							vm.option.series[0].data.push({value:item.enum, name:item.college_name});
+						}
+					});
+
+					makeChart('p1',vm.option);
+
 					vm.paginationConf.totalItems = num;
 					console.log("返回的结果数量为："+num);
 					if(num>0){
@@ -114,8 +136,10 @@
 	 		else if (vm.collegeSelectedList.indexOf(vm.collegeSelected)<0){
 	 			vm.collegeSelectedList.push(vm.collegeSelected);
 	 			var temp = [];
-	 			for (var i = 0;i < vm.collegeSelectedList.length;i++)
-	 				temp.push("college.id = " + vm.collegeSelectedList[i]);
+	 			for (var i = 0;i < vm.collegeSelectedList.length;i++){
+					temp.push("college.id = " + vm.collegeSelectedList[i]);
+					// vm.pieCollegeLegend.push(vm.collegeMap[vm.collegeSelectedList[i]]);
+				}
 	 			if (temp.length){
 	 			 	vm.params.college_id = temp.join(' or ');
 	 			}else vm.params.college_id = '';
@@ -127,8 +151,12 @@
 	 	function removeCollege(id){
 	 		vm.collegeSelectedList.splice(vm.collegeSelectedList.indexOf(id), 1);
 	 		var temp = [];
- 			for (var i = 0;i < vm.collegeSelectedList.length;i++)
- 				temp.push("college.id = " + vm.collegeSelectedList[i]);
+			// vm.pieCollegeLegend = [''];
+ 			for (var i = 0;i < vm.collegeSelectedList.length;i++){
+				temp.push("college.id = " + vm.collegeSelectedList[i]);
+				// vm.pieCollegeLegend.push(vm.collegeMap[vm.collegeList[i]]);
+				// vm.pieCollegeLegend.push(vm.collegeMap[vm.collegeSelectedList[i]]);
+			}
  			if (temp.length){
  			 	vm.params.college_id = temp.join(' or ');
  			}else{
@@ -211,26 +239,67 @@
 
 	 	}
 
-		// function objectToArray(o)
-		// {
-		// 	this.data=[];
-		// 	var keyset=o.keys();
-		// 	if(typeof (o)=='object'){
-        //
-		// 	}
-		// 	foreach ($_array as $key => $value) {
-		// 	$value = (is_array($value) || is_object($value)) ? objectToArray($value) : $value;
-		// 	$array[$key] = $value;
-		// 	return this.data;
-		// }
-		// 	return $array;
-		// }
-
 	 	vm.selectAll = selectAll;
 	 	function selectAll(){
 	 		angular.forEach(vm.exportParams, function(value, key){
 	 			vm.exportParams[key] = !value;
 	 		});
 	 	}
+
+
+		function makeChart(id, option){
+			var myChart = echarts.init(document.getElementById(id), 'macarons');
+			myChart.setOption(option);
+			window.onresize = myChart.resize;
+		}
+
+		var pieOption = {
+			title : {
+				text: '专家人才成分构成',
+				subtext: '学院分布情况',
+				x:'center'
+			},
+			tooltip : {
+				trigger: 'item',
+				formatter: "{a} <br/>{b} : {c} ({d}%)"
+			},
+			legend: {
+				orient : 'vertical',
+				x : 'left',
+				data:[]
+			},
+			toolbox: {
+				show : true,
+				feature : {
+					mark : {show: true},
+					dataView : {show: true, readOnly: false},
+					magicType : {
+						show: true,
+						type: ['pie', 'funnel'],
+						option: {
+							funnel: {
+								x: '25%',
+								width: '70%',
+								funnelAlign: 'right',
+								max: 1548
+							}
+						}
+					},
+					restore : {show: true},
+					saveAsImage : {show: true}
+				}
+			},
+			calculable : true,
+			series : [
+				{
+					name:'所属学院',
+					type:'pie',
+					radius : '55%',
+					center: ['50%', '60%'],
+					data:[]
+				}
+			]
+		};
+
     }
 })()

@@ -380,7 +380,7 @@ class ProjectController extends Controller {
                         $expert_participants = null;
                         foreach ($orign_participants as $participant) {
                             if(strpos($participant,"(学)")==false){//不存在(学)，是专家
-                                $expert_participants.$participant."；";
+                                $expert_participants.$participant.",";
                             }
                         }
                         $data["participants"] = $expert_participants;//参与教职工，使用；号分隔
@@ -434,6 +434,10 @@ class ProjectController extends Controller {
                             //将成功更新的数据记录到日志中
                             $update_counter++;
                             $updated_id[]=$result;
+
+                            //删除所有project_other_persons相关表，稍后重新插入（以后来数据为准）
+                            $flag["project_id"]=(int)$result;
+                            M('project_other_persons')->where($flag)->delete();
                         }else{
                             //插入数据
                             $result = $project->add($data);
@@ -445,6 +449,21 @@ class ProjectController extends Controller {
                         {
                             $error_counter++;
                             $errored_name[]=$data["name"]."(插入失败)";
+                        }else if($expert_participants!=null){
+                            $project_id = (int)$result;
+                            //分隔符选用半角逗号
+                            foreach($expert_participants as $expert_name){
+                                $expert_id = getPidByNameAndCollege($expert_name,null);
+
+                                //前提是前面已经根据project_id删除了先前的other_expert的信息
+                                $token["project_id"] = $project_id ;
+                                $token["person_name"] = $expert_name;
+                                //可能获取不到这个外键的id
+                                if($expert_id>0){
+                                    $token["person_id"]  = $expert_id  ;
+                                }
+                                $other_result = M('project_other_persons')->add($token);
+                            }
                         }
 
                     }
