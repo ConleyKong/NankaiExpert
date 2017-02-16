@@ -63,17 +63,21 @@ class PeopleController extends Controller {
                 ->page($pageNum,$itemsNum)
                 ->order('person.id')
                 ->select();
-            $totalNum = $person->where($query)->count();
-            $result[0]['totalNum'] = $totalNum;
             /*
              * 添加统计结果
              */
             //根据学院统计
             $itemCollegeCount = $person->field('college_name,count(*) enum')->where($query)->group('college_name')->select();
-            //根据学术称号统计
-//            $itemHonorCount = $person->field('college_name,count(*) enum')->where($query)->group('college_name')->select();
+            //根据学术称号统计,复杂，需要多表联合查询
+//            $itemHonorCount = $person->field('honor_records,count(*) enum')->where($query)->group('honor_records')->select();
+            //根据职称统计
+            $itemTitleCount = $person->field('title_name,count(*) enum')->where($query)->group('title_name')->select();
+
             $result[0]['itemCollegeCount']=$itemCollegeCount;
 //            $result[0]['itemHonorCount']=$itemHonorCount;
+            $result[0]['itemTitleCount']=$itemTitleCount;
+            $totalNum = $person->where($query)->count();
+            $result[0]['totalNum'] = $totalNum;
 
             //操作记录日志
 //            $audit['name'] = session('username');
@@ -336,7 +340,7 @@ class PeopleController extends Controller {
                 return '未知错误';
             }
 
-            $titleMap = array('name'=>'姓名','gender'=>'性别','employee_no'=>'职工号','college_name'=>'学院/部门','postdoctor'=>'博士后','honor_records'=>'荣誉称号','birthday'=>'出生日期','email'=>'邮箱','phone'=>'电话','first_class'=>'一级学科','second_class'=>'二级学科','credit'=>'诚信');
+            $titleMap = array('name'=>'姓名','gender'=>'性别','employee_no'=>'职工号','college_name'=>'学院/部门','title_name'=>'职称','postdoctor'=>'博士后','honor_records'=>'荣誉称号','birthday'=>'出生日期','email'=>'邮箱','phone'=>'电话','first_class'=>'一级学科','second_class'=>'二级学科','credit'=>'诚信');
             $field = split(',', $field);
             $excelTitle = array();
             foreach ($field as $value) {

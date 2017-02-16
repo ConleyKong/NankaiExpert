@@ -95,7 +95,6 @@
                                    ng-model="vm.academichonor_id[item.id]" uib-btn-checkbox data-toggle="tooltip"
                                    data-placement="top" title="{{item.abbr_name}}"
                                    ng-bind="item.abbr_name">
-
                             </label>
                         </div>
                     </div>
@@ -168,12 +167,32 @@
                     <!--</span>-->
                     <!--</div>-->
                     <!--</show-more>-->
-                    <a class="btn btn-primary top-10" ng-click="vm.showChart()" ng-hide="vm.chartFlag">显示统计图</a>
+                    <!--<a class="btn btn-primary top-10" ng-click="vm.showChart()" ng-hide="vm.chartFlag">显示统计图</a>-->
+
+                    <div class="col-sm-12 top-10" align="center" ng-hide="vm.chartFlag">
+                        <a ng-click="vm.showChart()" href="" title="显示统计图">
+                            <span class="glyphicon glyphicon-chevron-down"></span><br/>
+                            <sapn>显示统计图表</sapn>
+                        </a>
+                    </div>
                 </div>
                 <div  class="col-sm-12 top-10" ng-show="vm.chartFlag" ng-cloak>
                     <hr/>
-                    <div id="p1" style="height: 300px;width:1126px;"></div>
-                    <a class="btn btn-primary" ng-click="vm.chartFlag=false">关闭统计图</a>
+                    <span class="cond-label col-sm-1">统计类型：</span>
+                    <div class="col-sm-10 bottom-11">
+                        <div class="btn-group">
+                            <label class="btn btn-default active" ng-model="vm.count_type" uib-btn-radio="'college'" >科研单位</label>
+                            <label class="btn btn-default" ng-model="vm.count_type" uib-btn-radio="'title'">职称类型</label>
+                            <!--<label class="btn btn-default" ng-model="vm.count_type" uib-btn-radio="'honor'">学术称号</label>-->
+                        </div>
+                    </div>
+                    <div id="p1" style="height: 300px;width:1126px;" class="bottom-10"></div>
+                    <div class="top-10" align="center">
+                        <a ng-click="vm.chartFlag=false" href="" title="隐藏图表">
+                            <span class="glyphicon glyphicon-chevron-up"></span><br/>
+                            <sapn>隐藏统计图表</sapn>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -244,21 +263,19 @@
             <table class="table table-bordered table-striped table-hover">
                 <thead>
                 <tr>
-                    <th width="4%"><span ng-hide="vm.showCheckbox">#</span><span ng-show="vm.showCheckbox">全选<input type="checkbox"></th>
+                    <th width="4%"><span ng-hide="vm.showCheckbox">#</span><span ng-show="vm.showCheckbox">全选</span><input type="checkbox"></th>
                     <th width="8%">姓名<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.name"></th>
                     <th width="4%">性别<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.gender"></th>
                     <th width="8%">职工号<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.employee_no"></th>
                     <th width="16%">学院<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.college_name"></th>
-                    <th width="4%">博士后<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.postdoctor"></th>
-                    <th width="16%">学术荣誉<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.honor_records">
-                    </th>
+                    <th width="8%">职称<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.title_name"></th>
+                    <th width="8%">学术荣誉<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.honor_records"></th>
                     <th width="8%">出生日期<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.birthday"></th>
                     <th width="8%">邮箱<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.email"></th>
                     <th width="8%">电话<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.phone"></th>
-                    <th width="4%">一级学科<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.first_class">
-                    </th>
-                    <th width="4%">二级学科<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.second_class">
-                    </th>
+                    <th width="4%">一级学科<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.first_class"></th>
+                    <th width="4%">二级学科<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.second_class"></th>
+                    <th width="4%">博士后<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.postdoctor"></th>
                     <th width="4%">诚信<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.credit"></th>
                     <th width="4%">操作</th>
                 </tr>
@@ -270,13 +287,14 @@
                     <td ng-bind="item.gender"></td>
                     <td ng-bind="item.employee_no"></td>
                     <td ng-bind="item.college_name"></td>
-                    <td ng-bind="item.postdoctor==1?'是':'否'"></td>
+                    <td ng-bind="item.title_name"></td>
                     <td ng-bind="item.honor_records" title="{{item.honor_records}}"></td>
                     <td ng-bind="item.birthday"></td>
                     <td ng-bind="item.email" ></td>
                     <td ng-bind="item.phone"></td>
                     <td ng-bind="item.first_class" ></td>
                     <td ng-bind="item.second_class" ></td>
+                    <td ng-bind="item.postdoctor==1?'是':'否'"></td>
                     <td ng-bind="item.credit"></td>
                     <td><a href="__URL__/delete?id={{item.id}}">删除</a></td>
                     <!-- <td width="6%"><span class="glyphicon glyphicon-edit" onclick="modify(this);"></span><span class="glyphicon glyphicon-trash pull-right" onclick="del(this);"></span></td> -->

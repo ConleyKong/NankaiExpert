@@ -18,13 +18,63 @@
 	    	}
 		}
 		vm.chartFlag = false;//是否显示统计图表
+		vm.count_type = 'college';//默认显示学院统计信息
+
+		$scope.$watch('vm.count_type',function () {
+			console.log("vm.count_type 改变了："+vm.count_type);
+			makeMyChart();
+		},true);
+		$scope.$watch('vm.chartFlag',function () {
+			if(vm.chartFlag){
+				makeMyChart();
+			}
+		},true);
 
 		vm.showChart = function () {
 			vm.chartFlag = true;
 			// angular.element("#pi").style('cursor','default');
-			makeChart('p1', vm.option);
+			// makeChart('p1', vm.option);
 		}
 
+		function makeChart(id, option){
+			vm.myChart = echarts.init(document.getElementById(id), 'macarons');
+			vm.myChart.setOption(option);
+			window.onresize = vm.myChart.resize;
+		}
+
+		var pieOption = {
+			tooltip : {
+				trigger: 'item',
+				formatter: "{a} <br/>{b} : {c} ({d}%)"
+			},
+			legend: {
+				orient : 'vertical',
+				x : 'left',
+				data:[]
+			},
+			toolbox: {
+				show : true,
+				feature : {
+					mark : {show: true},
+					dataView : {show: true, readOnly: false},
+					magicType : {
+						show: true,
+						type: ['pie', 'funnel'],
+						option: {
+							funnel: {
+								x: '25%',
+								width: '70%',
+								funnelAlign: 'right',
+								max: 1548
+							}
+						}
+					},
+					restore : {show: true},
+					saveAsImage : {show: true}
+				}
+			},
+			calculable : true,
+		};
 
 		$scope.$watch('vm.showCheckbox',function () {
 			console.log("vm.showcheckbox 改变了："+vm.showCheckbox)
@@ -83,20 +133,13 @@
 	 		sendRequest.post(url, {}, jQuery.param(params)).then(
 	 			function(resp){
 					var num = resp[0]['totalNum'];
-
 					//更新统计信息
-					vm.option = $.extend(true, {}, pieOption);
-					var college_data = resp[0]['itemCollegeCount'];
-					angular.forEach(college_data,function (item,index) {
-						if(item.college_name!=null){
-							// console.log(item.college_name);
-							vm.option.legend.data.push(item.college_name);
-							vm.option.series[0].data.push({value:item.enum, name:item.college_name});
-						}
-					});
-
-					makeChart('p1',vm.option);
-
+					vm.college_data = resp[0]['itemCollegeCount'];
+					vm.title_data = resp[0]['itemTitleCount'];
+					if(vm.chartFlag){
+						console.log(vm.chartFlag);
+						makeMyChart();
+					}
 					vm.paginationConf.totalItems = num;
 					console.log("返回的结果数量为："+num);
 					if(num>0){
@@ -208,7 +251,7 @@
 
 	 	//导入导出
 	 	vm.showCheckbox = false;
-	 	vm.exportParams = {name:false,gender:false,employee_no:false,college_name:false,postdoctor:false,birthday:false,email:false,phone:false,first_class:false,second_class:false,credit:false,honor_records:false};
+	 	vm.exportParams = {name:false,gender:false,employee_no:false,college_name:false,title_name:false,postdoctor:false,birthday:false,email:false,phone:false,first_class:false,second_class:false,credit:false,honor_records:false};
 
 	 	vm.exportExcel = exportExcel;
 	 	function exportExcel(type){
@@ -246,60 +289,90 @@
 	 		});
 	 	}
 
-
-		function makeChart(id, option){
-			var myChart = echarts.init(document.getElementById(id), 'macarons');
-			myChart.setOption(option);
-			window.onresize = myChart.resize;
+		function makeMyChart(){
+			if(vm.chartFlag){
+				switch (vm.count_type){
+					case 'college':
+						console.log("显示学院统计信息");
+						makeChartAboutCollege();
+						break;
+					case 'title':
+						console.log("显示职称统计信息");
+						makeChartAboutTitle();
+						break;
+					default:
+						console.log("默认显示学院统计情况");
+						makeChartAboutCollege();
+						break;
+				}
+			}
+		}
+		function makeChartAboutCollege(){
+			//以学院信息为统计尺度
+			vm.option = $.extend(true, {}, pieOption,
+				{
+					title: {
+						text: '专家人才成分统计',
+						subtext: '科研单位分布情况',
+						x: 'center'
+					}
+				},
+				{
+					series: [
+						{
+							name: '所属学院',
+							type: 'pie',
+							radius: '55%',
+							center: ['50%', '60%'],
+							data: []
+						}
+					]
+				}
+			);
+			angular.forEach(vm.college_data,function (item,index) {
+				if(item.college_name!=null){
+					// console.log(item.college_name);
+					vm.option.legend.data.push(item.college_name);
+					vm.option.series[0].data.push({value:item.enum, name:item.college_name});
+				}
+			});
+			if(vm.chartFlag){
+				makeChart('p1',vm.option);
+			}
 		}
 
-		var pieOption = {
-			title : {
-				text: '专家人才成分构成',
-				subtext: '学院分布情况',
-				x:'center'
-			},
-			tooltip : {
-				trigger: 'item',
-				formatter: "{a} <br/>{b} : {c} ({d}%)"
-			},
-			legend: {
-				orient : 'vertical',
-				x : 'left',
-				data:[]
-			},
-			toolbox: {
-				show : true,
-				feature : {
-					mark : {show: true},
-					dataView : {show: true, readOnly: false},
-					magicType : {
-						show: true,
-						type: ['pie', 'funnel'],
-						option: {
-							funnel: {
-								x: '25%',
-								width: '70%',
-								funnelAlign: 'right',
-								max: 1548
-							}
-						}
-					},
-					restore : {show: true},
-					saveAsImage : {show: true}
-				}
-			},
-			calculable : true,
-			series : [
+		function makeChartAboutTitle(){
+			//以职称信息为统计尺度
+			vm.option = $.extend(true, {}, pieOption,
 				{
-					name:'所属学院',
-					type:'pie',
-					radius : '55%',
-					center: ['50%', '60%'],
-					data:[]
+				title : {
+					text: '专家人才成分统计',
+					subtext: '职称分布情况',
+					x:'center'
 				}
-			]
-		};
+			},
+				{
+					series: [
+						{
+							name: '教师职称',
+							type: 'pie',
+							radius: '55%',
+							center: ['50%', '60%'],
+							data: []
+						}
+					]
+				});
+			angular.forEach(vm.title_data,function (item,index) {
+				if(item.title_name!=null){
+					// console.log(item.college_name);
+					vm.option.legend.data.push(item.title_name);
+					vm.option.series[0].data.push({value:item.enum, name:item.title_name});
+				}
+			});
+			if(vm.chartFlag){
+				makeChart('p1',vm.option);
+			}
+		}
 
     }
 })()
