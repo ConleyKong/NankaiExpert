@@ -5,7 +5,6 @@
     function projectController($scope, sendRequest){
     	var vm = this;
     	vm.params = {};
-		// vm.totalcount = 0;
     	vm.paginationConf = {
 	        currentPage: 1,
 	        totalItems: 0,
@@ -15,20 +14,24 @@
 	       	onChange: function(){
 	       		vm.params.page = vm.paginationConf.currentPage;
 	       		vm.params.items = vm.paginationConf.itemsPerPage;
-	       		//console.log('page change', vm.params);
 	    	}
-		}
+		};
 
 		$scope.$watch('vm.params', function(){
 			console.log('params change', vm.params);
 			getProjectList(vm.params);
 		}, true);
 
-
 		function getProjectList(params){
 	 		var url = '/project/ProjectList/';
 	 		sendRequest.post(url, {}, jQuery.param(params)).then(
 	 			function(resp){
+					//获取统计信息
+					vm.college_data = resp[0]['itemCollegeCount'];
+					// console.log("返回的参数："+vm.college_data);
+					if(vm.chartFlag){
+						makeMyChart();
+					}
 					var num = resp[0]['totalNum'];
 					vm.paginationConf.totalItems = num;
 					vm.projectList={};
@@ -43,6 +46,114 @@
 	 			}
 	 		);
 	 	}
+
+		vm.chartFlag = false;//是否显示统计图表
+		vm.count_type = 'college';//默认显示学院统计信息
+
+		vm.showChart = function () {
+			vm.chartFlag = true;
+			console.log("chartFlag变量更新成功");
+		}
+
+		$scope.$watch('vm.count_type',function () {
+			console.log("vm.count_type 改变了："+vm.count_type);
+			makeMyChart();
+		},true);
+		$scope.$watch('vm.chartFlag',function () {
+			if(vm.chartFlag){
+				makeMyChart();
+			}
+		},true);
+
+		function makeChart(id, option){
+			vm.myChart = echarts.init(document.getElementById(id), 'macarons');
+			vm.myChart.setOption(option);
+			window.onresize = vm.myChart.resize;
+		}
+
+		var pieOption = {
+			tooltip : {
+				trigger: 'item',
+				formatter: "{a} <br/>{b} : {c} ({d}%)"
+			},
+			legend: {
+				orient : 'vertical',
+				x : 'left',
+				data:[]
+			},
+			toolbox: {
+				show : true,
+				feature : {
+					mark : {show: true},
+					dataView : {show: true, readOnly: false},
+					magicType : {
+						show: true,
+						type: ['pie', 'funnel'],
+						option: {
+							funnel: {
+								x: '25%',
+								width: '70%',
+								funnelAlign: 'right',
+								max: 1548
+							}
+						}
+					},
+					restore : {show: true},
+					saveAsImage : {show: true}
+				}
+			},
+			calculable : true,
+		};
+
+		function makeMyChart(){
+			if(vm.chartFlag){
+				switch (vm.count_type){
+					case 'college':
+						console.log("显示学院统计信息");
+						makeChartAboutCollege();
+						break;
+					default:
+						console.log("默认显示学院统计情况");
+						makeChartAboutCollege();
+						break;
+				}
+			}
+		}
+		function makeChartAboutCollege(){
+			//以学院信息为统计尺度
+			vm.option = $.extend(true, {}, pieOption,
+				{
+					title: {
+						text: '科研项目统计',
+						subtext: '科研单位分布情况',
+						x: 'center'
+					}
+				},
+				{
+					series: [
+						{
+							name: '所属科研单位',
+							type: 'pie',
+							radius: '55%',
+							center: ['50%', '60%'],
+							data: []
+						}
+					]
+				}
+			);
+			angular.forEach(vm.college_data,function (item,index) {
+				// console.log("填数据中……");
+				if(item.join_unit!=null){
+					console.log(item.college_name+","+item.enum);
+					vm.option.legend.data.push(item.join_unit);
+					vm.option.series[0].data.push({value:item.enum, name:item.join_unit});
+				}
+			});
+			if(vm.chartFlag){
+				makeChart('p1',vm.option);
+			}
+		}
+
 
 		////////////////////////////////////////////
 		//学院类型选择
@@ -96,36 +207,6 @@
  			}
 	 	}
 
-		/////////////////////////////////////
-		//项目类型筛选
-		/* 旧版
-		getProjectTypeList();
-		function getProjectTypeList(){
-			var url = '/Project/getProjectTypeList/';
-			vm.projecttype_id = [];
-			sendRequest.get(url, {}, {}).then(
-				function(resp){
-					vm.projecttypeList = resp;
-					for(var i = 0; i < resp.length;i++)
-						vm.projecttype_id.push(false);
-				},
-				function(resp){
-					console.log('get projectypeList failed');
-				}
-			);
-		}
-
-		$scope.$watch('vm.projecttype_id', function(){
-			var temp = [];
-			for (var i = 1;i < vm.projecttype_id.length;i++)
-				if (vm.projecttype_id[i])
-					temp.push("project_type.id = " + i);
-			if (temp.length){
-				vm.params.projecttype_id = temp.join(' or ');
-			}else vm.params.projecttype_id = '';
-		}, true);
-*/
-
 		getTypeList();
 		vm.typeMap = [''];
 		function getTypeList(){
@@ -159,7 +240,6 @@
 					vm.params.type_id = temp.join(' or ');
 				}else vm.params.type_id = '';
 			}
-			//console.log('vm.typeSelectedList', vm.typeSelectedList)
 		}, true);
 
 		vm.removeType = removeType;
@@ -229,6 +309,7 @@
 	 			param[i] = false;
 	 	}
 
+		///////////////////////////////////////////////////////////////////////////////////////
 	 	//导入导出
 	 	vm.showCheckbox = false;
 	 	vm.exportParams = {person_name:false,name:false,type_name:false,depth_flag:false,support_no:false,join_unit:false,source:false,source_department:false,subtype:false,start_time:false,end_time:false,fund:false,direct_fund:false,indirect_fund:false,financial_account:false,comment:false};
@@ -266,5 +347,6 @@
 	 			vm.exportParams[key] = !value;
 	 		});
 	 	}
+
     }
 })()

@@ -80,9 +80,14 @@ class ProjectController extends Controller {
             $Project = D('ProjectView');
             $result = $Project->where($query)->page($pageNum,$itemsNum)->order('project.id')->select();
             $prepData = $Project->where($query)->getField('fund',true);
-            $Project->getLastSql();
+//            $Project->getLastSql();
+            //根据学院统计
+            $itemCollegeCount = $Project->field('join_unit,count(*) enum')->where($query)->group('join_unit')->select();
+            $result[0]['itemCollegeCount']=$itemCollegeCount;
             $result[0]['totalNum'] = sizeof($prepData);
             $result[0]['totalFund'] = number_format(array_sum($prepData),3);
+
+
 //            $result[0]['totalFund'] = $prepData[1];
 //            $totalNum = $Project->where($query)->count();
 //            $result[0]['totalNum'] = $totalNum;

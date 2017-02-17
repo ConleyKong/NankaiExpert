@@ -1,4 +1,4 @@
-<extend name="EXPERT/Templates/nav.html"/>
+<extend name="EXPERT/Templates/nav.html" xmlns="http://www.w3.org/1999/html"/>
 <block name="content">
   <div class="container" ng-app="project" ng-controller="projectController as vm">
     <div class="panel panel-default">
@@ -6,14 +6,8 @@
         <span>筛选条件：</span>
       </div>
       <div class="panel-body">
-        <div class="col-sm-9">
-            <!--<div class="col-sm-12 bottom-10">-->
-            <!--<span class="cond-label">项目类型：</span>-->
-            <!--<div class="btn-group">-->
-            <!--<label class="btn btn-default active" ng-click="vm.resetCheckbox(vm.projecttype_id)" ng-model="vm.params.projecttype_id" uib-btn-radio="''">全部</label>-->
-            <!--<label class="btn btn-default" ng-repeat="item in vm.projecttypeList" ng-model="vm.projecttype_id[item.id]" uib-btn-checkbox data-toggle="tooltip" data-placement="top" title="{{item.name}}" ng-bind="item.name.length>9?item.name.substr(0,9) + '...':item.name"></label>-->
-            <!--</div>-->
-            <!--</div>-->
+        <div class="col-sm-12">
+          <div class="col-sm-9">
             <div class="col-sm-6">
               <span class="cond-label">项目来源：</span>
               <div class="btn-group">
@@ -24,7 +18,6 @@
                 </label>
               </div>
             </div>
-
             <div class="col-sm-6">
               <span class="cond-label">参与单位：</span>
               <div class="btn-group">
@@ -35,14 +28,14 @@
                 </label>
               </div>
             </div>
-          <div class="col-sm-4 top-10 bottom-10">
-            <span class="cond-label">项目类型：</span>
-            <div class="btn-group">
-              <label class="btn btn-default active" ng-model="vm.params.depth_flag" uib-btn-radio="''">全部</label>
-              <label class="btn btn-default" ng-model="vm.params.depth_flag" uib-btn-radio="'是'">纵向</label>
-              <label class="btn btn-default" ng-model="vm.params.depth_flag" uib-btn-radio="'否'">横向</label>
+            <div class="col-sm-4 top-10 bottom-10">
+              <span class="cond-label">项目类型：</span>
+              <div class="btn-group">
+                <label class="btn btn-default active" ng-model="vm.params.depth_flag" uib-btn-radio="''">全部</label>
+                <label class="btn btn-default" ng-model="vm.params.depth_flag" uib-btn-radio="'是'">纵向</label>
+                <label class="btn btn-default" ng-model="vm.params.depth_flag" uib-btn-radio="'否'">横向</label>
+              </div>
             </div>
-          </div>
             <div class="col-sm-8 bottom-10 top-10">
               <span class="cond-label">立项时间：</span>
               <div class="btn-group">
@@ -57,73 +50,63 @@
                 </form>
               </div>
             </div>
-            <!--<div class="col-sm-12 bottom-10">-->
-              <!--<span class="cond-label">拥有者：</span>-->
-              <!--<div class="btn-group">-->
-                <!--<input type="text" class="form-control" ng-model="vm.person_name"/>-->
-              <!--</div>-->
-            <!--</div>-->
-            <!--<div class="col-sm-12 bottom-10">-->
-              <!--<span class="cond-label">项目名称：</span>-->
-              <!--<div class="btn-group">-->
-                <!--<input type="text" class="form-control" ng-model="vm.name"/>-->
-              <!--</div>-->
-            <!--</div>-->
-            <!--<div class="col-sm-12">-->
-              <!--<span class="cond-label"></span>-->
-              <!--<button class="btn btn-info" ng-click="vm.submit()">确定</button>-->
-              <!--<button class="btn btn-default" ng-click="vm.cancel()">取消</button>-->
-            <!--</div>-->
-          <div class="col-sm-12 bottom-10" ng-if="vm.collegeSelectedList.length > 0||vm.typeSelectedList.length > 0">
-            <span class="col-sm-1">所选单位与来源：</span>
-            <label style="margin-bottom:0" ng-repeat="item in vm.collegeSelectedList">
-              <button tyle="button" class="btn button-link" ng-bind="vm.collegeMap[item]+'   X'"
-                      ng-click="vm.removeCollege(item)"><b></b></button>
-              &nbsp;
-            </label>
-            <label style="margin-bottom:0" ng-repeat="item in vm.typeSelectedList">
-              <button tyle="button" class="btn button-link" ng-bind="vm.typeMap[item]+'   X'" ng-click="vm.removeType(item)"><b></b></button>&nbsp;
-            </label>
-          </div>
-        </div>
-        <div class="col-sm-3">
-          <div class="panel panel-info">
-            <div class="panel-heading">
-              <h3 class="panel-title">所选项目基本统计</h3>
+            <div class="col-sm-12 bottom-10" ng-if="vm.collegeSelectedList.length > 0||vm.typeSelectedList.length > 0">
+              <span class="col-sm-1">所选单位与来源：</span>
+              <label style="margin-bottom:0" ng-repeat="item in vm.collegeSelectedList">
+                <button tyle="button" class="btn button-link" ng-bind="vm.collegeMap[item]+'   X'"
+                        ng-click="vm.removeCollege(item)"><b></b></button>
+                &nbsp;
+              </label>
+              <label style="margin-bottom:0" ng-repeat="item in vm.typeSelectedList">
+                <button tyle="button" class="btn button-link" ng-bind="vm.typeMap[item]+'   X'" ng-click="vm.removeType(item)"><b></b></button>&nbsp;
+              </label>
             </div>
-            <!--<div class="panel-body">-->
-            <!--<div id="c2" class="col-md-12">-->
-            <!---->
-            <!--</div>-->
-            <!--</div>-->
-            <table class="table table-bordered table-striped" style="border-bottom:1px #bce8f1 solid">
-              <thead>
-              <tr>
-                <th class="col-sm-6">项目总数(项)</th>
-                <th class="col-sm-6">基金总数(万)</th>
-              </tr>
-              </thead>
-              <tbody>
-              <tr>
-                <td ng-bind="vm.paginationConf.totalItems"></td>
-                <td ng-bind="vm.totalFund"></td>
-              </tr>
-              </tbody>
-            </table>
-            <!--<table class="table table-bordered table-striped">-->
-            <!--<thead>-->
-            <!--<tr>-->
-            <!--<th>资助编号</th>-->
-            <!--<th>项目总数</th>-->
-            <!--</tr>-->
-            <!--</thead>-->
-            <!--<tbody>-->
-            <!--<tr ng-repeat="item in vm.projectSupport" ng-if="$index<3">-->
-            <!--<td ng-bind="item.support_no"></td>-->
-            <!--<td ng-bind="item.supportcount"></td>-->
-            <!--</tr>-->
-            <!--</tbody>-->
-            <!--</table>-->
+          </div>
+          <div class="col-sm-3">
+            <div class="panel panel-info">
+              <div class="panel-heading">
+                <h3 class="panel-title">所选项目基本统计</h3>
+              </div>
+              <table class="table table-bordered table-striped" style="border-bottom:1px #bce8f1 solid">
+                <thead>
+                <tr>
+                  <th class="col-sm-6">项目总数(项)</th>
+                  <th class="col-sm-6">基金总数(万)</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                  <td ng-bind="vm.paginationConf.totalItems"></td>
+                  <td ng-bind="vm.totalFund"></td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="col-sm-12 bottom-10" align="center" ng-hide="vm.chartFlag">
+            <!--<a ng-click="vm.chartFlag=true" href="" title="显示统计图">-->
+            <a ng-click="vm.chartFlag=true" href="" title="显示统计图">
+              <span class="glyphicon glyphicon-chevron-down"></span><br/>
+              <sapn>显示统计图表</sapn>
+            </a>
+          </div>
+          <div  class="col-sm-12" ng-show="vm.chartFlag" ng-cloak>
+            <hr/>
+            <span class="cond-label col-sm-1">统计类型：</span>
+            <div class="col-sm-11">
+              <div class="btn-group">
+                <label class="btn btn-default active" ng-model="vm.count_type" uib-btn-radio="'college'">科研单位</label>
+                <!--<label class="btn btn-default" ng-model="vm.count_type" uib-btn-radio="'title'">职称类型</label>-->
+                <!--<label class="btn btn-default" ng-model="vm.count_type" uib-btn-radio="'honor'">学术称号</label>-->
+              </div>
+            </div>
+            <div id="p1" style="height: 300px;width:1126px;" class="bottom-10"></div>
+            <div class="top-10" align="center">
+              <a ng-click="vm.chartFlag=false" href="" title="隐藏图表">
+                <span class="glyphicon glyphicon-chevron-up"></span><br/>
+                <sapn>隐藏统计图表</sapn>
+              </a>
+            </div>
           </div>
         </div>
       </div>
@@ -240,9 +223,9 @@
   </div>
 </block>
 <block name="js">
-<script type="text/javascript" src="__PUBLIC__/js/project.controller.js"></script>
-<script type="text/javascript" src="__CDN__/angular-ui-bootstrap/0.14.3/ui-bootstrap.min.js"></script>
-<script>
-  selectMenu('project', 2, 0);
-</script>
+    <script type="text/javascript" src="__CDN__/angular-ui-bootstrap/0.14.3/ui-bootstrap.min.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/js/project.controller.js"></script>
+    <script type="text/javascript">
+      selectMenu('project', 2, 0);
+    </script>
 </block>

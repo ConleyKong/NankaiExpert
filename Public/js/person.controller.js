@@ -17,64 +17,6 @@
 	       		//console.log('page change', vm.params);
 	    	}
 		}
-		vm.chartFlag = false;//是否显示统计图表
-		vm.count_type = 'college';//默认显示学院统计信息
-
-		$scope.$watch('vm.count_type',function () {
-			console.log("vm.count_type 改变了："+vm.count_type);
-			makeMyChart();
-		},true);
-		$scope.$watch('vm.chartFlag',function () {
-			if(vm.chartFlag){
-				makeMyChart();
-			}
-		},true);
-
-		vm.showChart = function () {
-			vm.chartFlag = true;
-			// angular.element("#pi").style('cursor','default');
-			// makeChart('p1', vm.option);
-		}
-
-		function makeChart(id, option){
-			vm.myChart = echarts.init(document.getElementById(id), 'macarons');
-			vm.myChart.setOption(option);
-			window.onresize = vm.myChart.resize;
-		}
-
-		var pieOption = {
-			tooltip : {
-				trigger: 'item',
-				formatter: "{a} <br/>{b} : {c} ({d}%)"
-			},
-			legend: {
-				orient : 'vertical',
-				x : 'left',
-				data:[]
-			},
-			toolbox: {
-				show : true,
-				feature : {
-					mark : {show: true},
-					dataView : {show: true, readOnly: false},
-					magicType : {
-						show: true,
-						type: ['pie', 'funnel'],
-						option: {
-							funnel: {
-								x: '25%',
-								width: '70%',
-								funnelAlign: 'right',
-								max: 1548
-							}
-						}
-					},
-					restore : {show: true},
-					saveAsImage : {show: true}
-				}
-			},
-			calculable : true,
-		};
 
 		$scope.$watch('vm.showCheckbox',function () {
 			console.log("vm.showcheckbox 改变了："+vm.showCheckbox)
@@ -133,7 +75,7 @@
 	 		sendRequest.post(url, {}, jQuery.param(params)).then(
 	 			function(resp){
 					var num = resp[0]['totalNum'];
-					//更新统计信息
+					//获取统计信息
 					vm.college_data = resp[0]['itemCollegeCount'];
 					vm.title_data = resp[0]['itemTitleCount'];
 					if(vm.chartFlag){
@@ -288,6 +230,70 @@
 	 			vm.exportParams[key] = !value;
 	 		});
 	 	}
+
+
+		////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		//画图模块
+
+		vm.chartFlag = false;//是否显示统计图表
+		vm.count_type = 'college';//默认显示学院统计信息
+
+		$scope.$watch('vm.count_type',function () {
+			console.log("vm.count_type 改变了："+vm.count_type);
+			makeMyChart();
+		},true);
+		$scope.$watch('vm.chartFlag',function () {
+			if(vm.chartFlag){
+				makeMyChart();
+			}
+		},true);
+		vm.showChart = function () {
+			vm.chartFlag = true;
+			// angular.element("#pi").style('cursor','default');
+			// makeChart('p1', vm.option);
+		}
+
+		function makeChart(id, option){
+			vm.myChart = echarts.init(document.getElementById(id), 'macarons');
+			vm.myChart.setOption(option);
+			window.onresize = vm.myChart.resize;
+		}
+
+		var pieOption = {
+			tooltip : {
+				trigger: 'item',
+				formatter: "{a} <br/>{b} : {c} ({d}%)"
+			},
+			legend: {
+				orient : 'vertical',
+				x : 'left',
+				data:[]
+			},
+			toolbox: {
+				show : true,
+				feature : {
+					mark : {show: true},
+					dataView : {show: true, readOnly: false},
+					magicType : {
+						show: true,
+						type: ['pie', 'funnel'],
+						option: {
+							funnel: {
+								x: '25%',
+								width: '70%',
+								funnelAlign: 'right',
+								max: 1548
+							}
+						}
+					},
+					restore : {show: true},
+					saveAsImage : {show: true}
+				}
+			},
+			calculable : true,
+		};
+
+
 
 		function makeMyChart(){
 			if(vm.chartFlag){
