@@ -11,7 +11,7 @@ class PaperViewModel extends ViewModel {
 			'publish_date',
 			'paper_type',
 			'conference_name',
-			'other_author',
+			'other_authors',
 			'valid',
             '_type' => 'LEFT'
 		),

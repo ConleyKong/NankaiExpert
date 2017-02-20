@@ -16,20 +16,24 @@
 	       		vm.params.items = vm.paginationConf.itemsPerPage;
 	       		//console.log('page change', vm.params);
 	    	}
-		}
+		};
 
 		$scope.$watch('vm.params', function(){
 			console.log('params change', vm.params);
 			getPaperList(vm.params);
 		}, true);
-
-
+		
 		function getPaperList(params){
 	 		//console.log('getPaperList', vm.params);
-	 		var url = '/paper/PaperList/';
+	 		// var url = '/paper/PaperList/';
+			var url = '/paper/paperList/';
+			console.log("访问的url为："+url);
+			vm.paperList={};
+			vm.paginationConf.totalItems=0;
 	 		sendRequest.post(url, {}, jQuery.param(params)).then(
 	 			function(resp){
-	 				vm.paperList = resp;var num = resp[0]['totalNum'];
+					var num = resp[0]['totalNum'];
+	 				vm.paperList = resp;
 					vm.paginationConf.totalItems = num;
 					console.log("返回的结果数量为："+num);
 					if(num>0){
@@ -37,10 +41,10 @@
 					}
 	 			},
 	 			function(resp){
-	 				console.log('get paperList failed');
+	 				console.log('无法获取论文列表');
 	 			}
 	 		);
-	 	}
+	 	};
 
 	 	getCollegeList();
 	 	vm.collegeMap = [''];
@@ -57,7 +61,7 @@
 	 				console.log('get collegeList failed');
 	 			}
 	 		);
-	 	}
+	 	};
 	 	vm.collegeSelected = '';
 	 	vm.collegeSelectedList = [];
 	 	$scope.$watch('vm.collegeSelected', function(){
@@ -91,7 +95,7 @@
  				vm.collegeSelected = '';
  			}
 	 		//console.log('vm.collegeSelectedList', vm.collegeSelectedList)
-	 	}
+	 	};
 
 	 	//条件查询
 		vm.params.conference_name = '';
@@ -103,11 +107,11 @@
 
 		vm.setStart = function () {
 			vm.params.start_time = vm.start_time;
-		}
+		};
 
 		vm.setEnd = function () {
 			vm.params.end_time = vm.end_time;
-		}
+		};
 
 		$scope.setStartKeyupEvent = function(e){
 			var keycode = window.event?e.keyCode:e.which;
@@ -127,7 +131,7 @@
 		vm.search = function () {
 			console.log("关键词"+vm.keyword)
 			vm.params.keyword = vm.keyword;
-		}
+		};
 		$scope.searchKeyupEvent = function(e){
 			var keycode = window.event?e.keyCode:e.which;
 			if(keycode==13){
@@ -138,14 +142,14 @@
 		vm.resetKeyword=function () {
 			vm.keyword="";
 			vm.params.keyword="";
-		}
+		};
 
 	 	vm.submit = function(){
 	 		vm.params.conference_name = vm.conference_name;
 	 		vm.params.person_name = vm.person_name;
 	 		vm.params.pub_start = vm.pub_start;
 	 		vm.params.pub_end = vm.pub_end;
-	 	}
+	 	};
 	 	vm.cancel = function(){
 	 		vm.params.conference_name = '';
 	 		vm.params.person_name = '';
@@ -155,14 +159,14 @@
 	 		vm.person_name = '';
 	 		vm.pub_start = '';
 	 		vm.pub_end = '';
-	 	}
+	 	};
 		
 		
 
 	 	vm.resetCheckbox = function(param){
 	 		for (var i = 0; i < param.length;i++)
 	 			param[i] = false;
-	 	}
+	 	};
 
 	 	//导入导出
 	 	vm.showCheckbox = false;
@@ -193,13 +197,13 @@
 	 		var url = '/paper/export/?type=' + type +'&'+jQuery.param(parameters)  + '&field=' + field;
 			location.href = url;
 	 		vm.showCheckbox = false;
-	 	}
+	 	};
 
 	 	vm.selectAll = selectAll;
 	 	function selectAll(){
 	 		angular.forEach(vm.exportParams, function(value, key){
 	 			vm.exportParams[key] = !value;
 	 		});
-	 	}
+	 	};
     }
 })()

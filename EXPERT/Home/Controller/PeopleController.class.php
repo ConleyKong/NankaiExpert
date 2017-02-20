@@ -24,6 +24,7 @@ class PeopleController extends Controller {
             deleteEmptyValue($param);
             $pageNum = $param['page'] ? $param['page'] : 1;  //当前页
             $itemsNum =  $param['items'] ? $param['items'] : 10; //每页个数
+            
             if ($param['startTime']){
                 $param['birthday'] = array(array('gt',$param['startTime']),array('lt',$param['endTime']));
                 unset($param['startTime']);
@@ -41,6 +42,7 @@ class PeopleController extends Controller {
             }
             if ($string)
                 $param['_string'] = $string;
+
             $person = D('PeopleView');
             unset($param['page']);
             unset($param['items']);
@@ -58,7 +60,7 @@ class PeopleController extends Controller {
             $query["valid"]=true;
 
 	        $result = $person
-//                ->field('id,name,gender,employee_no,postdoctor,birthday,email,phone,first_class,second_class,college_name,academic_name,credit')
+            //                ->field('id,name,gender,employee_no,postdoctor,birthday,email,phone,first_class,second_class,college_name,academic_name,credit')
                 ->where($query)
                 ->page($pageNum,$itemsNum)
                 ->order('person.id')
@@ -69,12 +71,12 @@ class PeopleController extends Controller {
             //根据学院统计
             $itemCollegeCount = $person->field('college_name,count(*) enum')->where($query)->group('college_name')->select();
             //根据学术称号统计,复杂，需要多表联合查询
-//            $itemHonorCount = $person->field('honor_records,count(*) enum')->where($query)->group('honor_records')->select();
+            //            $itemHonorCount = $person->field('honor_records,count(*) enum')->where($query)->group('honor_records')->select();
             //根据职称统计
             $itemTitleCount = $person->field('title_name,count(*) enum')->where($query)->group('title_name')->select();
 
             $result[0]['itemCollegeCount']=$itemCollegeCount;
-//            $result[0]['itemHonorCount']=$itemHonorCount;
+            //            $result[0]['itemHonorCount']=$itemHonorCount;
             $result[0]['itemTitleCount']=$itemTitleCount;
             $totalNum = $person->where($query)->count();
             $result[0]['totalNum'] = $totalNum;

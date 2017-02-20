@@ -1,45 +1,65 @@
 <?php
 namespace Home\Controller;
 use Think\Controller;
+/**
+ * Created by PhpStorm.
+ * User: Conley.K
+ * Date: 2017/2/17 0017
+ * Time: 16:29
+ */
 class PaperController extends Controller {
-    public function index()
-    {
-    	if (! session('logged')){
-    		$this->redirect('Index/index');
-    	}
-    	else{
-			$this->display();
-		}
+    public function index(){
+        if (! session('logged')){
+            $this->redirect('Index/index');
+        }
+        else{
+            $this->display();
+        }
     }
 
-    public function PaperList()
+
+    public function paperList()
     {
-    	if (! session('logged')){
-    		$this->redirect('Index/index');
-    	}
-    	else{
+        if (! session('logged')){
+            $this->redirect('Index/index');
+        }
+        else{
+
             $param = I('post.');
             deleteEmptyValue($param);
-	    	$pageNum = $param['page'] ? $param['page'] : 1;  //当前页
+            $pageNum = $param['page'] ? $param['page'] : 1;  //当前页
             $itemsNum =  $param['items'] ? $param['items'] : 10; //每页个数
+            unset($param['page']);
+            unset($param['items']);
 
-            $pub_start = $param['start_time'];
-            $pub_end = $param['end_time'];
             $publish_date = array();
-            if ($pub_start)
+            if($param['start_time']){
+                $pub_start = $param['start_time'];
                 $publish_date = array('gt',$pub_start);
-            if($pub_end)
+                unset($param['startTime']);
+            }
+            if($param['end_time']){
+                $pub_end = $param['end_time'];
                 $publish_date = array('lt',$pub_end);
-            if($publish_date)
+                unset($param['endTime']);
+            }
+            if($publish_date){
                 $query['publish_date'] = $publish_date;
+            }
 
-
-            if ($param['name'])
+            if ($param['name']){
                 $query['name']=array('like','%'.$param['name'].'%');
-            if ($param['conference_name'])
+                unset($param['name']);
+            }
+            if ($param['conference_name']){
                 $query['conference_name']=array('like','%'.$param['conference_name'].'%');
-            if ($param['person_name'])
+                unset($param['conference_name']);
+            }
+            if ($param['person_name']){
                 $query['person_name']=array('like','%'.$param['person_name'].'%');
+                unset($param['person_name']);
+            }
+
 
             $string = '';
             if ($param['college_id']){
@@ -52,29 +72,30 @@ class PaperController extends Controller {
                 $string .= $string?' AND '.$ts:$ts;
                 unset($param['keyword']);
             }
-            if ($string)
+            if ($string){
                 $query['_string'] = $string;
+            }
 
-	        $paper = D('PaperView');
-            unset($param['pub_start']);
-            unset($param['pub_end']);
-            unset($param['page']);
-            unset($param['items']);
+            $paper = D('PaperView');
 
             $query["valid"]=true;
 
-	        $result = $paper->where($query)->page($pageNum,$itemsNum)->order('paper.id')->select();
+            $result = $paper
+                ->where($query)
+                ->page($pageNum,$itemsNum)
+                ->order('paper.id')
+                ->select();
             $totalNum = $paper->where($query)->count();
             $result[0]['totalNum'] = $totalNum;
             //操作记录日志
-            $audit['name'] = session('username');
-            $audit['ip'] = getIp();
-            $audit['module'] = '论文列表';
-            $audit['time'] = date('y-m-d h:i:s',time());
-            $audit['result'] = '成功';
-            M('audit')->add($audit);
+//            $audit['name'] = session('username');
+//            $audit['ip'] = getIp();
+//            $audit['module'] = '论文列表';
+//            $audit['time'] = date('y-m-d h:i:s',time());
+//            $audit['result'] = '成功';
+//            M('audit')->add($audit);
             $this->ajaxReturn($result,'json');
-	    }
+        }
     }
 
 
@@ -82,8 +103,7 @@ class PaperController extends Controller {
     * 删除指定paper
     * 将paper的valid置为false
     */
-    public function delete()
-    {
+    public function delete(){
 
         if (!session('logged')){
             $this->redirect('Index/index');
@@ -193,7 +213,7 @@ class PaperController extends Controller {
             }
 
             $titleMap = array('person_name'=>'第一作者','col_name'=>'第一作者单位','name'=>'论文名','conference_name'=>'期刊/会议名称','publish_date'=>'发表时间','comment'=>'备注');
-            $field = split(',', $field); 
+            $field = split(',', $field);
             $excelTitle = array();
             foreach ($field as $value) {
                 array_push($excelTitle, $titleMap[$value]);
