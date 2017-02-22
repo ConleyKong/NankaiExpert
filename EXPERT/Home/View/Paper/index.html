@@ -91,7 +91,7 @@
                             <h3 class="table-title warning-text pull-left">请选择要导出的字段</h3>
                         </div>
                         <div class="col-md-8" ng-show="vm.showImportbox">
-                            <form method="post" action="{:U('Project/import')}" enctype="multipart/form-data">
+                            <form method="post" action="{:U('Paper/import')}" enctype="multipart/form-data">
                                 <!--<div class="col-sm-6">-->
                                 <!--<label class="pull-right right-10">浏览要导入的Excel文件：</label>-->
                                 <!--</div>-->
@@ -113,12 +113,14 @@
                 <thead>
                 <tr>
                     <th width="4%"><span ng-hide="vm.showCheckbox">#</span><span ng-show="vm.showCheckbox">全选<input type="checkbox" ng-click="vm.selectAll();"></span></th>
-                    <th width="28%">论文名<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.name"></th>
-                    <th width="16%">第一作者单位<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.col_name"></th>
-                    <th width="8%">第一作者<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.person_name"></th>
-                    <th width="16%">期刊/会议名称<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.conference_name"></th>
-                    <th width="8%">发表时间<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.publish_date"></th>
-                    <th width="16%">备注<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.comment"></th>
+                    <th width="24%">论文题目<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.name"></th>
+                    <th width="8%">论文类型<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.comment"></th>
+                    <th width="6%">第一作者<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.person_name"></th>
+                    <th width="6%">通讯作者<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.person_name"></th>
+                    <th width="16%">其他作者<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.person_name"></th>
+                    <th width="8%">认领单位<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.col_name"></th>
+                    <th width="4%">出版时间<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.publish_date"></th>
+                    <th width="16%">刊物名称<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.conference_name"></th>
                     <th width="4%">操作</th>
                 </tr>
                 </thead>
@@ -126,11 +128,13 @@
                 <tr ng-if="vm.paginationConf.totalItems>0" ng-repeat="item in vm.paperList | filter:filter">
                     <td ng-bind="item.id"></td>
                     <td ng-bind="item.name"></td>
+                    <td ng-bind="item.paper_type"></td>
+                    <td><a ng-bind="item.first_author" href="__APP__/People/detail/?id={{item.author_id}}"></a></td>
+                    <td ng-bind="item.contacter_name"></td>
+                    <td ng-bind="item.other_authors_name"></td>
                     <td ng-bind="item.col_name"></td>
-                    <td><a ng-bind="item.person_name" href="__APP__/People/detail/?id={{item.author_id}}"></a></td>
+                    <td ng-bind="item.publish_year"></td>
                     <td ng-bind="item.conference_name"></td>
-                    <td ng-bind="item.publish_date"></td>
-                    <td ng-bind="item.comment"></td>
                     <td><a href="__URL__/delete?id={{item.id}}">删除</a></td>
                 </tr>
                 <tr ng-if="vm.paginationConf.totalItems==0">

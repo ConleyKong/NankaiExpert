@@ -130,7 +130,9 @@
 		        <tr>
 		          <th>第一作者</th>
 		          <th>第一作者单位</th>
+				  <th>论文名称</th>
 		          <th>期刊/会议名称</th>
+				  <th>论文类型</th>
 		          <th>发表时间</th>
 		          <th>备注</th>
 		        </tr>
@@ -140,8 +142,10 @@
 			        <tr>
 			          <td>{$pa['person_name']}</td>
 			          <td>{$pa['col_name']}</td>
+					  <td>{$pa['name']}</td>
 			          <td>{$pa['conference_name']}</td>
-			          <td>{$pa['publish_date']}</td>
+					  <td>{$pa['paper_type']}</td>
+			          <td>{$pa['publish_year']}</td>
 			          <td>{$pa['comment']}</td>
 			        </tr>
 			    </volist>

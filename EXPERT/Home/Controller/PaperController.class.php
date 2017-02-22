@@ -293,94 +293,163 @@ class PaperController extends Controller {
 
                         /*
                          *输入数据表的表结构：
-                         *
-                         * 		，
+                        0 收录年份
+                        1 论文题目
+                        2 论文类型
+                        3 中文第一作者
+                        4 中文其他作者(半角逗号分割，英文名中间为句点)
+                        5 英文作者
+                        6 通讯作者
+                        7 认领单位
+                        8 出版时间
+                        9 发表刊物
+                        10 影响因子
+                        11 文章类型
+                        12 会议
+                        13 刊号 isbn
+                        14 卷号 vol
+                        15 期号 issue
+                        16 页码范围 page range
                          *  需要特殊处理的字段：第一作者id，学院id，联系作者id
                          */
                         $paper = M("paper");
                         $data = array();
-                        $data["name"]= $v[0];//论文名（name）
-                        $first_author_no = trim($v[1]);//第一作者职工号(first_author_id->person(employee_num))
-                        $data["publish_date"]=$v[2];//发表日期(publish_date)
-                        $contact_author_no = $v[3];//联系作者id//联系作者职工号(contact_author_id->person(employee_num))
-                        $data["paper_type"]=$v[4];//论文类型(paper_type)
-                        $data["conference_name"]=$v[5];//期刊/会议名称(conference_name)
-                        $other_authors = $v[6];
-                        $data["other_authors"]=$other_authors;//其他作者（学院），多个作者中间用中文逗号隔开(other_author)
-                        $college_name = $v[7];//学院名(college_id->college(name))
+                        $name = $v[1];//论文名（name）☑
+                        $data["name"]= $name;
+                        $first_author = trim($v[3]);
+                        $data['first_author'] = $first_author;//第一作者姓名 ☑
+                        $other_authors_name = $v[4];//其他作者姓名（半角逗号分割）
+                        $data['other_authors_name'] = $other_authors_name;//其他作者姓名（半角逗号分割）☑
+                        $data['english_authors'] = $v[5];//所有作者的英文名☑
+                        $contact_author = $v[6];
+                        $data['contact_author'] = $contact_author;//联系作者姓名☑
+                        $college_name = $v[7];
+                        $publish_year=trim(str_replace(array("\'",","),'',$v[8]));//出版时间(publish_year)☑
+                        $data["publish_year"]=$publish_year;
+                        $conference_name = str_replace(array("\'",","),'',$v[9]);//期刊名称(conference_name)
+                        $data["conference_name"]=$conference_name;
+                        $data["article_type"]=$v[11];//文章类型(article_type)
+                        $data['isbn']=trim($v[13]);//isbn
+                        $issue = trim(str_replace('n','',$v[15]));//期号
+                        $data['issue'] = $issue;
+                        $page_range = trim(str_replace('p','',$v[16]));//页码范围
+                        $data['page_range'] = $page_range;
+
+                        //有关paper——type的输入
+                        $record_year=trim(str_replace(array("\'",","),'',$v[0]));//收录年份
+                        $paper_type = $v[2];//论文类型;
+                        $factor=$v[10];//影响因子
+                        $conference=$v[12];//会议名称
 
                         ///////////////////////////////////////////////////////////////////////
                         //\\\\\涉及外键的操作////\\
 
-                        // 处理第一作者信息 person
-                        $first_author_id = getPersonIdByEmployeeNo($first_author_no);
-                        if($first_author_id>0){
-                            $data["first_author_id"] = $first_author_id;
-                        }else{
-                            $error_counter++;
-                            $errored_name[]=$data["name"]."（第一作者职工号不存在）";
-                            continue;
-                        }
-
-                        //处理联系作者信息 联系作者职工号(contact_author_id->person(employee_num))
-
-                        $contact_author_id = getPersonIdByEmployeeNo($contact_author_no);
-                        if($contact_author_id>0){
-                            $data["contact_author_id"] = $contact_author_id;
-                        }else{
-                            $error_counter++;
-                            $errored_name[]=$data["name"]."（联系作者职工号不存在）";
-                            continue;
-                        }
-
-                        //处理学院id college
-                        $college_id = getForeignKey($college_name,"college",$college_buffer);
+                        // 0.学院id
+                        $college_id = getForeignKeyFromDB($college_name,"college");
                         if($college_id>0){
                             $data["college_id"] = $college_id;
                         }else{
                             $error_counter++;
-                            $errored_name[]=$data["name"]."（学院名不存在）";
+                            $errored_name[]= " 学院信息：".$college_name."不存在；";
                             continue;
                         }
 
-                        $condition = array("name"=>$v[0]);
-                        $isduplicated = $paper->where($condition)->find();
-                        if((int)$isduplicated['id']>0){//数据库中存在相同数据，使用更新操作
-                            $num = $paper->where($condition)->save($data);
-                            $result = $isduplicated['id'];
+                        // 1.第一作者id
+                        $first_author_id = getPidByNameAndCollege($first_author,$college_id);
+                        if($first_author_id>0){
+                            $data["first_author_id"] = $first_author_id;
+                        }else{
+                            $data["first_author_id"] = 88888;
+                        }
+//                        else{
+//                            $error_counter++;
+//                            $errored_name[]= "职工".$first_author."不存在；";
+////                            continue;
+//                        }
+
+                        // 2.联系作者id
+                        $contact_author_id = getPidByNameAndCollege($contact_author,$college_id);
+                        if($contact_author_id>0){
+                            $data["contact_author_id"] = $contact_author_id;
+                        }else{
+                            $data["contact_author_id"] = 88888;
+                        }
+//                        else{
+//                            $error_counter++;
+//                            $errored_name[]=" 联系作者".$contact_author."不存在）";
+////                            continue;
+//                        }
+
+                        /*
+                        *   查重：
+                         * 使用两种思路：
+                         * 1.第一作者和出版时间一样以及论文名一样，
+                         * 2.第一作者和出版时间一样以及期号和页码一样
+                        */
+                        $search_data=array();
+                        //去掉英文第一作者的姓，因为不同索引的姓缩写方式不同
+                        $search_data["first_author"]=substr($first_author,0,strpos($first_author,'.'));
+                        $search_data["publish_year"]=$publish_year;
+                        $temp_paper = $paper->where($search_data)->select();
+
+                        $paper_id = -1;
+                        if($temp_paper!=null){
+                            foreach ($temp_paper as $p){
+                                if($p['name']==$name){//论文名相同
+                                    $paper_id = $p['id'];
+                                    break;
+                                }
+                                //论文所在期号和页码相同
+                                if($p['issue']==$issue && $p['page_range']==$page_range){
+                                    $paper_id = $p['id'];
+                                    break;
+                                }
+                            }
+                        }
+
+                        //不存在重名的论文，直接插入paper表、paper_type表和other——authors表
+                        if($paper_id<0){
+                            //paper中插入数据
+                            $data['paper_type']=$paper_type;
+                            $result = $paper->add($data);
+                            $paper_id =  $result;
+                            $insert_counter++;//成功插入数据记录到日志中
+                            $inserted_id[]=$result;
+                        }else{//存在重名的paper
+                            //只更新paper数据
+                            $condition = array();
+                            $condition['id']=$paper_id;
+                            $o_paper = $paper->where($condition)->find();
+                            if(strpos($o_paper['paper_type'],$paper_type) === false){//若先前没有这个类型
+                                $o_paper['paper_type'] = $o_paper['paper_type'].','.$paper_type;
+                            }
+                            $num = $paper->where($condition)->save($o_paper);
                             //将成功更新的数据记录到日志中
                             $update_counter++;
-                            $updated_id[]=$result;
-
-                            //删除所有paper_other_authors相关记录
-                            $flag["paper_id"]=(int)$result;
-                            M('paper_other_authors')->where($flag)->delete();
-                        }else{
-                            //插入数据
-                            $result = $paper->add($data);
-                            //成功插入数据记录到日志中
-                            $insert_counter++;
-                            $inserted_id[]=$result;
+                            $updated_id[]=$paper_id;
                         }
-                        if (empty($result))
-                        {
-//                            $this->error ( '数据插入/更新失败！' );
-                            $error_counter++;
-                            $errored_name[]=$data["name"];
-                        }else if($other_authors!=''){
-                            $paper_id = (int)$result;
-                            //分隔符选用半角逗号
-                            $author_list = explode(',',$other_authors);
-                            foreach($author_list as $author_name){
-                                $author_id = getPidByNameAndCollege($author_name,null);
-                                //上边已经删除了重复记录，因此此处直接插入
-                                $token["paper_id"] = $paper_id;
-                                $token["person_name"]=$author_name;
-                                //可能获取不到这个外键的id
-                                if($author_id>0){
-                                    $token["person_id"] = $author_id;
+                        //paper_type中插入数据
+                        $type_data = array();
+                        $type_data['paper_id']=$paper_id;
+                        $type_date['type_name']=$paper_type;
+                        $type_data['record_year']=$record_year;
+                        $cname = $conference!=''?$conference:$conference_name;
+                        $type_data['conference_name']= $cname;
+                        $type_data['factor'] = $factor;
+                        M('paper_type')->add($type_data);
+
+                        //paper_other_authors中插入数据
+                        $authors = explode(',',$other_authors_name);
+                        foreach ($authors as $a){
+                            if($a!=''){
+                                $oa = array();
+                                $oa_id = getPidByNameAndCollege($a,$college_id);
+                                if($oa_id>0){
+                                    $oa['paper_id']=$paper_id;
+                                    $oa['person_name']=$a;
+                                    $oa["person_id"] = $oa_id;
+                                    M('paper_other_authors')->add($oa);
                                 }
-                                $honor_result = M('paper_other_authors')->add($token);
                             }
                         }
 
