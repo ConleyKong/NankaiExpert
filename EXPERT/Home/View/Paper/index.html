@@ -19,9 +19,8 @@
                             </label>
                         </div>
                     </div>
-                    <div class="col-sm-4">
-                        <span class="cond-label">论文类型：</span>
-                        <div class="btn-group">
+
+                        <!--<div class="btn-group col-sm-11">-->
                             <!--<label class="btn btn-default active" ng-click="vm.resetCheckbox(vm.academichonor_id)"-->
                                    <!--ng-model="vm.params.academichonor_id" uib-btn-radio="''">全部</label>-->
                             <!--<label class="btn btn-default" ng-repeat="item in vm.academichonorList"-->
@@ -29,10 +28,16 @@
                                    <!--data-placement="top" title="{{item.abbr_name}}"-->
                                    <!--ng-bind="item.abbr_name">-->
                             <!--</label>-->
-                            <label class="btn btn-default active">全部</label>
-                            <label class="btn btn-default">EI</label>
-                            <label class="btn btn-default">SCI</label>
-                            <label class="btn btn-default">CPCI-S</label>
+                        <!--</div>-->
+
+                    <div class="col-sm-4">
+                        <span class="cond-label">论文类型：</span>
+                        <div class="btn-group">
+                            <label class="btn btn-default active" ng-click="vm.resetPaperType()"
+                                   ng-model="vm.params.paper_type" uib-btn-radio="''">全部</label>
+                            <label class="btn btn-default" ng-model="vm.paper_type.ei" uib-btn-checkbox data-toggle="tooltip" data-placement="top">EI</label>
+                            <label class="btn btn-default" ng-model="vm.paper_type.sci" uib-btn-checkbox data-toggle="tooltip" data-placement="top">SCI</label>
+                            <label class="btn btn-default" ng-model="vm.paper_type.cpci" uib-btn-checkbox data-toggle="tooltip" data-placement="top">CPCI-S</label>
                         </div>
                     </div>
                     <div class="col-sm-4 form-inline">

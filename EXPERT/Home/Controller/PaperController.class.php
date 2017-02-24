@@ -44,21 +44,21 @@ class PaperController extends Controller {
                 unset($param['endTime']);
             }
             if($publish_date){
-                $query['publish_date'] = $publish_date;
+                $query['publish_year'] = $publish_date;
             }
 
-            if ($param['name']){
-                $query['name']=array('like','%'.$param['name'].'%');
-                unset($param['name']);
-            }
-            if ($param['conference_name']){
-                $query['conference_name']=array('like','%'.$param['conference_name'].'%');
-                unset($param['conference_name']);
-            }
-            if ($param['person_name']){
-                $query['person_name']=array('like','%'.$param['person_name'].'%');
-                unset($param['person_name']);
-            }
+//            if ($param['name']){
+//                $query['name']=array('like','%'.$param['name'].'%');
+//                unset($param['name']);
+//            }
+//            if ($param['conference_name']){
+//                $query['conference_name']=array('like','%'.$param['conference_name'].'%');
+//                unset($param['conference_name']);
+//            }
+//            if ($param['person_name']){
+//                $query['person_name']=array('like','%'.$param['person_name'].'%');
+//                unset($param['person_name']);
+//            }
 
 
             $string = '';
@@ -71,6 +71,11 @@ class PaperController extends Controller {
                 $ts = "( paper.name like '%$keyword%' OR paper.conference_name like '%$keyword%' OR person.name like '%$keyword%')";
                 $string .= $string?' AND '.$ts:$ts;
                 unset($param['keyword']);
+            }
+            $paper_type = $param['paper_type'];
+            if($paper_type){
+                $string .= $string?' AND ( '.$paper_type.' )':'( '.$paper_type.' )';
+                unset($param['paper_type']);
             }
             if ($string){
                 $query['_string'] = $string;
@@ -326,8 +331,7 @@ class PaperController extends Controller {
                         $college_name = $v[7];
                         $publish_year=trim(str_replace(array("\'",","),'',$v[8]));//出版时间(publish_year)☑
                         $data["publish_year"]=$publish_year;
-                        $conference_name = str_replace(array("\'",","),'',$v[9]);//期刊名称(conference_name)
-                        $data["conference_name"]=$conference_name;
+
                         $data["article_type"]=$v[11];//文章类型(article_type)
                         $data['isbn']=trim($v[13]);//isbn
                         $issue = trim(str_replace('n','',$v[15]));//期号
@@ -340,6 +344,9 @@ class PaperController extends Controller {
                         $paper_type = $v[2];//论文类型;
                         $factor=$v[10];//影响因子
                         $conference=$v[12];//会议名称
+                        $conference_name = str_replace(array("\'",","),'',$v[9]);//期刊名称(conference_name)
+                        $conference_name = $conference_name==''?$conference:$conference_name;
+                        $data["conference_name"]=$conference_name;
 
                         ///////////////////////////////////////////////////////////////////////
                         //\\\\\涉及外键的操作////\\

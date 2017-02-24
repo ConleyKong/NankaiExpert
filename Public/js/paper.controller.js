@@ -46,6 +46,36 @@
 	 		);
 	 	};
 
+
+		vm.paper_type={
+			ei:false,
+			sci:false,
+			cpci:false
+		}
+
+		$scope.$watch('vm.paper_type',function () {
+			var temp=[];
+			angular.forEach(vm.paper_type,function (value,key) {
+				if(value){
+					temp.push(" paper_type like '%"+key+"%' ");
+				}
+			});
+
+			if(temp.length>0){
+				vm.params.paper_type=temp.join(' and ');
+			}else{
+				vm.params.paper_type='';
+			}
+			console.log("选中的论文类型为："+vm.params.paper_type);
+		},true);
+
+		vm.resetPaperType = function(){
+			vm.paper_type.cpci=false;
+			vm.paper_type.ei=false;
+			vm.paper_type.sci=false;
+			// console.log("清空后的论文类型："+JSON.stringify(vm.paper_type));
+		}
+
 	 	getCollegeList();
 	 	vm.collegeMap = [''];
 	 	function getCollegeList(){
