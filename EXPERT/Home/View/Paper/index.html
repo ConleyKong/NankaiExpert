@@ -70,6 +70,31 @@
                         &nbsp;
                     </label>
                 </div>
+                <div class="col-sm-12 bottom-10" align="center" ng-hide="vm.chartFlag">
+                    <!--<a ng-click="vm.chartFlag=true" href="" title="显示统计图">-->
+                    <a ng-click="vm.chartFlag=true" href="" title="显示统计图">
+                        <span class="glyphicon glyphicon-chevron-down"></span><br/>
+                        <sapn>显示统计图表</sapn>
+                    </a>
+                </div>
+                <div  class="col-sm-12" ng-show="vm.chartFlag" ng-cloak>
+                    <hr/>
+                    <span class="cond-label col-sm-1">统计类型：</span>
+                    <div class="col-sm-11">
+                        <div class="btn-group">
+                            <label class="btn btn-default active" ng-model="vm.count_type" uib-btn-radio="'college'">科研单位</label>
+                            <label class="btn btn-default" ng-model="vm.count_type" uib-btn-radio="'type'">论文类型</label>
+                            <!--<label class="btn btn-default" ng-model="vm.count_type" uib-btn-radio="'honor'">学术称号</label>-->
+                        </div>
+                    </div>
+                    <div id="p1" style="height: 300px;width:1126px;" class="bottom-10"></div>
+                    <div class="top-10" align="center">
+                        <a ng-click="vm.chartFlag=false" href="" title="隐藏图表">
+                            <span class="glyphicon glyphicon-chevron-up"></span><br/>
+                            <sapn>隐藏统计图表</sapn>
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="col-md-12">

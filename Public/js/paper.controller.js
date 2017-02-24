@@ -32,6 +32,13 @@
 			vm.paginationConf.totalItems=0;
 	 		sendRequest.post(url, {}, jQuery.param(params)).then(
 	 			function(resp){
+					//获取统计信息
+					vm.college_data = resp[0]['itemCollegeCount'];
+					vm.type_data = resp[0]['itemTypeCount'];
+					// console.log("返回的参数："+vm.college_data);
+					if(vm.chartFlag){
+						makeMyChart();
+					}
 					var num = resp[0]['totalNum'];
 	 				vm.paperList = resp;
 					vm.paginationConf.totalItems = num;
@@ -46,6 +53,153 @@
 	 		);
 	 	};
 
+		vm.chartFlag = false;//是否显示统计图表
+		vm.count_type = 'college';//默认显示学院统计信息
+
+		vm.showChart = function () {
+			vm.chartFlag = true;
+			console.log("chartFlag变量更新成功");
+		}
+
+		$scope.$watch('vm.count_type',function () {
+			console.log("vm.count_type 改变了："+vm.count_type);
+			makeMyChart();
+		},true);
+		$scope.$watch('vm.chartFlag',function () {
+			if(vm.chartFlag){
+				makeMyChart();
+			}
+		},true);
+
+		function makeChart(id, option){
+			vm.myChart = echarts.init(document.getElementById(id), 'macarons');
+			vm.myChart.setOption(option);
+			window.onresize = vm.myChart.resize;
+		}
+
+		var pieOption = {
+			tooltip : {
+				trigger: 'item',
+				formatter: "{a} <br/>{b} : {c} ({d}%)"
+			},
+			legend: {
+				orient : 'vertical',
+				x : 'left',
+				data:[]
+			},
+			toolbox: {
+				show : true,
+				feature : {
+					mark : {show: true},
+					dataView : {show: true, readOnly: false},
+					magicType : {
+						show: true,
+						type: ['pie', 'funnel'],
+						option: {
+							funnel: {
+								x: '25%',
+								width: '70%',
+								funnelAlign: 'right',
+								max: 1548
+							}
+						}
+					},
+					restore : {show: true},
+					saveAsImage : {show: true}
+				}
+			},
+			calculable : true,
+		};
+
+		function makeMyChart(){
+			if(vm.chartFlag){
+				switch (vm.count_type){
+					case 'college':
+						console.log("显示学院统计信息");
+						makeChartAboutCollege();
+						break;
+					case 'type':
+						console.log("显示论文类型统计信息");
+						makeChartAboutType();
+						break;
+					default:
+						console.log("默认显示学院统计情况");
+						makeChartAboutCollege();
+						break;
+				}
+			}
+		}
+		function makeChartAboutCollege(){
+			//以学院信息为统计尺度
+			console.log("正在显示学院信息统计");
+			vm.option = $.extend(true, {}, pieOption,
+				{
+					title: {
+						text: '科研成果（论文）统计',
+						subtext: '科研单位分布情况',
+						x: 'center'
+					}
+				},
+				{
+					series: [
+						{
+							name: '所属科研单位',
+							type: 'pie',
+							radius: '55%',
+							center: ['50%', '60%'],
+							data: []
+						}
+					]
+				}
+			);
+			angular.forEach(vm.college_data,function (item,index) {
+				// console.log("填数据中……");
+				if(item.col_name!=null){
+					console.log(item.col_name+","+item.enum);
+					vm.option.legend.data.push(item.col_name);
+					vm.option.series[0].data.push({value:item.enum, name:item.col_name});
+				}
+			});
+			if(vm.chartFlag){
+				makeChart('p1',vm.option);
+			}
+		}
+
+		function makeChartAboutType(){
+			//以论文类型信息为统计尺度
+			console.log("正在显示类型信息统计");
+			vm.option = $.extend(true, {}, pieOption,
+				{
+					title: {
+						text: '科研成果（论文）统计',
+						subtext: '论文类型分布情况',
+						x: 'center'
+					}
+				},
+				{
+					series: [
+						{
+							name: '论文类型',
+							type: 'pie',
+							radius: '55%',
+							center: ['50%', '60%'],
+							data: []
+						}
+					]
+				}
+			);
+			angular.forEach(vm.type_data,function (item,index) {
+				// console.log("填数据中……");
+				if(item.paper_type!=null){
+					console.log(item.paper_type+","+item.enum);
+					vm.option.legend.data.push(item.paper_type);
+					vm.option.series[0].data.push({value:item.enum, name:item.paper_type});
+				}
+			});
+			if(vm.chartFlag){
+				makeChart('p1',vm.option);
+			}
+		}
 
 		vm.paper_type={
 			ei:false,
@@ -200,7 +354,7 @@
 
 	 	//导入导出
 	 	vm.showCheckbox = false;
-	 	vm.exportParams = {person_name:false,col_name:false,name:false,conference_name:false,publish_date:false,comment:false};
+	 	vm.exportParams = {first_author:false,contact_author:false,col_name:false,name:false,paper_type:false,conference_name:false,other_authors_name:false,publish_year:false,comment:false};
 
 	 	vm.exportExcel = exportExcel;
 	 	function exportExcel(type){

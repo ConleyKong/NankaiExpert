@@ -47,20 +47,6 @@ class PaperController extends Controller {
                 $query['publish_year'] = $publish_date;
             }
 
-//            if ($param['name']){
-//                $query['name']=array('like','%'.$param['name'].'%');
-//                unset($param['name']);
-//            }
-//            if ($param['conference_name']){
-//                $query['conference_name']=array('like','%'.$param['conference_name'].'%');
-//                unset($param['conference_name']);
-//            }
-//            if ($param['person_name']){
-//                $query['person_name']=array('like','%'.$param['person_name'].'%');
-//                unset($param['person_name']);
-//            }
-
-
             $string = '';
             if ($param['college_id']){
                 $string .= $string ? ' AND ('.$param['college_id'].')' : '('.$param['college_id'].')';
@@ -92,6 +78,10 @@ class PaperController extends Controller {
                 ->select();
             $totalNum = $paper->where($query)->count();
             $result[0]['totalNum'] = $totalNum;
+            $itemCollegeCount = $paper->field('col_name,count(*) enum')->where($query)->group('col_name')->select();
+            $result[0]['itemCollegeCount']=$itemCollegeCount;
+            $itemTypeCount = $paper->field('paper_type,count(*) enum')->where($query)->group('paper_type')->select();
+            $result[0]['itemTypeCount']=$itemTypeCount;
             //操作记录日志
 //            $audit['name'] = session('username');
 //            $audit['ip'] = getIp();
@@ -198,6 +188,10 @@ class PaperController extends Controller {
                 $ts = " (paper.name like '%$keyword%' OR paper.conference_name like '%$keyword%' OR person.name like '%$keyword%')";
                 $string .= $string?' AND '.$ts:$ts;
             }
+            $paper_type = I('get.paper_type');
+            if($paper_type){
+                $string .= $string?' AND ( '.$paper_type.' )':'( '.$paper_type.' )';
+            }
             if ($string)
                 $query['_string'] = $string;
 
@@ -217,7 +211,7 @@ class PaperController extends Controller {
                 return '未知错误';
             }
 
-            $titleMap = array('person_name'=>'第一作者','col_name'=>'第一作者单位','name'=>'论文名','conference_name'=>'期刊/会议名称','publish_date'=>'发表时间','comment'=>'备注');
+            $titleMap = array('first_author'=>'第一作者','contact_author'=>'通讯作者','col_name'=>'认领单位','name'=>'论文名','paper_type'=>'论文类型','conference_name'=>'期物/会议名称','other_authors_name'=>'其他作者','publish_year'=>'出版时间','comment'=>'备注');
             $field = split(',', $field);
             $excelTitle = array();
             foreach ($field as $value) {
@@ -341,7 +335,7 @@ class PaperController extends Controller {
 
                         //有关paper——type的输入
                         $record_year=trim(str_replace(array("\'",","),'',$v[0]));//收录年份
-                        $paper_type = $v[2];//论文类型;
+                        $paper_type = trim(str_replace(array("\'",","),'',$v[2]));//论文类型;
                         $factor=$v[10];//影响因子
                         $conference=$v[12];//会议名称
                         $conference_name = str_replace(array("\'",","),'',$v[9]);//期刊名称(conference_name)
@@ -414,8 +408,8 @@ class PaperController extends Controller {
                             }
                         }
 
-                        //不存在重名的论文，直接插入paper表、paper_type表和other——authors表
-                        if($paper_id<0){
+
+                        if($paper_id<0){ //不存在重名的论文，直接插入paper表、paper_type表和other——authors表
                             //paper中插入数据
                             $data['paper_type']=$paper_type;
                             $result = $paper->add($data);
@@ -438,7 +432,7 @@ class PaperController extends Controller {
                         //paper_type中插入数据
                         $type_data = array();
                         $type_data['paper_id']=$paper_id;
-                        $type_date['type_name']=$paper_type;
+                        $type_data['type_name']=$paper_type;
                         $type_data['record_year']=$record_year;
                         $cname = $conference!=''?$conference:$conference_name;
                         $type_data['conference_name']= $cname;
