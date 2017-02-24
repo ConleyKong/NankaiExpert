@@ -7,9 +7,62 @@
     'use strict'; 
 
     angular.module('utils', ['tm.pagination'])
+    .directive("ngDate",ngDate)
     .directive("dateRange",dateRange)
     .directive("multiCondition",multiCondition)
     .directive("showMore",showMore)
+
+    function ngDate() {
+        return {
+            restrict: 'A',
+            require: '?ngModel',
+            link: function ($scope, $element, $attrs, $ngModel) {
+                if (!$ngModel) {
+                    return;
+                }
+                $('.form_datetime').datetimepicker({
+                    weekStart: 1,
+                    todayBtn: 1,
+                    autoclose: 1,
+                    todayHighlight: 1,
+                    startView: 2,
+                    forceParse: 0,
+                    showMeridian: 1
+                });
+                $('.form_year').datetimepicker({
+                    language: 'fr',
+                    // weekStart: 1,
+                    todayBtn: 1,
+                    autoclose: 1,
+                    // todayHighlight: 1,
+                    startView: 4,
+                    minView: 4,
+                    forceParse: 0
+                });
+                $('.form_date').datetimepicker({
+                    language: 'fr',
+                    weekStart: 1,
+                    todayBtn: 1,
+                    autoclose: 1,
+                    todayHighlight: 1,
+                    startView: 2,
+                    minView: 2,
+                    forceParse: 0
+                });
+                $('.form_time').datetimepicker({
+                    language: 'fr',
+                    weekStart: 1,
+                    todayBtn: 1,
+                    autoclose: 1,
+                    todayHighlight: 1,
+                    startView: 1,
+                    minView: 0,
+                    maxView: 1,
+                    forceParse: 0
+                });
+            },
+        };
+    }
 
     function dateRange(){
         return {

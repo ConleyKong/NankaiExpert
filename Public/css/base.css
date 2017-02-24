@@ -102,6 +102,10 @@ button.button-link:hover{
 	width: 240px;
 }
 
+.ltbox-size{
+	width: 120px;
+}
+
 table{
 	table-layout: fixed;
 }

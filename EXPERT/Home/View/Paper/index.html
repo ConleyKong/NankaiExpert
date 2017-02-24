@@ -8,7 +8,7 @@
             <div class="panel-body">
                 <!--筛选条件-->
                 <div class="col-sm-12">
-                    <div class="col-sm-5 bottom-10">
+                    <div class="col-sm-4">
                         <span class="cond-label">作者单位：</span>
                         <div class="btn-group">
                             <label style="margin-bottom:0;color:#eee">
@@ -19,22 +19,41 @@
                             </label>
                         </div>
                     </div>
-
-                    <div class="col-sm-7 bottom-10">
-                        <span class="cond-label">发表时间：</span>
+                    <div class="col-sm-4">
+                        <span class="cond-label">论文类型：</span>
                         <div class="btn-group">
-                            <form class="form-inline">
-                                <div class="form-group">
-                                    <input type="text" class="box-width form-control"
-                                           ng-model="vm.start_time" ng-blur="vm.setStart()" ng-keyup="setStartKeyupEvent($event)" placeholder="时间格式：2010-10-10"/>
-                                    至
-                                </div>
-                                <div class="form-group">
-                                    <input type="text" class="box-width form-control"
-                                           ng-model="vm.end_time" ng-blur="vm.setEnd()" ng-keyup="setEndKeyupEvent($event)" placeholder="时间格式：2010-10-10"/>
-                                </div>
-                            </form>
+                            <!--<label class="btn btn-default active" ng-click="vm.resetCheckbox(vm.academichonor_id)"-->
+                                   <!--ng-model="vm.params.academichonor_id" uib-btn-radio="''">全部</label>-->
+                            <!--<label class="btn btn-default" ng-repeat="item in vm.academichonorList"-->
+                                   <!--ng-model="vm.academichonor_id[item.id]" uib-btn-checkbox data-toggle="tooltip"-->
+                                   <!--data-placement="top" title="{{item.abbr_name}}"-->
+                                   <!--ng-bind="item.abbr_name">-->
+                            <!--</label>-->
+                            <label class="btn btn-default active">全部</label>
+                            <label class="btn btn-default">EI</label>
+                            <label class="btn btn-default">SCI</label>
+                            <label class="btn btn-default">CPCI-S</label>
                         </div>
+                    </div>
+                    <div class="col-sm-4 form-inline">
+                        <span class="cond-label">出版年份：</span>
+                        <div class="input-group form-control  col-sm-1 date form_date" ng-date data-date="" data-date-format="dd MM yyyy" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd" >
+                            <input style="width: 70px" type="text" class="form-control" id="start_year" placeholder="1919" ng-model='timepickerTest'>
+                            <div class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></div>
+                        </div>
+                        至
+                        <div class="input-group form-control  col-sm-1 date form_date" ng-date data-date="" data-date-format="dd MM yyyy" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd" >
+                            <input style="width: 70px" type="text" class="form-control" id="end_year" placeholder="今年" ng-model='timepickerTest'>
+                            <div class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></div>
+                        </div>
+                        <!--<div class="form-group">-->
+                            <!--<label for="dtp_input2" class="col-md-2 control-label">Date Picking</label>-->
+                            <!--<div  ng-model='timepickerTest'  ng-time class="input-group date form_date col-md-5" data-date="" data-date-format="dd MM yyyy" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">-->
+                                <!--<input class="form-control" size="16" type="text" value="" readonly>-->
+                                <!--<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>-->
+                            <!--</div>-->
+                            <!--<input type="hidden" id="dtp_input2" value="" /><br/>-->
+                        <!--</div>-->
                     </div>
                 </div>
                 <!--所选筛选单位-->
@@ -119,8 +138,8 @@
                     <th width="6%">通讯作者<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.person_name"></th>
                     <th width="16%">其他作者<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.person_name"></th>
                     <th width="8%">认领单位<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.col_name"></th>
-                    <th width="4%">出版时间<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.publish_date"></th>
-                    <th width="16%">刊物名称<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.conference_name"></th>
+                    <th width="6%">出版时间<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.publish_date"></th>
+                    <th width="18%">刊物名称<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.conference_name"></th>
                     <th width="4%">操作</th>
                 </tr>
                 </thead>
@@ -155,5 +174,15 @@
     <script type="text/javascript" src="__CDN__/angular-ui-bootstrap/0.14.3/ui-bootstrap.min.js"></script>
     <script>
         selectMenu('paper', 3, 0);
+        $('.form_date').datetimepicker({
+            language:  'zh-CN',
+            weekStart: 1,
+            todayBtn:  1,
+            autoclose: 1,
+            todayHighlight: 1,
+            startView: 2,
+            minView: 2,
+            forceParse: 0
+        });
     </script>
 </block>
