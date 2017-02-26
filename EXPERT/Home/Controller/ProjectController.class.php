@@ -395,6 +395,7 @@ class ProjectController extends Controller {
                         //\\\\\涉及外键的操作////\\
 
                         //处理所属学院名
+                        $college_name = $college_name==''?'其他':$college_name;
                         $college_id = getForeignKeyFromDB($college_name,"college");
                         if($college_id>0){
                             $data["college_id"] = $college_id;

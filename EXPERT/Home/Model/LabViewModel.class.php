@@ -6,26 +6,15 @@ class LabViewModel extends ViewModel {
 		'lab'	=> 	array(
 			'id',
 			'name',
-			'manager_id',
-			'contact_id',
 			'location',
-			'formed_date',
+			'formed_year',
 			'college_id',
-			'member',
+			'members',
 			'description',
+			'research_interests',
+			'research_results',
+			'lab_type',
 			'valid',
-		),
-		'person' => array(
-			'name' => 'manager_name',
-			'_on' => 'lab.manager_id=person.id',
-			'_type' => 'LEFT',
-		),
-		'contact' => array(
-			'_table' => 'person',
-			'id'=>'contact_id',
-			'name' => 'contact_name',
-			'_on' => 'contact.id=lab.contact_id',
-			'_type' => 'LEFT'
 		),
 		'college' => array(
 			'name' => 'college_name',

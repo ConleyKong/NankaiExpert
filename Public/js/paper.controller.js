@@ -354,7 +354,7 @@
 
 	 	//导入导出
 	 	vm.showCheckbox = false;
-	 	vm.exportParams = {first_author:false,contact_author:false,col_name:false,name:false,paper_type:false,conference_name:false,other_authors_name:false,publish_year:false,comment:false};
+	 	vm.exportParams = {first_author:false,contacter_name:false,col_name:false,name:false,paper_type:false,conference_name:false,other_authors_name:false,publish_year:false,comment:false};
 
 	 	vm.exportExcel = exportExcel;
 	 	function exportExcel(type){

@@ -5,13 +5,16 @@ class PatentViewModel extends ViewModel {
 	public $viewFields = array(
 		'patent' => array(
 			'id',
-			'first_inventor_id',
 			'name',
-			'owner_id',
-			'type',
+			'first_inventor_id',
+			'first_inventor',
+			'college_id',
 			'apply_no',
 			'apply_date',
+			'type',
+			'all_inventors',
 			'grant_date',
+			'patent_state',
 			'comment',
 			'valid',
 			'_type' => 'LEFT'
@@ -19,30 +22,16 @@ class PatentViewModel extends ViewModel {
 		'inventor' => array(
 			'_table' => 'person',
 			'id'=>'inventor_id',
-			'name' => 'firstinventor_name',
+			'name' => 'inventor_name',
 			'_on' => 'inventor.id=patent.first_inventor_id',
 			'_type' => 'LEFT'
 		),
-		'owner' => array(
-			'_table' => 'person',
-			'id' =>'ownerid',
-			'name' => 'owner_name',
-			'_on' => 'owner.id=patent.owner_id',
-			'_type' => 'LEFT'
-		),
-		'inventorcollege' => array(
-			'_table' => 'college',
-			'id' =>'inventorcollege_id',
-			'name' => 'inventorcollege_name',
-			'_on' => 'inventorcollege.id=inventor.college_id',
-			'_type' => 'LEFT'
-		),
-		'ownercollege' => array(
+		'owner_college' => array(
 			'_table' => 'college',
 //			'_as' => 'ownercollege',
-			'id' =>'ownercollege_id',
-			'name' => 'ownercollege_name',
-			'_on' => 'ownercollege.id=owner.college_id',
+			'id' =>'owner_college_id',
+			'name' => 'owner_college_name',
+			'_on' => 'owner_college.id=patent.college_id',
 			'_type' => 'LEFT'
 		),
 	);

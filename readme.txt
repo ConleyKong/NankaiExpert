@@ -1,3 +1,10 @@
+version 2.2
+导入专利信息，导入实验平台信息
+修复college外键bug：
+    当外键为空时，ModelView就不会显示：
+    解决方法：$college_name = $college_name==''?'其他':$college_name;
+修复lab，patent，paper导出的字段映射不匹配问题
+
 version 2.1
 导入论文信息：
 判断论文重名逻辑：

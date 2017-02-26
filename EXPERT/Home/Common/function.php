@@ -243,6 +243,7 @@ function getPersonIdByEmployeeNo($employee_no)
  * 		成功：返回人员的id
  * 		失败：返回-1
  * 		用户名为空：返回0
+ * 		修改为出现异常就返回88888
  */
 function getPidByNameAndCollege($employee_name,$college_id)
 {
@@ -251,6 +252,9 @@ function getPidByNameAndCollege($employee_name,$college_id)
 		$id = null;
 		$p = D("person")->where("name='%s' ", $employee_name)->select();
 		$dupNum = count($p);
+		if($dupNum<=0){
+			return 88888;//默认为“未知用户”
+		}
 		if($dupNum==1){//单例情况，直接返回id值
 			$id = (int)$p[0]['id'];
 		}else{
@@ -276,11 +280,11 @@ function getPidByNameAndCollege($employee_name,$college_id)
 		}
 		if ($id != null) {
 			return $id;
-		}else if($college_id!=null){
-			return -1;
+		}else{
+			return 88888;
 		}
 	}else{
-		return 0;
+		return 88888;
 	}
 
 

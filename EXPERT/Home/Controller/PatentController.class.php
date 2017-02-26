@@ -183,7 +183,7 @@ class PatentController extends Controller {
             }
             else
                 return '未知错误';
-            $titleMap = array('name'=>'专利名称','owner_name'=>'拥有人','ownercollege_name'=>'拥有单位','firstinventor_name'=>'第一发明人','inventorcollege_name'=>'第一发明人单位','type'=>'专利类型','apply_no'=>'专利（申请）号','apply_date'=>'专利申请日','grant_date'=>'专利授权日','comment'=>'备注');
+            $titleMap = array('name'=>'专利名称','first_inventor'=>'第一发明人','owner_college_name'=>'所属单位','apply_no'=>'申请编号','apply_date'=>'申请日期','type'=>'专利类型','all_inventors'=>'参与人','grant_date'=>'授权日期','patent_state'=>'专利状态','comment'=>'备注');
             $field = split(',', $field); 
             $excelTitle = array();
             foreach ($field as $value) {
@@ -265,64 +265,42 @@ class PatentController extends Controller {
                         $patent = M("patent");
                         $data = array();
                         $data["name"]= $v[0];//专利名称
-                        $first_inventor_no = trim($v[1]);//第一发明人职工号
+                        $first_inventor = trim($v[1]);//第一发明人姓名
+                        $data['first_inventor'] = $first_inventor;
                         $college_name = trim($v[2]);//学院
-                        $data["apply_no"]=$v[3];//申请编号
+                        $data["apply_no"]=trim($v[3]);//申请编号
                         $data["apply_date"]=$v[4];//申请日期
                         $data["grant_date"]=$v[5];//授予日期
                         $type_name = trim($v[6]);//专利类型
                         $data["type"] = $type_name;
-                        $others_nos = trim($v[7]);//其他发明人职工号（使用；分割）
-                        $extra_names = trim($v[8]);//校外发明人姓名（使用；分割）
-
-                        $owner_no = trim($v[9]);//专利所有人职工号
+                        $all_inventors = trim($v[7]);//所有专利发明人，‘,’分割
+                        $data['all_inventors']=$all_inventors;
+                        $date['patent_state'] = trim($v[8]);//专利状态
 
                         ///////////////////////////////////////////////////////////////////////
                         //\\\\\涉及外键的操作////\\
 
-                        // 处理//第一发明人职工号
-                            $first_inventor_id = getPersonIdByEmployeeNo($first_inventor_no);
+                        //处理学院信息 college_id
+                        $college_name = $college_name==''?'其他':$college_name;
+                        $college_id = getForeignKeyFromDB($college_name,"college");
+                        if($college_id>0){
+                            $data["college_id"] = $college_id;
+                        }else{
+                            $error_counter++;
+                            $errored_name[]=$data["name"]."（学院名".$college_name."有误）";
+//                            continue;
+                        }
+
+
+                        // 处理第一发明人id
+                            $first_inventor_id = getPidByNameAndCollege($first_inventor,$college_id);
                             if($first_inventor_id>0){
                                 $data["first_inventor_id"] = $first_inventor_id;
                             }else{
                                 $error_counter++;
-                                $errored_name[]=$data["name"]."（第一发明人职工号不存在）";
-                                continue;
-                            }
-
-                        //处理学院信息 college_id
-                            $college_id = getForeignKey($college_name,"college",$college_buffer);
-                            if($college_id>0){
-                                $data["college_id"] = $college_id;
-                            }else{
-                                $error_counter++;
-                                $errored_name[]=$data["name"]."（学院名有误）";
-                                continue;
-                            }
-
-
-                        //处理专利所有人职工号
-                            $owner_id = getPersonIdByEmployeeNo($owner_no);
-                            if($owner_id>0){
-                                $data["owner_id"] = $owner_id;
-                            }else{
-                                $error_counter++;
-                                $errored_name[]=$data["name"]."（专利所有人职工号不存在）";
-                                continue;
-                            }
-
-//                        //处理专利类型信息 patent_type
-//                        if($type_name!=''){
-//                            $type_id = getForeignKey($type_name,"person_type",$type_buffer);
-//                            if($type_id>0){
-//                                $data["type_id"] = $type_id;
-//                            }else{
-//                                $error_counter++;
-//                                $errored_name[]=$data["name"]."（用户人员类型有误）";
+                                $errored_name[]=$data["name"]."（第一发明人".$first_inventor."不存在）";
 //                                continue;
-//                            }
-//                        }
-
+                            }
 
                         $condition["apply_no"] =$data["apply_no"];
                         $condition["name"]=$data["name"];
@@ -333,12 +311,9 @@ class PatentController extends Controller {
                             //将成功更新的数据记录到日志中
                             $update_counter++;
                             $updated_id[]=$result;
-
-                            //删除所有patent_other(extra)_person相关表，稍后重新插入（以后来数据为准）
+                            //删除所有patent_inventors相关表，稍后重新插入（以后来数据为准）
                             $flag["patent_id"]=(int)$result;
-                            M('patent_other_inventor')->where($flag)->delete();
-                            M('patent_extra_inventor')->where($flag)->delete();
-
+                            M('patent_inventors')->where($flag)->delete();
                         }else{
                             //插入数据
                             $result = $patent->add($data);
@@ -351,41 +326,29 @@ class PatentController extends Controller {
                         if (empty($result))
                         {
                             $error_counter++;
-                            $errored_name[]=$data["name"];
-                        }else if($others_nos!=''){
+                            $errored_name[]=$data["name"]."插入失败！";
+                        }else if($all_inventors!=''){
                             // 插入其他发明人职工号
-//                            dump($data);//显示添加的数据
                             $patent_id = (int)$result;
-                            $others_no_list = explode('；',$others_nos);//此处分隔符需要选用全角分号，因为Excel中输入的可能是用的中文输入法
-                            foreach($others_no_list as $person_no){
-                                $person_id = getPersonIdByEmployeeNo($person_no);
+                            $inventors = explode(',',$all_inventors);//此处分隔符需要选用全角分号，因为Excel中输入的可能是用的中文输入法
+                            foreach($inventors as $ivtor){
+                                $person_id = getPidByNameAndCollege($ivtor,$college_id);
 
                                 if($person_id>0){
                                     $token["patent_id"] = $patent_id ;
                                     $token["person_id"]  = $person_id  ;
-                                    $existed = M('patent_other_inventor')->where($token)->find();
+                                    $existed = M('patent_inventors')->where($token)->find();
                                     if($existed==null){
                                         //插入patent_other_inventor数据
-                                        $patent_other_inventor_result = M('patent_other_inventor')->add($token);
+                                        $patent_other_inventor_result = M('patent_inventors')->add($token);
                                     }
                                 }else{//可能获取不到这个外键的id
                                     $error_counter++;
-                                    $errored_name[]=$data["name"]."（其他发明人职工号 $person_no 不存在）";
-                                    continue;
+                                    $errored_name[]=$data["name"]."（发明人 $ivtor 不存在）";
+//                                    continue;
                                 }
                             }
-                        }else if($extra_names!=''){
-                            // 插入其他校外发明人姓名
-                            $patent_id = (int)$result;
-                            $extra_name_list = explode('；',$extra_names);//此处分隔符需要选用全角分号，因为Excel中输入的可能是用的中文输入法
-                            foreach($extra_name_list as $person_name){
-                                    $token["patent_id"] = $patent_id ;
-                                    $token["person_name"]  = $person_name  ;
-                                    $patent_extra_inventor_result = M('patent_extra_inventor')->add($token);
-                            }
-
                         }
-
                     }
 
                 }
@@ -397,10 +360,10 @@ class PatentController extends Controller {
                 $audit['module'] = '人员信息';
                 $audit['time'] = date('y-m-d h:i:s', time());
                 $error_counter>0?$audit['result'] ='警告':$audit['result'] = '成功';
-                $descr = "\n 记录导入失败".$error_counter."条；\n ";
+                $descr = "\n 记录导入异常".$error_counter."条；\n ";
                 if($error_counter>0){
                     //将插入失败的用户姓名记录下来
-                    $descr .= "导入失败的专利名： ";
+                    $descr .= "导入异常的专利名： ";
                     foreach ($errored_name as $e_name){
                         $descr .= $e_name.",";
                     }
@@ -425,10 +388,9 @@ class PatentController extends Controller {
                 M('audit')->add($audit);
 
                 if($error_counter==0){
-//                    $this->success("恭喜您，成功导入或更新数据"+($insert_counter+$update_counter)+"条！（详情见日志）",'',5);
-                    $this->success("导入工作成功（详情见日志）",'',3);
+                    $this->success("导入工作成功（详情见日志）",'/Audit/index',2);
                 }else{
-                    $this->error("存在导入失败的记录，请查看日志进行修正！",'',30);
+                    $this->error("存在导入失败的记录，请查看日志进行修正！",'/Audit/index',2);
                 }
 
             }

@@ -211,7 +211,7 @@ class PaperController extends Controller {
                 return '未知错误';
             }
 
-            $titleMap = array('first_author'=>'第一作者','contact_author'=>'通讯作者','col_name'=>'认领单位','name'=>'论文名','paper_type'=>'论文类型','conference_name'=>'期物/会议名称','other_authors_name'=>'其他作者','publish_year'=>'出版时间','comment'=>'备注');
+            $titleMap = array('first_author'=>'第一作者','contacter_name'=>'通讯作者','col_name'=>'认领单位','name'=>'论文名','paper_type'=>'论文类型','conference_name'=>'期物/会议名称','other_authors_name'=>'其他作者','publish_year'=>'出版时间','comment'=>'备注');
             $field = split(',', $field);
             $excelTitle = array();
             foreach ($field as $value) {
@@ -346,6 +346,7 @@ class PaperController extends Controller {
                         //\\\\\涉及外键的操作////\\
 
                         // 0.学院id
+                        $college_name = $college_name==''?'其他':$college_name;
                         $college_id = getForeignKeyFromDB($college_name,"college");
                         if($college_id>0){
                             $data["college_id"] = $college_id;
@@ -493,9 +494,11 @@ class PaperController extends Controller {
                 M('audit')->add($audit);
 
                 if($error_counter==0){
-                    $this->success("恭喜您，科研成果数据导入操作成功！（详情见操作记录模块）",'',4);
+//                    $this->success("恭喜您，成功导入或更新数据"+($insert_counter+$update_counter)+"条！（详情见日志）",'',5);
+                    $this->success("导入工作成功（详情见日志）",'/Audit/index',2);
+//                    $this->redirect("Audit/index");
                 }else{
-                    $this->error("存在导入失败的记录，请查看操作记录模块的日志进行修正！",'',4);
+                    $this->error("存在导入失败的记录，请查看日志进行修正！",'/Audit/index',2);
                 }
 
             }

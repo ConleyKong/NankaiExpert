@@ -524,6 +524,7 @@ class PeopleController extends Controller {
 
 
                         //处理学院信息 college_id
+                        $college_name = $college_name==''?'其他':$college_name;
                             $college_id = getForeignKey($college_name,"college",$college_buffer);
                             if($college_id>0){
                                 $data["college_id"] = $college_id;
@@ -639,9 +640,7 @@ class PeopleController extends Controller {
                 M('audit')->add($audit);
 
                 if($error_counter==0){
-//                    $this->success("恭喜您，成功导入或更新数据"+($insert_counter+$update_counter)+"条！（详情见日志）",'',5);
                     $this->success("导入工作成功（详情见日志）",'/Audit/index',2);
-//                    $this->redirect("Audit/index");
                 }else{
                     $this->error("存在导入失败的记录，请查看日志进行修正！",'/Audit/index',2);
                 }

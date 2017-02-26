@@ -23,12 +23,11 @@ class LabController extends Controller {
             $pageNum = $param['page'] ? $param['page'] : 1;  //当前页
             $itemsNum =  $param['items'] ? $param['items'] : 10; //每页个数
 
-            $manager_name = $param['manager_name'];
-            if($manager_name){
-                $query['manager_name']=array('like','%'.$manager_name.'%');
-                unset($param['manager_name']);
-            }
-
+//            $manager_name = $param['manager_name'];
+//            if($manager_name){
+//                $query['manager_name']=array('like','%'.$manager_name.'%');
+//                unset($param['manager_name']);
+//            }
             $formed_start = $param['start_time'];
             $formed_end = $param['end_time'];
             $formed_date = array();
@@ -41,7 +40,7 @@ class LabController extends Controller {
                 unset($param['end_time']);
             }
             if($formed_date)
-                $query['formed_date']=$formed_date;
+                $query['formed_year']=$formed_date;
 
             $string = '';
             if ($param['college_id']){
@@ -50,7 +49,7 @@ class LabController extends Controller {
             }
             if($param['keyword']){
                 $keyword = $param['keyword'];
-                $ts = " (lab.name like '%$keyword%' OR person.name like '%$keyword%' OR contact.name like '%$keyword%') ";
+                $ts = " (lab.name like '%$keyword%' ) ";
                 $string .= $string?' AND '.$ts:$ts;
                 unset($param['keyword']);
             }
@@ -175,7 +174,7 @@ class LabController extends Controller {
             else
                 return '未知错误';
 
-            $titleMap = array('name'=>'平台名称','manager_name'=>'负责人姓名','contact_name'=>'联系人姓名','location'=>'地址','formed_date'=>'成立时间','college_name'=>'所属院系','member'=>'成员','description'=>'描述');
+            $titleMap = array('name'=>'平台名称','college_name'=>'所属院系','lab_type'=>'实验室类型','description'=>'实验室简介','research_interests'=>'研究方向','research_results'=>'研究成果','formed_year'=>'成立年份','members'=>'成员');
             $field = split(',', $field);
             $excelTitle = array();
             foreach ($field as $value) {
@@ -241,6 +240,9 @@ class LabController extends Controller {
                 /*存储临时数组，缓存少部分数据*/
                 $college_buffer = array();
 
+                //默认的学院id为其他：23
+                $default_college_id = 23;
+
                 //统计导入的结果
                 $insert_counter=0;//成功插入的新数据数
                 $inserted_id = array();//成功插入的记录的id
@@ -261,41 +263,29 @@ class LabController extends Controller {
                          */
                         $lab = M("lab");
                         $data = array();
-                        $data["name"]= $v[0];//实验室名称
-                        $data["location"]= $v[1];//地址
-                        $manager_no =trim($v[2]);//负责人职工号
-                        $data["formed_time"]=$v[3];//成立时间
-                        $college_name = trim($v[4]);//所属部门或学院名
-                        $data["member"]=$v[5];//成员（中文分号分隔）
-                        $data["description"]=$v[6];//实验室介绍（500字内）
-
-
+                        $data["name"]= trim($v[0]);//实验室名称
+                        $data["location"]= trim($v[1]);//地址
+                        $data["formed_year"]=trim($v[2]);//成立时间
+                        $college_name = trim($v[3]);//所属部门或学院名
+                        $data["members"]=trim($v[4]);//成员（中文分号分隔）
+                        $data["description"]=trim($v[5]);//实验室介绍（500字内）
+                        $data['research_interests']=trim($v[6]);//研究方向
+                        $data['research_results']=trim($v[7]);//研究方向
+                        $data['lab_type']=trim($v[8]);//实验室类型
                         ///////////////////////////////////////////////////////////////////////
                         //\\\\\涉及外键的操作////\\
 
-                        // 处理负责人职工号
-                            $manager_id = getPersonIdByEmployeeNo($manager_no);
-                            if($manager_id>0){
-                                $data["manager_id"] = $manager_id;
-                            }else{
-                                $error_counter++;
-                                $errored_name[]=$data["name"]."（负责人职工号不存在）";
-                                continue;
-                            }
-
-
                         //处理学院信息 college_id
-                            $college_id = getForeignKey($college_name,"college",$college_buffer);
+                        $college_name = $college_name==''?'其他':$college_name;
+                            $college_id = getForeignKeyFromDB($college_name,"college");
                             if($college_id>0){
                                 $data["college_id"] = $college_id;
                             }else{
                                 $error_counter++;
-                                $errored_name[]=$data["name"]."（学院信息不存在）";
-                                continue;
+                                $errored_name[]=$data["name"]."（学院 $college_name 不存在）";
+//                                continue;
                             }
 
-
-                        $condition["manager_id"] =$data["manager_id"];
                         $condition["name"]=$data["name"];
                         $isduplicated = $lab->where($condition)->find();
                         if((int)$isduplicated['id']>0){//数据库中存在相同数据，使用更新操作
@@ -328,10 +318,10 @@ class LabController extends Controller {
                 $audit['module'] = '实验平台';
                 $audit['time'] = date('y-m-d h:i:s', time());
                 $error_counter>0?$audit['result'] ='警告':$audit['result'] = '成功';
-                $descr = "\n 记录导入失败".$error_counter."条；\n ";
+                $descr = "\n 记录导入异常".$error_counter."条；\n ";
                 if($error_counter>0){
                     //将插入失败的用户姓名记录下来
-                    $descr .= "导入失败的平台名： ";
+                    $descr .= "导入异常的平台名： ";
                     foreach ($errored_name as $e_name){
                         $descr .= $e_name.",";
                     }
@@ -356,10 +346,9 @@ class LabController extends Controller {
                 M('audit')->add($audit);
 
                 if($error_counter==0){
-//                    $this->success("恭喜您，成功导入或更新数据"+($insert_counter+$update_counter)+"条！（详情见日志）",'',5);
-                    $this->success("导入工作成功（详情见日志）",'',3);
+                    $this->success("导入工作成功（详情见日志）",'/Audit/index',2);
                 }else{
-                    $this->error("存在导入失败的记录，请查看日志进行修正！",'',30);
+                    $this->error("存在导入异常的记录，请查看日志进行修正！",'/Audit/index',2);
                 }
 
             }

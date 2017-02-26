@@ -175,7 +175,7 @@
 
 	 	//导入导出
 	 	vm.showCheckbox = false;
-	 	vm.exportParams = {name:false,owner_name:false,ownercollege_name:false,firstinventor_name:false,inventorcollege_name:false,type:false,apply_no:false,apply_date:false,grant_date:false,comment:false};
+	 	vm.exportParams = {name:false,first_inventor:false,owner_college_name:false,apply_no:false,apply_date:false,type:false,all_inventors:false,grant_date:false,patent_state:false,comment:false};
 
 	 	vm.exportExcel = exportExcel;
 	 	function exportExcel(type){

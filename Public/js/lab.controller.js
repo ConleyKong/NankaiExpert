@@ -162,7 +162,7 @@
 
 		//导入导出
 		vm.showCheckbox = false;
-		vm.exportParams = {name:false,manager_name:false,contact_name:false,location:false,formed_time:false,college_name:false,member:false};
+		vm.exportParams = {name:false,college_name:false,lab_type:false,description:false,research_interests:false,research_results:false,formed_year:false,members:false};
 
 		vm.exportExcel = exportExcel;
 		function exportExcel(type){
