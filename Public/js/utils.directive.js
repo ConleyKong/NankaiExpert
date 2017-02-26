@@ -31,10 +31,8 @@
                 });
                 $('.form_year').datetimepicker({
                     language: 'fr',
-                    // weekStart: 1,
                     todayBtn: 1,
                     autoclose: 1,
-                    // todayHighlight: 1,
                     startView: 4,
                     minView: 4,
                     forceParse: 0

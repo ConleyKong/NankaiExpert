@@ -42,15 +42,27 @@
                     </div>
                     <div class="col-sm-4 form-inline">
                         <span class="cond-label">出版年份：</span>
-                        <div class="input-group form-control  col-sm-1 date form_date" ng-date data-date="" data-date-format="dd MM yyyy" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd" >
-                            <input style="width: 70px" type="text" class="form-control" id="start_year" placeholder="1919" ng-model='timepickerTest'>
-                            <div class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></div>
+                        <div class="btn-group">
+                            <form class="form-inline">
+                                <div class="form-group">
+                                    <input type="text" style="width: 70px" class="form-control" ng-model="vm.start_time" ng-blur="vm.setStart()" ng-keyup="setStartKeyupEvent($event)" placeholder="1919"/>
+                                    至
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" style="width: 70px" class="form-control" ng-model="vm.end_time" ng-blur="vm.setEnd()" ng-keyup="setEndKeyupEvent($event)" placeholder="2017"/>
+                                </div>
+                            </form>
                         </div>
-                        至
-                        <div class="input-group form-control  col-sm-1 date form_date" ng-date data-date="" data-date-format="dd MM yyyy" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd" >
-                            <input style="width: 70px" type="text" class="form-control" id="end_year" placeholder="今年" ng-model='timepickerTest'>
-                            <div class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></div>
-                        </div>
+                        <!--<span class="cond-label">出版年份：</span>-->
+                        <!--<div class="input-group form-control  col-sm-1 date form_year" ng-date data-date="" data-date-format="dd MM yyyy" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd" >-->
+                            <!--<input style="width: 70px" type="text" class="form-control" id="start_year" placeholder="1919" ng-model='timepickerTest'>-->
+                            <!--<div class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></div>-->
+                        <!--</div>-->
+                        <!--至-->
+                        <!--<div class="input-group form-control  col-sm-1 date form_date" ng-date data-date="" data-date-format="dd MM yyyy" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd" >-->
+                            <!--<input style="width: 70px" type="text" class="form-control" id="end_year" placeholder="今年" ng-model='timepickerTest'>-->
+                            <!--<div class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></div>-->
+                        <!--</div>-->
                         <!--<div class="form-group">-->
                             <!--<label for="dtp_input2" class="col-md-2 control-label">Date Picking</label>-->
                             <!--<div  ng-model='timepickerTest'  ng-time class="input-group date form_date col-md-5" data-date="" data-date-format="dd MM yyyy" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">-->
