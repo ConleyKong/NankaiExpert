@@ -258,7 +258,7 @@ class PeopleController extends Controller {
             $paper_condition['valid']=true;
             $paper = D('PaperView')->where($paper_condition)->select();
 
-            $patent_condition['owner_id']=$id;
+            $patent_condition['inventor_id']=$id;
             $patent_condition['valid']=true;
             $patent = D('PatentView')->where($patent_condition)->select();
 

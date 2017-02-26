@@ -1,3 +1,6 @@
+version 2.3
+添加针对p1的width调整代码（nav中的js）
+
 version 2.2
 导入专利信息，导入实验平台信息
 修复college外键bug：

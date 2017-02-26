@@ -62,38 +62,44 @@
 		          <th>拥有者</th>
 		          <th>项目名称</th>
 		          <th>类型</th>
-		          <th>支助编号</th>
 		          <th>参与单位</th>
 		          <th>项目来源</th>
-		          <th>子类</th>
 		          <th>开始时间</th>
 		          <th>结束时间</th>
 		          <th>经费</th>
 		          <th>直接经费</th>
 		          <th>间接经费</th>
 		          <th>金融账户</th>
-		          <th>备注</th>
+				  <th>支助编号</th>
 		        </tr>
 		      </thead>
 		      <tbody>
+			  <?php if($project){?>
 		      	<volist name="project" id="pr">
-			        <tr>
-			          <td>{$pr['person_name']}</td>
-			          <td>{$pr['name']}</td>
-			          <td>{$pr['type_name']}</td>
-			          <td>{$pr['support_no']}</td>
-			          <td>{$pr['join_unit']}</td>
-			          <td>{$pr['source']}</td>
-			          <td>{$pr['subtype']}</td>
-			          <td>{$pr['start_time']}</td>
-			          <td>{$pr['end_time']}</td>
-			          <td>{$pr['fund']}</td>
-			          <td>{$pr['direct_fund']}</td>
-			          <td>{$pr['indirect_fund']}</td>
-			          <td>{$pr['financial_account']}</td>
-			          <td>{$pr['comment']}</td>
-			        </tr>
+					<tr>
+							<td>{$pr['person_name']}</td>
+							<td>{$pr['name']}</td>
+							<td>{$pr['type_name']}</td>
+							<td>{$pr['join_unit']}</td>
+							<td>{$pr['source']}</td>
+							<td>{$pr['start_time']}</td>
+							<td>{$pr['end_time']}</td>
+							<td>{$pr['fund']}</td>
+							<td>{$pr['direct_fund']}</td>
+							<td>{$pr['indirect_fund']}</td>
+							<td>{$pr['financial_account']}</td>
+						    <td>{$pr['support_no']}</td>
+					</tr>
 			    </volist>
+			  <?php }else{?>
+			  <tr>
+				  <td colspan="12">
+					  <div style=" font-size:18px; color:#666; font-family:微软雅黑; text-align:center">
+						  暂无信息
+					  </div>
+				  </td>
+			  </tr>
+			  <?php }?>
 		      </tbody>
 		    </table>
 		</div>
@@ -101,25 +107,37 @@
 			<blockquote><h3>成果奖励</h3></blockquote>
 			<table class="table table-hover table-striped table-bordered">
 		      <thead>
-		        <tr>
-		          <th>获得者</th>
-		          <th>奖励名称</th>
-		          <th>等级</th>
-		          <th>获奖时间</th>
-		          <th>备注</th>
-		        </tr>
+			  <tr>
+				  <th>获奖贡献</th>
+				  <th>奖励名称</th>
+				  <th>第一获奖人</th>
+				  <th>级别</th>
+				  <th>获奖时间</th>
+				  <th>其他获奖人</th>
+			  </tr>
 		      </thead>
-		      <tbody>
-		      	<volist name="award" id="aw">
-						<tr>
-							<td>{$aw['person_name']}</td>
-							<td>{$aw['name']}</td>
-							<td>{$aw['level']}</td>
-							<td>{$aw['time']}</td>
-							<td>{$aw['comment']}</td>
-						</tr>
-			    </volist>
-		      </tbody>
+				<tbody>
+				<?php if($award){?>
+				<volist name="award" id="aw">
+					<tr>
+						<td>{$aw['achievement']}</td>
+						<td>{$aw['name']}</td>
+						<td>{$aw['person_name']}</td>
+						<td>{$aw['level']}</td>
+						<td>{$aw['time']}</td>
+						<td>{$aw['cooperator']}</td>
+					</tr>
+				</volist>
+				<?php }else{?>
+					<tr>
+						<td colspan="6">
+							<div style=" font-size:18px; color:#666; font-family:微软雅黑; text-align:center">
+								暂无信息
+							</div>
+						</td>
+					</tr>
+				<?php }?>
+				</tbody>
 		    </table>		
 		</div>
 		<div class="col-md-12">
@@ -134,10 +152,11 @@
 		          <th>期刊/会议名称</th>
 				  <th>论文类型</th>
 		          <th>发表时间</th>
-		          <th>备注</th>
+		          <th>其他作者</th>
 		        </tr>
 		      </thead>
 		      <tbody>
+			  <?php if($paper){?>
 		      	<volist name="paper" id="pa">
 			        <tr>
 			          <td>{$pa['person_name']}</td>
@@ -146,9 +165,18 @@
 			          <td>{$pa['conference_name']}</td>
 					  <td>{$pa['paper_type']}</td>
 			          <td>{$pa['publish_year']}</td>
-			          <td>{$pa['comment']}</td>
+			          <td>{$pa['other_authors_name']}</td>
 			        </tr>
 			    </volist>
+			  <?php }else{?>
+			  <tr>
+				  <td colspan="7">
+					  <div style=" font-size:18px; color:#666; font-family:微软雅黑; text-align:center">
+						  暂无信息
+					  </div>
+				  </td>
+			  </tr>
+			  <?php }?>
 		      </tbody>
 		    </table>		
 		</div>
@@ -158,32 +186,42 @@
 		      <thead>
 		        <tr>
 		        	<th>专利名称</th>
-		        	<th>专利权人/申请人</th>
-		        	<th>所在单位</th>
-		          	<th>第一发明人</th>
-		          	<th>第一发明人单位</th>
-		          	<th>专利类型</th>
-		          	<th>专利（申请）号</th>
-		          	<th>专利申请日</th>
-		          	<th>专利授权日</th>
+					<th>第一发明人</th>
+					<th>所属单位</th>
+					<th>编号</th>
+					<th>申请日期</th>
+					<th>专利类型</th>
+					<th>授权日期</th>
+					<th>专利状态</th>
+					<th>所有参与人</th>
 		          	<th>备注</th>
 		        </tr>
 		      </thead>
 		      <tbody>
+			  <?php if($patent){?>
 		      	<volist name="patent" id="pat">
 			        <tr>
 			          <td>{$pat['name']}</td>
-			          <td>{$pat['owner_name']}</td>
-			          <td>{$pat['ownercollege_name']}</td>
-			          <td>{$pat['firstinventor_name']}</td>
-			          <td>{$pat['inventorcollege_name']}</td>
-			          <td>{$pat['type']}</td>
+			          <td>{$pat['first_inventor']}</td>
+			          <td>{$pat['owner_college_name']}</td>
 			          <td>{$pat['apply_no']}</td>
 			          <td>{$pat['apply_date']}</td>
+			          <td>{$pat['type']}</td>
 			          <td>{$pat['grant_date']}</td>
+			          <td>{$pat['patent_state']}</td>
+			          <td>{$pat['all_inventors']}</td>
 			          <td>{$pat['comment']}</td>
 			        </tr>
 			    </volist>
+			  <?php }else{?>
+			  <tr>
+				  <td colspan="10">
+					  <div style=" font-size:18px; color:#666; font-family:微软雅黑; text-align:center">
+						  暂无信息
+					  </div>
+				  </td>
+			  </tr>
+			  <?php }?>
 		      </tbody>
 		    </table>		
 		</div>
