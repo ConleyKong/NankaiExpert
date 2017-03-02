@@ -37,6 +37,11 @@
 								<a href="/Homepage/index">首页</a>
 							</h2>
 						</li>
+						<li class=" nav-item-2" _t_nav="lab">
+							<h2>
+								<a href="/Lab/index">科研平台</a>
+							</h2>
+						</li>
 						<li class=" nav-item-2" _t_nav="people">
 							<h2>
 								<!--<a href="javascript:void(0);">科研队伍</a>-->
@@ -66,11 +71,6 @@
 						<li class=" nav-item-2" _t_nav="award">
 							<h2>
 								<a href="/Award/index">成果获奖</a>
-							</h2>
-						</li>
-						<li class=" nav-item-2" _t_nav="lab">
-							<h2>
-								<a href="/Lab/index">科研平台</a>
 							</h2>
 						</li>
 						<li class=" nav-item-2" _t_nav="event">
@@ -506,14 +506,6 @@ function selectMenu(first, second, third){
 	});
 	$('#'+first).find('dl').eq(second).find('a').eq(third).addClass('third-menu-selected');
 }
-
-//自动调整标签宽度
-var browser_width = $(document.body).width();
-$("#p1").css("width",browser_width*0.8);
-$(window).resize(function() {
-	browser_width = $(document.body).width();
-	$("#p1").css("width",browser_width*0.8);
-});
 
 </script>
 <block name="js"></block>

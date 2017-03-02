@@ -275,7 +275,7 @@ class PatentController extends Controller {
                         $data["type"] = $type_name;
                         $all_inventors = trim($v[7]);//所有专利发明人，‘,’分割
                         $data['all_inventors']=$all_inventors;
-                        $date['patent_state'] = trim($v[8]);//专利状态
+                        $data['patent_state'] = trim($v[8]);//专利状态
 
                         ///////////////////////////////////////////////////////////////////////
                         //\\\\\涉及外键的操作////\\

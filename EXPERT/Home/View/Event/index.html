@@ -7,128 +7,6 @@
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title" id="myModalLabel">添加科技事件信息</h4>
                 </div>
-<!--<?php
-
-if (isset($_FILES['imgfile'])
-
-&& is_uploaded_file($_FILES['imgfile']['tmp_name']))
-
-{
-
- $imgFile = $_FILES['imgfile'];
-
-$upErr = $imgFile['error'];
-
-
-
-if ($upErr == 0)
-
-{
-
-$imgType = $imgFile['type']; //文件类型。
-
-
-
-/* 判断文件类型，这个例子里仅支持jpg和gif类型的图片文件。*/
-
-if ($imgType == 'image/jpeg'
-
-|| $imgType == 'image/gif')
-
-{
-
-$imgFileName = $imgFile['name'];
-
-$imgSize = $imgFile['size'];
-
-$imgTmpFile = $imgFile['tmp_name'];
-
-
-
-/* 将文件从临时文件夹移到上传文件夹中。*/
-
-move_uploaded_file($imgTmpFile, 'upfile/'.$imgFileName);
-
-
-/*显示上传后的文件的信息。*/
-
-$strPrompt = sprintf("文件%s上传成功<br>"
-
-                , "文件大小: %s字节<br>"
-
-                , "<img src='upfile/%s'>"
-
-                , $imgFileName, $imgSize, $imgFileName
-
-                );
-
-                echo $strPrompt;
-
-                }
-
-                else
-
-                {
-
-                echo "请选择jpg或gif文件，不支持其它类型的文件。";
-
-                }
-
-                }
-
-                else
-
-                {
-
-                echo "文件上传失败。<br>";
-
-                switch ($upErr)
-
-                {
-
-                case 1:
-
-                echo "超过了php.ini中设置的上传文件大小。";
-
-                break;
-
-                case 2:
-
-                echo "超过了MAX_FILE_SIZE选项指定的文件大小。";
-
-                break;
-
-                case 3:
-
-                echo "文件只有部分被上传。";
-
-                break;
-
-                case 4:
-
-                echo "文件未被上传。";
-
-                break;
-
-                case 5:
-
-                echo "上传文件大小为0";
-
-                break;
-
-                }
-
-                }
-
-                }
-
-                else
-
-                {
-
-                /*显示表单。*/
-
-                ?>-->
 
                 <div class="modal-body">
                     <form class="form-horizontal" action="__URL__/add" method="post">
@@ -193,14 +71,6 @@ $strPrompt = sprintf("文件%s上传成功<br>"
                         </div>
                     </form>
                 </div>
-
-
-
-
-<!--<?php
-}
-?>-->
-
             </div>
         </div>
     </div>
@@ -412,10 +282,6 @@ $strPrompt = sprintf("文件%s上传成功<br>"
     </div>
 
 
-
-
-
-
     <div class="container" ng-app="event" ng-controller="eventController as vm">
         <div class="col-md-12">
             <div class="panel panel-default table-header">
@@ -424,64 +290,55 @@ $strPrompt = sprintf("文件%s上传成功<br>"
                         <div class="col-md-4 pull-left">
                             <h3 class="panel-title table-title">科技事件列表</h3>
                         </div>
-                        <div class="col-md-8 pull-right" ng-hide="vm.showCheckbox">
+                        <!--<div class="col-md-8 pull-right" ng-hide="vm.showCheckbox">-->
 
 
-                            <button type="button" class="btn btn-info pull-right" data-toggle="modal" data-target="#modal">新增
-                                &nbsp;&nbsp;<span class="glyphicon glyphicon-plus"></span></button>&nbsp;&nbsp;&nbsp;
-                            <button type="button" class="btn btn-info pull-right right-10" ng-click="vm.showImportbox=true">
-                                导入Excel&nbsp;&nbsp;
-                                <span class="glyphicon glyphicon-import"></span>
-                            </button>
-                            <button type="button" class="btn btn-info pull-right right-10" ng-click="vm.showCheckbox=true">导出Excel
-                                &nbsp;&nbsp;<span class="glyphicon glyphicon-export"></span></button>&nbsp;&nbsp;&nbsp;
+                            <!--<button type="button" class="btn btn-info pull-right" data-toggle="modal" data-target="#modal">新增-->
+                                <!--&nbsp;&nbsp;<span class="glyphicon glyphicon-plus"></span></button>&nbsp;&nbsp;&nbsp;-->
+                            <!--<button type="button" class="btn btn-info pull-right right-10" ng-click="vm.showImportbox=true">-->
+                                <!--导入Excel&nbsp;&nbsp;-->
+                                <!--<span class="glyphicon glyphicon-import"></span>-->
+                            <!--</button>-->
+                            <!--<button type="button" class="btn btn-info pull-right right-10" ng-click="vm.showCheckbox=true">导出Excel-->
+                                <!--&nbsp;&nbsp;<span class="glyphicon glyphicon-export"></span></button>&nbsp;&nbsp;&nbsp;-->
 
-                        </div>
+                        <!--</div>-->
                     </div>
                 </div>
-                <div class="col-md-8" ng-show="vm.showImportbox">
-                    <form method="post" action="{:U('Event/import')}" enctype="multipart/form-data">
-                        <!--<div class="col-sm-6">-->
-                        <!--<label class="pull-right right-10">浏览要导入的Excel文件：</label>-->
+                <!--<div class="col-md-8" ng-show="vm.showImportbox">-->
+                    <!--<form method="post" action="{:U('Event/import')}" enctype="multipart/form-data">-->
+                        <!--&lt;!&ndash;<div class="col-sm-6">&ndash;&gt;-->
+                        <!--&lt;!&ndash;<label class="pull-right right-10">浏览要导入的Excel文件：</label>&ndash;&gt;-->
+                        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                        <!--<div class="col-sm-8">-->
+                            <!--<input type="file" class="pull-right bottom-10" name="file_import"/>-->
                         <!--</div>-->
-                        <div class="col-sm-8">
-                            <input type="file" class="pull-right bottom-10" name="file_import"/>
-                        </div>
-                        <div class="col-sm-4" class="pull-right right-10">
-                            <button class="btn btn-default pull-right right-10" type="button"
-                                    ng-click="vm.showImportbox=false">取消导入
-                            </button>
-                            <input type="submit" class="btn btn-primary pull-right right-10" value="导入所选文件"/>
-                        </div>
-                    </form>
-                </div>
+                        <!--<div class="col-sm-4" class="pull-right right-10">-->
+                            <!--<button class="btn btn-default pull-right right-10" type="button"-->
+                                    <!--ng-click="vm.showImportbox=false">取消导入-->
+                            <!--</button>-->
+                            <!--<input type="submit" class="btn btn-primary pull-right right-10" value="导入所选文件"/>-->
+                        <!--</div>-->
+                    <!--</form>-->
+                <!--</div>-->
             </div>
             <table class="table table-bordered table-striped table-hover">
                 <thead>
                 <tr>
-                    <th>开始时间</th>
-                    <th>结束时间</th>
-                    <th>名称</th>
-                    <th>简介</th>
-                    <th>相关人员</th>
-                    <th>地址</th>
-                    <th>备注</th>
-                    <th>图片</th>
-                    <th>操作</th>
+                    <th width="20%">名称</th>
+                    <th width="12%">时间</th>
+                    <th width="22%">相关人员</th>
+                    <th width="30%">简介</th>
+                    <th width="16%">操作</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr ng-if="vm.paginationConf.totalItems>0" ng-repeat="item in vm.eventList | filter:filter">
-                    <td ng-bind="item.time_start"></td>
-                    <td ng-bind="item.time_end"></td>
                     <td ng-bind="item.name"></td>
-                    <td ng-bind="item.abstract"></td>
+                    <td ng-bind="item.time_start"></td>
                     <td ng-bind="item.relevant_person"></td>
-                    <td ng-bind="item.location"></td>
-                    <td ng-bind="item.remark"></td>
-                    <td ng-bind="item.picture">图片</td>
-                    <td><a href="__URL__/delete?id={{item.id}}" >删除</a></td>
-
+                    <td ng-bind="item.abstract"></td>
+                    <td><a href="#">详情</a><a href="__URL__/delete?id={{item.id}}" >删除</a></td>
                 </tr>
                 <tr ng-if="vm.paginationConf.totalItems==0"><td colspan="12"><h2 class="text-center text-danger">无数据</h2></td></tr>
                 </tbody>

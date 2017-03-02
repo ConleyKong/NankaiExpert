@@ -102,14 +102,15 @@
             <tr>
               <!--点击实验室名称后显示实验室详细信息，类似于用户详细信息-->
               <th width="4%"><span ng-hide="vm.showCheckbox">#</span><span ng-show="vm.showCheckbox">全选<input type="checkbox" ng-click="vm.selectAll();"></span></th>
-              <th width="24%">实验室名<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.name"></th>
-              <th width="10%">所属院系<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.college_name"></th>
-              <th width="10%">实验室类型<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.lab_type"></th>
-              <th width="12%">平台简介<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.description"></th>
-              <th width="12%">研究方向<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.research_interests"></th>
-              <th width="12%">研究成果<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.research_results"></th>
-              <th width="6%">成立年份<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.formed_year"></th>
+              <th width="24%">平台名<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.name"></th>
+              <th width="10%">类型<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.lab_type"></th>
               <th width="6%">成员<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.members"></th>
+              <th width="10%">依托单位<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.college_name"></th>
+              <th width="12%">简介<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.description"></th>
+              <!--<th width="12%">研究方向<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.research_interests"></th>-->
+              <!--<th width="12%">研究成果<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.research_results"></th>-->
+              <!--<th width="6%">成立年份<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.formed_year"></th>-->
+
               <th width="4%">操作</th>
             </tr>
           </thead>
@@ -117,13 +118,13 @@
             <tr ng-if="vm.paginationConf.totalItems>0" ng-repeat="item in vm.labList | filter:filter">
               <td ng-bind="item.id"></td>
               <td ng-bind="item.name"></td>
-              <td ng-bind="item.college_name"></td>
               <td ng-bind="item.lab_type"></td>
-              <td ng-bind="item.description"></td>
-              <td ng-bind="item.research_interests"></td>
-              <td ng-bind="item.research_results"></td>
-              <td ng-bind="item.formed_year"></td>
               <td ng-bind="item.members"></td>
+              <td ng-bind="item.college_name"></td>
+              <td ng-bind="item.description"></td>
+              <!--<td ng-bind="item.research_interests"></td>-->
+              <!--<td ng-bind="item.research_results"></td>-->
+              <!--<td ng-bind="item.formed_year"></td>-->
               <td><a href="__URL__/delete?id={{item.id}}">删除</a></td>
             </tr>
             <tr ng-if="vm.paginationConf.totalItems==0"><td colspan="12"><h2 class="text-center text-danger">无数据</h2></td></tr>

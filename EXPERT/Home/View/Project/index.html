@@ -175,22 +175,16 @@
             <th width="24%">名称<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.name"></th>
             <th width="8%">负责人<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.person_name"></th>
             <th width="12%">单位<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.join_unit"></th>
-            <th width="3%">纵向<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.depth_flag"></th>
+            <!--<th width="3%">纵向<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.depth_flag"></th>-->
             <th width="8%">类型<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.type_name"></th>
-            <th width="8%">起始<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.start_time"></th>
-            <th width="8%">结束<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.end_time"></th>
             <th width="12%">来源<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.source"></th>
-
-            <!--<th>资助编号<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.support_no"></th>-->
-
-            <!--<th>来源单位<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.source_department"></th>-->
-            <!--<th>子类<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.subtype"></th>-->
-
             <th width="4%">经费<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.fund"></th>
             <th width="4%">直接经费<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.direct_fund"></th>
             <th width="4%">间接经费<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.indirect_fund"></th>
             <!--<th width="6em">金融账户<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.financial_account"></th>-->
             <!--<th>备注<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.comment"></th>-->
+            <th width="8%">起始<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.start_time"></th>
+            <th width="8%">结束<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.end_time"></th>
             <th width="4%">操作</th>
           </tr>
         </thead>
@@ -200,10 +194,8 @@
             <td ng-bind="item.name"></td>
             <td ><a ng-bind="item.person_name" href="__APP__/People/detail/?id={{item.manager_id}}"></a></td>
             <td ng-bind="item.join_unit" ></td>
-            <td ng-bind="item.depth_flag"></td>
+            <!--<td ng-bind="item.depth_flag"></td>-->
             <td ng-bind="item.type_name"></td>
-            <td ng-bind="item.start_time"></td>
-            <td ng-bind="item.end_time"></td>
             <td ng-bind="item.source"></td>
             <td ng-bind="item.fund"></td>
             <td ng-bind="item.direct_fund"></td>
@@ -213,6 +205,8 @@
             <!--<td ng-bind="item.subtype"></td>-->
             <!--<td ng-bind="item.financial_account"></td>-->
             <!--<td ng-bind="item.comment"></td>-->
+            <td ng-bind="item.start_time"></td>
+            <td ng-bind="item.end_time"></td>
             <td><a href="__URL__/delete?id={{item.id}}">删除</a> </td>
           </tr>
           <tr ng-if="vm.paginationConf.totalItems==0"><td colspan="15"><h2 class="text-center text-danger">无数据</h2></td></tr>

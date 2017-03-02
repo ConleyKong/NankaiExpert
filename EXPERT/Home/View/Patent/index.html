@@ -134,34 +134,34 @@
   		<table class="table table-bordered table-striped table-hover">
         <thead>
           <tr>
-            <th width="4%"><span ng-hide="vm.showCheckbox">#</span><span ng-show="vm.showCheckbox">全选<input type="checkbox" ng-click="vm.selectAll();"></span></th>
-            <th width="24%">专利名<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.name"></th>
-            <th width="6%">第一发明人<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.first_inventor"></th>
-            <th width="9%">所属单位<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.owner_college_name"></th>
-            <th width="8%">申请编号<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.apply_no"></th>
-            <th width="6%">申请日期<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.apply_date"></th>
-            <th width="6%">专利类型<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.type"></th>
-            <th width="17%">参与人员<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.all_inventors"></th>
-            <th width="6%">授权日期<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.grant_date"></th>
-            <th width="6%">专利状态<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.patent_state"></th>
-            <th width="4%">备注<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.comment"></th>
-            <th width="4%">操作</th>
+              <th width="4%"><span ng-hide="vm.showCheckbox">#</span><span ng-show="vm.showCheckbox">全选<input type="checkbox" ng-click="vm.selectAll();"></span></th>
+              <th width="24%">专利名<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.name"></th>
+              <th width="6%">第一人<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.first_inventor"></th>
+              <th width="10%">参与人<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.all_inventors"></th>
+              <th width="9%">单位<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.owner_college_name"></th>
+              <th width="8%">申请日期<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.apply_date"></th>
+              <th width="8%">申请编号<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.apply_no"></th>
+              <th width="8%">授权日期<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.grant_date"></th>
+              <th width="6%">专利类型<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.type"></th>
+              <th width="6%">专利状态<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.patent_state"></th>
+              <!--<th width="4%">备注<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.comment"></th>-->
+              <th width="4%">操作</th>
           </tr>
         </thead>
         <tbody>
           <tr ng-if="vm.paginationConf.totalItems>0" ng-repeat="item in vm.patentList | filter:filter">
-            <td ng-bind="item.id"></td>
-            <td ng-bind="item.name"></td>
-            <td><a ng-bind="item.first_inventor" href="__APP__/People/detail/?id={{item.first_inventor_id}}"></a></td>
-            <td ng-bind="item.owner_college_name"></td>
-            <td ng-bind="item.apply_no"></td>
-            <td ng-bind="item.apply_date"></td>
-            <td ng-bind="item.type"></td>
-            <td ng-bind="item.all_inventors"></td>
-            <td ng-bind="item.grant_date"></td>
-            <td ng-bind="item.patent_state"></td>
-            <td ng-bind="item.comment"></td>
-            <td><a href="__URL__/delete?id={{item.id}}">删除</a></td>
+              <td ng-bind="item.id"></td>
+              <td ng-bind="item.name"></td>
+              <td><a ng-bind="item.first_inventor" href="__APP__/People/detail/?id={{item.first_inventor_id}}"></a></td>
+              <td ng-bind="item.all_inventors"></td>
+              <td ng-bind="item.owner_college_name"></td>
+              <td ng-bind="item.apply_date"></td>
+              <td ng-bind="item.apply_no"></td>
+              <td ng-bind="item.grant_date"></td>
+              <td ng-bind="item.type"></td>
+              <td ng-bind="item.patent_state"></td>
+              <!--<td ng-bind="item.comment"></td>-->
+              <td><a href="__URL__/delete?id={{item.id}}">删除</a></td>
           </tr>
           <tr ng-if="vm.paginationConf.totalItems==0"><td colspan="12"><h2 class="text-center text-danger">无数据</h2></td></tr>
         </tbody>

@@ -196,10 +196,7 @@
                     <span class="glyphicon glyphicon-import"></span>
                 </button>
                 <button type="button" class="btn btn-info pull-right right-10" ng-click="vm.showCheckbox=true">导出Excel&nbsp;&nbsp;<span class="glyphicon glyphicon-export"></span></button>
-                <!--<div class="input-group col-md-4 pull-right right-10">-->
-                  <!--<input type="text" class="form-control" ng-model="filter" placeholder="输入关键字">-->
-                  <!--<div class="input-group-addon">筛选</div>-->
-                <!--</div>-->
+
                 <div class="input-group col-md-4 pull-right right-10 has-feedback">
                     <a class="btn input-group-addon" ng-click="vm.search()">搜索</a>
                     <input type="text" class="form-control " ng-model="vm.keyword" ng-blur="vm.search()" ng-keyup="searchKeyupEvent($event)" placeholder="获奖人/奖励名">
@@ -238,16 +235,16 @@
         <thead>
           <tr>
             <th width="4%"><span ng-hide="vm.showCheckbox">#</span><span ng-show="vm.showCheckbox">全选<input type="checkbox" ng-click="vm.selectAll();"></span></th>
-            <th width="24%">获奖贡献<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.achievement"></th>
-            <th width="12%">奖励名称<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.name"></th>
+            <th width="16%">贡献<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.achievement"></th>
+            <th width="12%">奖励<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.name"></th>
             <th width="6%">级别<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.level"></th>
             <th width="6%">等级<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.sub_level"></th>
             <th width="6%">获奖人<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.person_name"></th>
-            <th width="6%">所属学院<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.col_name"></th>
-            <th width="8%">出生日期<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.birthday"></th>
-            <th width="8%">获奖人职称<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.grade_name"></th>
-            <th width="8%">获奖时间<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.time"></th>
-            <th width="16%">其他获奖人<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.cooperator"></th>
+            <th width="8%">学院<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.col_name"></th>
+            <!--<th width="8%">出生日期<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.birthday"></th>-->
+            <!--<th width="8%">获奖人职称<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.grade_name"></th>-->
+            <th width="8%">时间<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.time"></th>
+            <th width="8%">其他人<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.cooperator"></th>
             <!--<th width="4%">备注<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.comment"></th>-->
             <th width="4%">操作</th>
           </tr>
@@ -261,8 +258,8 @@
             <td ng-bind="item.sub_level"></td>
             <td><a ng-bind="item.person_name" href="__APP__/People/detail/?id={{item.first_id}}"></a></td>
             <td ng-bind="item.col_name"></td>
-            <td ng-bind="item.birthday"></td>
-            <td ng-bind="item.grade_name"></td>
+            <!--<td ng-bind="item.birthday"></td>-->
+            <!--<td ng-bind="item.grade_name"></td>-->
             <td ng-bind="item.time"></td>
             <td ng-bind="item.cooperator"></td>
             <!--<td ng-bind="item.comment"></td>-->
