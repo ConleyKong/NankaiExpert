@@ -4,26 +4,29 @@
   </div>
   <div id="myUserApp" class="container" ng-app="user" ng-controller="userController as vm">
     <div class="col-sm-12 row">
-      <show-more count="5">
-
-        <div class="col-sm-12">
-            <span class="cond-label">所属部门：</span>
+        <div class="col-sm-9 bottom-10">
+            <span class="cond-label">筛选学院：</span>
             <div class="btn-group">
               <label style="margin-bottom:0;color:#eee">
                 <select class="select-width form-control" ng-model="vm.collegeSelected" ng-options="item.id as item.name for item in vm.collegeList">
                   <option value="">全部</option>
                 </select>
               </label>
-              <label style="margin-bottom:0" ng-repeat="item in vm.collegeSelectedList">
+              <label style="margin-bottom:0" ng-repeat="item in vm.collegeSelectedList" ng-cloak>
                 <button tyle="button" class="btn button-link" ng-bind="vm.collegeMap[item]+'   X'" ng-click="vm.removeCollege(item)"><b></b></button>&nbsp;
               </label>
             </div>
         </div>
-
-        <div class="col-sm-12" id="more">
-            <span class="glyphicon glyphicon-triangle-bottom"></span>
+        <div class="col-sm-3 bottom-10">
+                <a href="/Audit/index" class="btn btn-primary" style="margin-right: 30px">查看系统日志</a>
+                <a href="/Index/logout" class="btn btn-primary">退出当前账户</a>
         </div>
-      </show-more>
+
+
+        <!--<div class="col-sm-12" id="more">-->
+            <!--<span class="glyphicon glyphicon-triangle-bottom"></span>-->
+        <!--</div>-->
+      <!--</show-more>-->
     </div>
   	<div class="col-md-12">
       <div class="panel panel-default table-header">
@@ -41,14 +44,14 @@
   		<table class="table table-bordered table-striped table-hover">
         <thead>
           <tr>
-            <th>#</th>
-            <th>账户名</th>
-            <th>真实姓名</th>
-            <th>所属部门</th>
-            <th>注册日期</th>
-            <th>角色</th>
-            <th>账号状态</th>
-             <th>操作</th>
+            <th width="6%">#</th>
+            <th width="14%">账户名</th>
+            <th width="14%">真实姓名</th>
+            <th width="16%">所属部门</th>
+            <th width="14%">注册日期</th>
+            <th width="12%">角色</th>
+            <th width="12%">账号状态</th>
+             <th width="12%">操作</th>
           </tr>
         </thead>
         <tbody>
@@ -61,19 +64,19 @@
             <td ng-bind="item.role_name"></td>
             <td ng-bind="item.status_name"></td>
             <td ng-switch="item.status_id">
-                <div ng-switch-when="1">
+                <div ng-switch-when="1" ng-cloak>
                     <!--待审核-->
                     <a href="__URL__/set_status?id={{item.id}}&flag=2" >通过</a>
                     <a href="__URL__/del?id={{item.id}}">删除</a>
                 </div>
-                <div ng-switch-when="2">
+                <div ng-switch-when="2"  ng-cloak>
                     <!--正常-->
                     <a href="__URL__/set_status?id={{item.id}}&flag=4" >锁定</a>
                     <a href="__URL__/del?id={{item.id}}">删除</a>
                 </div>
-                <div ng-switch-when="4">
+                <div ng-switch-when="4" ng-cloak>
                     <!--锁定-->
-                    <a  href="__URL__/set_status?id={{item.id}}&flag=2" >解锁</a>
+                    <a href="__URL__/set_status?id={{item.id}}&flag=2" >解锁</a>
                     <a href="__URL__/del?id={{item.id}}">删除</a>
                 </div>
                 <div ng-switch-default></div>

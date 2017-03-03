@@ -6,7 +6,7 @@
         <div class="panel-heading">
           <h3 class="panel-title">项目统计</h3>
         </div>
-        <div class="panel-body">
+        <div class="panel-body" style="height:260px;">
           <div id="c1" class="col-md-12" style="height:260px;"></div>
         </div>
       </div>
@@ -19,7 +19,7 @@
         <!-- <div class="panel-body">
           <div id="c2" class="col-md-12" style="height:300px;"></div>
         </div> -->
-        <table class="table table-bordered table-striped" style="border-bottom:1px #bce8f1 solid">
+        <table class="table table-bordered table-striped" style="height:260px;border-bottom:1px #bce8f1 ;">
           <thead>
             <tr>
               <th>项目类型</th>
@@ -27,7 +27,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr ng-repeat="item in vm.projectType" ng-if="$index<7">
+            <tr ng-repeat="item in vm.projectType" ng-if="$index<6">
               <td ng-bind="item.type_name"></td>
               <td ng-bind="item.typecount"></td>
             </tr>

@@ -231,7 +231,7 @@
             <table class="table table-bordered table-striped table-hover">
                 <thead>
                 <tr>
-                    <th width="4%"><span ng-hide="vm.showCheckbox">#</span><span ng-show="vm.showCheckbox">全选</span><input type="checkbox"></th>
+                    <th width="4%"><span ng-hide="vm.showCheckbox">id</span><span ng-show="vm.showCheckbox">全选<input type="checkbox"></span></th>
                     <th width="8%">职工号<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.employee_no"></th>
                     <th width="8%">姓名<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.name"></th>
                     <th width="4%">性别<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.gender"></th>
@@ -264,7 +264,13 @@
                     <td ng-bind="item.first_class" ></td>
                     <td ng-bind="item.second_class" ></td>
                     <td ng-bind="item.credit"></td>
-                    <td><a href="__URL__/delete?id={{item.id}}">删除</a></td>
+                    <td>
+                        <?php if($_SESSION['role_num']==2){ ?>
+                        <a href="__URL__/delete?id={{item.id}}">删除</a>
+                        <?php }else{ ?>
+                        <a href="#">暂无</a>
+                        <?php } ?>
+                    </td>
                     <!-- <td width="6%"><span class="glyphicon glyphicon-edit" onclick="modify(this);"></span><span class="glyphicon glyphicon-trash pull-right" onclick="del(this);"></span></td> -->
                 </tr>
                 <tr ng-if="vm.paginationConf.totalItems=='0'">
