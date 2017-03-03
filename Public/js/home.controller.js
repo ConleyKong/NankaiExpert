@@ -12,7 +12,7 @@
             sendRequest.post(url, {}, {}).then(
                 function(resp){
                     vm.projectType = resp.type;
-                    vm.projectSupport = resp.support;
+                    // vm.projectSupport = resp.support;
                 },
                 function(resp){
                     console.log('get projectType failed');

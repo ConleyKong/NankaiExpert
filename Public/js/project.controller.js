@@ -226,13 +226,14 @@
 		vm.typeSelected = '';
 		vm.typeSelectedList = [];
 		$scope.$watch('vm.typeSelected', function(){
-			console.log('vm.typeSelected', vm.typeSelected)
+			console.log('选中的类型为：', vm.typeSelected)
 			if (!vm.typeSelected){
 				vm.typeSelectedList = [];
 				vm.params.type_id = '';
 			}
-			else if (vm.typeSelectedList.indexOf(vm.typeSelected)<0){
+			else if (vm.typeSelectedList.indexOf(vm.typeSelected)<0){//若selectedList中不存在当前项目
 				vm.typeSelectedList.push(vm.typeSelected);
+				console.log("typeSelectedList中注入"+vm.typeSelected);
 				var temp = [];
 				for (var i = 0;i < vm.typeSelectedList.length;i++)
 					temp.push("project.type_id = " + vm.typeSelectedList[i]);

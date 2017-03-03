@@ -9,7 +9,7 @@
         <div class="col-sm-12">
           <div class="col-sm-9">
             <div class="col-sm-6">
-              <span class="cond-label">项目来源：</span>
+              <span class="cond-label">项目类型：</span>
               <div class="btn-group">
                 <label style="margin-bottom:0;color:#eee">
                   <select class="box-width form-control" ng-model="vm.typeSelected" ng-options="item.id as item.name for item in vm.typeList">
@@ -28,39 +28,56 @@
                 </label>
               </div>
             </div>
-            <div class="col-sm-4 top-10 bottom-10">
-              <span class="cond-label">项目类型：</span>
+            <div class="col-sm-4 top-10">
+              <span class="cond-label">横纵类型：</span>
               <div class="btn-group">
                 <label class="btn btn-default active" ng-model="vm.params.depth_flag" uib-btn-radio="''">全部</label>
                 <label class="btn btn-default" ng-model="vm.params.depth_flag" uib-btn-radio="'是'">纵向</label>
                 <label class="btn btn-default" ng-model="vm.params.depth_flag" uib-btn-radio="'否'">横向</label>
               </div>
             </div>
-            <div class="col-sm-8 bottom-10 top-10">
+            <div class="col-sm-5 top-10">
               <span class="cond-label">立项时间：</span>
               <div class="btn-group">
                 <form class="form-inline">
                   <div class="form-group">
-                    <input type="text" class="form-control" ng-model="vm.start_time" ng-blur="vm.setStart()" ng-keyup="setStartKeyupEvent($event)" placeholder="时间格式：2010-10-10"/>
+                    <input type="text" class="form-control" style="width:110px" ng-model="vm.start_time" ng-blur="vm.setStart()" ng-keyup="setStartKeyupEvent($event)"
+                           placeholder="2010-10-10"/>
                     至
                   </div>
                   <div class="form-group">
-                    <input type="text" class="form-control" ng-model="vm.end_time" ng-blur="vm.setEnd()" ng-keyup="setEndKeyupEvent($event)" placeholder="时间格式：2010-10-10"/>
+                    <input type="text" class="form-control" style="width:110px" ng-model="vm.end_time" ng-blur="vm.setEnd()" ng-keyup="setEndKeyupEvent($event)"
+                           placeholder="2010-10-10"/>
                   </div>
                 </form>
               </div>
             </div>
-            <div class="col-sm-12 bottom-10" ng-if="vm.collegeSelectedList.length > 0||vm.typeSelectedList.length > 0">
-              <span class="col-sm-1">所选单位与来源：</span>
-              <label style="margin-bottom:0" ng-repeat="item in vm.collegeSelectedList">
-                <button tyle="button" class="btn button-link" ng-bind="vm.collegeMap[item]+'   X'"
-                        ng-click="vm.removeCollege(item)"><b></b></button>
-                &nbsp;
-              </label>
-              <label style="margin-bottom:0" ng-repeat="item in vm.typeSelectedList">
-                <button tyle="button" class="btn button-link" ng-bind="vm.typeMap[item]+'   X'" ng-click="vm.removeType(item)"><b></b></button>&nbsp;
-              </label>
+            <div class="col-sm-1 top-10" ng-hide="vm.chartFlag">
+              <a class="btn btn-success" ng-click="vm.chartFlag=true" href="" title="显示统计图">显示统计图表</a>
             </div>
+            <div class="col-sm-1 top-10" ng-hide="!vm.chartFlag" ng-cloak>
+              <a class="btn btn-danger" ng-click="vm.chartFlag=false" href="" title="隐藏图表">隐藏统计图表</a>
+            </div>
+            <div class="row col-sm-12">
+              <span class="col-sm-1 top-10">所选单位与类型：</span>
+              <div class="col-sm-11 top-10" ng-show="vm.collegeSelectedList.length > 0||vm.typeSelectedList.length > 0" ng-cloak>
+                <label style="margin-bottom:0" ng-repeat="item in vm.collegeSelectedList">
+                  <button tyle="button" class="btn button-link" ng-bind="vm.collegeMap[item]+'   X'"
+                          ng-click="vm.removeCollege(item)"><b></b></button>
+                  &nbsp;
+                </label>
+                <label style="margin-bottom:0" ng-repeat="item in vm.typeSelectedList">
+                  <button tyle="button" class="btn button-link" ng-bind="vm.typeMap[item]+'   X'" ng-click="vm.removeType(item)"><b></b></button>&nbsp;
+                </label>
+              </div>
+              <div  class="col-sm-11 top-10" ng-hide="vm.collegeSelectedList.length > 0||vm.typeSelectedList.length > 0" ng-cloak>
+                <label style="margin-bottom:0">
+                  <button tyle="button" class="btn button-link">所有类型</button>
+                </label>
+              </div>
+            </div>
+
+
           </div>
           <div class="col-sm-3">
             <div class="panel panel-info">
@@ -83,13 +100,6 @@
               </table>
             </div>
           </div>
-          <div class="col-sm-12 bottom-10" align="center" ng-hide="vm.chartFlag">
-            <!--<a ng-click="vm.chartFlag=true" href="" title="显示统计图">-->
-            <a ng-click="vm.chartFlag=true" href="" title="显示统计图">
-              <span class="glyphicon glyphicon-chevron-down"></span><br/>
-              <sapn>显示统计图表</sapn>
-            </a>
-          </div>
           <div  class="col-sm-12" ng-show="vm.chartFlag" ng-cloak>
             <hr/>
             <span class="cond-label col-sm-1">统计类型：</span>
@@ -100,13 +110,8 @@
                 <!--<label class="btn btn-default" ng-model="vm.count_type" uib-btn-radio="'honor'">学术称号</label>-->
               </div>
             </div>
-            <div id="p1" style="height: 300px;width:1126px;" class="bottom-10"></div>
-            <div class="top-10" align="center">
-              <a ng-click="vm.chartFlag=false" href="" title="隐藏图表">
-                <span class="glyphicon glyphicon-chevron-up"></span><br/>
-                <sapn>隐藏统计图表</sapn>
-              </a>
-            </div>
+            <div id="p1" style="height: 300px;width:1126px;" class="bottom-20"></div>
+
           </div>
         </div>
       </div>

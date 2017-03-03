@@ -19,17 +19,6 @@
                             </label>
                         </div>
                     </div>
-
-                        <!--<div class="btn-group col-sm-11">-->
-                            <!--<label class="btn btn-default active" ng-click="vm.resetCheckbox(vm.academichonor_id)"-->
-                                   <!--ng-model="vm.params.academichonor_id" uib-btn-radio="''">全部</label>-->
-                            <!--<label class="btn btn-default" ng-repeat="item in vm.academichonorList"-->
-                                   <!--ng-model="vm.academichonor_id[item.id]" uib-btn-checkbox data-toggle="tooltip"-->
-                                   <!--data-placement="top" title="{{item.abbr_name}}"-->
-                                   <!--ng-bind="item.abbr_name">-->
-                            <!--</label>-->
-                        <!--</div>-->
-
                     <div class="col-sm-4">
                         <span class="cond-label">论文类型：</span>
                         <div class="btn-group">
@@ -40,7 +29,7 @@
                             <label class="btn btn-default" ng-model="vm.paper_type.cpci" uib-btn-checkbox data-toggle="tooltip" data-placement="top">CPCI-S</label>
                         </div>
                     </div>
-                    <div class="col-sm-4 form-inline">
+                    <div class="col-sm-3 form-inline">
                         <span class="cond-label">出版年份：</span>
                         <div class="btn-group">
                             <form class="form-inline">
@@ -53,41 +42,22 @@
                                 </div>
                             </form>
                         </div>
-                        <!--<span class="cond-label">出版年份：</span>-->
-                        <!--<div class="input-group form-control  col-sm-1 date form_year" ng-date data-date="" data-date-format="dd MM yyyy" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd" >-->
-                            <!--<input style="width: 70px" type="text" class="form-control" id="start_year" placeholder="1919" ng-model='timepickerTest'>-->
-                            <!--<div class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></div>-->
-                        <!--</div>-->
-                        <!--至-->
-                        <!--<div class="input-group form-control  col-sm-1 date form_date" ng-date data-date="" data-date-format="dd MM yyyy" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd" >-->
-                            <!--<input style="width: 70px" type="text" class="form-control" id="end_year" placeholder="今年" ng-model='timepickerTest'>-->
-                            <!--<div class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></div>-->
-                        <!--</div>-->
-                        <!--<div class="form-group">-->
-                            <!--<label for="dtp_input2" class="col-md-2 control-label">Date Picking</label>-->
-                            <!--<div  ng-model='timepickerTest'  ng-time class="input-group date form_date col-md-5" data-date="" data-date-format="dd MM yyyy" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">-->
-                                <!--<input class="form-control" size="16" type="text" value="" readonly>-->
-                                <!--<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>-->
-                            <!--</div>-->
-                            <!--<input type="hidden" id="dtp_input2" value="" /><br/>-->
-                        <!--</div>-->
+                    </div>
+                    <div class="col-sm-1 bottom-10" style="right: 10px" ng-hide="vm.chartFlag">
+                        <a class="btn btn-success" ng-click="vm.chartFlag=true" align="center" href="" title="显示统计图">显示统计图表</a>
+                    </div>
+                    <div class="col-sm-1 bottom-10" style="right: 10px" ng-hide="!vm.chartFlag" ng-cloak>
+                        <a class="btn btn-danger" ng-click="vm.chartFlag=false" href="" title="隐藏图表">隐藏统计图表</a>
                     </div>
                 </div>
                 <!--所选筛选单位-->
-                <div class="col-sm-12 bottom-10" ng-if="vm.collegeSelectedList.length > 0">
+                <div class="col-sm-12 bottom-10" ng-if="vm.collegeSelectedList.length > 0" ng-cloak>
                     <span class="col-sm-1">所选单位：</span>
                     <label style="margin-bottom:0" ng-repeat="item in vm.collegeSelectedList">
                         <button tyle="button" class="btn button-link" ng-bind="vm.collegeMap[item]+'   X'"
                                 ng-click="vm.removeCollege(item)"><b></b></button>
                         &nbsp;
                     </label>
-                </div>
-                <div class="col-sm-12 bottom-10" align="center" ng-hide="vm.chartFlag">
-                    <!--<a ng-click="vm.chartFlag=true" href="" title="显示统计图">-->
-                    <a ng-click="vm.chartFlag=true" href="" title="显示统计图">
-                        <span class="glyphicon glyphicon-chevron-down"></span><br/>
-                        <sapn>显示统计图表</sapn>
-                    </a>
                 </div>
                 <div  class="col-sm-12" ng-show="vm.chartFlag" ng-cloak>
                     <hr/>
@@ -100,12 +70,6 @@
                         </div>
                     </div>
                     <div id="p1" class="col-sm-12 bottom-10" align="center" style="height: 300px;width:1126px;" ></div>
-                    <div class="top-10" align="center">
-                        <a ng-click="vm.chartFlag=false" href="" title="隐藏图表">
-                            <span class="glyphicon glyphicon-chevron-up"></span><br/>
-                            <sapn>隐藏统计图表</sapn>
-                        </a>
-                    </div>
                 </div>
             </div>
         </div>

@@ -99,7 +99,7 @@
                         </div>
                     </div>
                     <div class="col-sm-12 top-10">
-                        <div class="col-sm-5">
+                        <div class="col-sm-4">
                             <span class="cond-label">学&nbsp;&nbsp;&nbsp;&nbsp;院：&nbsp;</span>
                             <div class="btn-group">
                                 <label style="margin-bottom:0;color:#eee">
@@ -128,8 +128,14 @@
                                 <label class="btn btn-default" ng-model="vm.params.postdoctor" uib-btn-radio="'0'">否</label>
                             </div>
                         </div>
+                        <div class="col-sm-1" align="center" ng-hide="vm.chartFlag">
+                            <a class="btn btn-success" ng-click="vm.chartFlag=true" href="" title="显示统计图">显示统计图</a>
+                        </div>
+                        <div class="col-sm-1" align="center" ng-hide="!vm.chartFlag" ng-cloak>
+                            <a class="btn btn-danger" ng-click="vm.chartFlag=false" href="#p_table" title="隐藏图表">隐藏统计图</a>
+                        </div>
                     </div>
-                    <div class="col-sm-12 bottom-10" ng-if="vm.collegeSelectedList.length > 0">
+                    <div class="col-sm-3 " ng-if="vm.collegeSelectedList.length > 0">
                         <span class="col-sm-1">所选部门：</span>
                         <label style="margin-bottom:0" ng-repeat="item in vm.collegeSelectedList">
                             <button tyle="button" class="btn button-link" ng-bind="vm.collegeMap[item]+'   X'"
@@ -137,14 +143,15 @@
                             &nbsp;
                         </label>
                     </div>
-                    <div class="col-sm-12 top-10" align="center" ng-hide="vm.chartFlag">
-                        <a ng-click="vm.chartFlag=true" href="" title="显示统计图">
-                            <span class="glyphicon glyphicon-chevron-down"></span><br/>
-                            <sapn>显示统计图表</sapn>
-                        </a>
-                    </div>
+                    <!--<div class="col-sm-12 top-10" align="center" ng-hide="vm.chartFlag">-->
+                        <!--<a ng-click="vm.chartFlag=true" href="" title="显示统计图">-->
+                            <!--<span class="glyphicon glyphicon-chevron-down"></span><br/>-->
+                            <!--<sapn>显示统计图表</sapn>-->
+                        <!--</a>-->
+                    <!--</div>-->
+
                 </div>
-                <div  class="col-sm-12 top-10" ng-show="vm.chartFlag" ng-cloak>
+                <div  class="col-sm-12" ng-show="vm.chartFlag" ng-cloak>
                     <hr/>
                     <span class="cond-label col-sm-1">统计类型：</span>
                     <div class="col-sm-10">
@@ -154,13 +161,7 @@
                             <!--<label class="btn btn-default" ng-model="vm.count_type" uib-btn-radio="'honor'">学术称号</label>-->
                         </div>
                     </div>
-                    <div id="p1" style="height: 300px;width:1126px;" class="bottom-10"></div>
-                    <div class="top-10" align="center">
-                        <a ng-click="vm.chartFlag=false" href="#p_table" title="隐藏图表">
-                            <span class="glyphicon glyphicon-chevron-up"></span><br/>
-                            <sapn>隐藏统计图表</sapn>
-                        </a>
-                    </div>
+                    <div id="p1" style="height: 300px;width:1126px;" class="bottom-20"></div>
                 </div>
             </div>
         </div>

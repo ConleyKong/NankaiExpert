@@ -149,7 +149,7 @@ var option1 = {
         {
             name:'业务指标',
             type:'gauge',
-            center: ['25%','55%'],
+            center: ['25%','60%'],
             splitNumber: 10,       // 分割段数，默认为5
             axisLine: {            // 坐标轴线
                 lineStyle: {       // 属性lineStyle控制线条样式

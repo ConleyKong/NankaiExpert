@@ -136,11 +136,11 @@ class ProjectController extends Controller {
     	}
     	else{
     		$project = D('ProjectView');
-			$type = $project->field(array('count(project.type_id) typecount','type_name'))->group('type_id')->select();
-			$support = $project->field(array('count(support_no) supportcount','support_no'))->group('support_no')->select();
+			$type = $project->field(array('type_name','count(project.type_id) typecount'))->group('type_id')->order('typecount desc')->select();
+//			$support = $project->field(array('count(support_no) supportcount','support_no'))->group('support_no')->select();
             $result = array();
             $result['type'] = $type;
-            $result['support'] = $support;
+//            $result['support'] = $support;
             $this->ajaxReturn($result, 'json');
 		}
     }
