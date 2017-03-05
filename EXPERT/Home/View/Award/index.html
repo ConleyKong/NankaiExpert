@@ -77,7 +77,7 @@
       </div>
   </div> -->
   <div class="container" ng-app="award" ng-controller="awardController as vm">
-      <div class="panel panel-default">
+      <div id="pannel_frame" class="panel panel-default">
           <div class="panel-heading">
               <span>筛选条件：</span>
           </div>
@@ -286,6 +286,15 @@
 <script type="text/javascript" src="__PUBLIC__/js/award.controller.js"></script>
 <script type="text/javascript" src="__CDN__/angular-ui-bootstrap/0.14.3/ui-bootstrap.min.js"></script>
 <script>
-  selectMenu('award', 0, 0);  
+  selectMenu('award', 0, 0);
+  $(document).ready(function(){
+      refresh_mychart();
+  });
+  $(window).resize(refresh_mychart());
+  function refresh_mychart(){
+      var p1_width = $("#pannel_frame").width()-20;
+      var p1_height = p1_width/4;
+      $("#p1").width(p1_width).height(p1_height);
+  }
 </script>
 </block>

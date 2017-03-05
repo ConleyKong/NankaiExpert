@@ -78,7 +78,7 @@
         </div>
     </div>
     <div class="container" ng-app="person" ng-controller="personController as vm">
-        <div class="panel panel-default">
+        <div id="pannel_frame" class="panel panel-default">
             <div class="panel-heading">
                 <span>筛选条件：</span>
             </div>
@@ -161,7 +161,8 @@
                             <!--<label class="btn btn-default" ng-model="vm.count_type" uib-btn-radio="'honor'">学术称号</label>-->
                         </div>
                     </div>
-                    <div id="p1" style="height: 300px;width:1126px;" class="bottom-20"></div>
+                    <!--<div id="p1" style="height: 300px;width:1126px;" class="bottom-20"></div>-->
+                    <div id="p1" class="bottom-20"></div>
                 </div>
             </div>
         </div>
@@ -237,11 +238,12 @@
                     <th width="4%">性别<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.gender"></th>
                     <th width="8%">生日<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.birthday"></th>
                     <th width="8%">职称<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.title_name"></th>
+                    <th width="6%">党派<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.party"></th>
                     <th width="4%">博士后<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.postdoctor"></th>
                     <th width="8%">学术荣誉<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.honor_records"></th>
-                    <th width="8%">电话<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.phone"></th>
-                    <th width="8%">邮箱<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.email"></th>
-                    <th width="16%">学院<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.college_name"></th>
+                    <th width="6%">电话<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.phone"></th>
+                    <th width="6%">邮箱<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.email"></th>
+                    <th width="14%">学院<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.college_name"></th>
                     <th width="4%">一级学科<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.first_class"></th>
                     <th width="4%">二级学科<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.second_class"></th>
                     <th width="4%">诚信<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.credit"></th>
@@ -256,6 +258,7 @@
                     <td ng-bind="item.gender"></td>
                     <td ng-bind="item.birthday"></td>
                     <td ng-bind="item.title_name"></td>
+                    <td ng-bind="item.party"></td>
                     <td ng-bind="item.postdoctor==1?'是':'否'"></td>
                     <td ng-bind="item.honor_records" title="{{item.honor_records}}"></td>
                     <td ng-bind="item.phone"></td>
@@ -364,13 +367,18 @@
                 });
             }
         }
-        //自动调整标签宽度
-//        var browser_width = $(document.body).width();
-//        $("#p1").css("width",browser_width*0.8);
-//        $(window).resize(function() {
-//            browser_width = $(document.body).width();
-//            alert("窗口宽度："+browser_width);
-//            $("#p1").css("width",browser_width*0.8);
-//        });
+
+
+        $(document).ready(function(){
+            refresh_mychart();
+        });
+        $(window).resize(refresh_mychart());
+        function refresh_mychart(){
+            var p1_width = $("#pannel_frame").width()-20;
+            var p1_height = p1_width/4;
+            $("#p1").width(p1_width).height(p1_height);
+        }
+
+
     </script>
 </block>

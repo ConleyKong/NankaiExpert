@@ -45,5 +45,14 @@
 <script type="text/javascript" src="__CDN__/angular-ui-bootstrap/0.14.3/ui-bootstrap.min.js"></script>
 <script>
   selectMenu('audit', 6, 0);
+  $(document).ready(function(){
+    refresh_mychart();
+  });
+  $(window).resize(refresh_mychart());
+  function refresh_mychart(){
+    var p1_width = $("#pannel_frame").width()-20;
+    var p1_height = p1_width/4;
+    $("#p1").width(p1_width).height(p1_height);
+  }
 </script>
 </block>

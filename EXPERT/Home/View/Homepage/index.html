@@ -1,6 +1,6 @@
 <extend name="EXPERT/Templates/nav.html"/>
 <block name="content">
-  <div class="container" ng-app="home" ng-controller="homeController as vm">
+  <div id="body_container" class="container" ng-app="home" ng-controller="homeController as vm">
     <div class="col-md-8">
       <div class="panel panel-info">
         <div class="panel-heading">
@@ -19,14 +19,14 @@
         <!-- <div class="panel-body">
           <div id="c2" class="col-md-12" style="height:300px;"></div>
         </div> -->
-        <table class="table table-bordered table-striped" style="height:260px;border-bottom:1px #bce8f1 ;">
+        <table  class="table table-bordered table-striped" style="height:260px;border-bottom:1px #bce8f1 ;">
           <thead>
             <tr>
               <th>项目类型</th>
               <th>项目总数</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody id="project_abstraction" >
             <tr ng-repeat="item in vm.projectType" ng-if="$index<6">
               <td ng-bind="item.type_name"></td>
               <td ng-bind="item.typecount"></td>
@@ -76,4 +76,15 @@
   <script type="text/javascript" src="__CDN__/echarts/2.2.7/echarts-all.js"></script>
   <script type="text/javascript" src="__PUBLIC__/js/home_echarts.js"></script>
   <script type="text/javascript" src="__PUBLIC__/js/home.controller.js"></script>
+  <script type="text/javascript" >
+//  $(document).ready(function(){
+//    refresh_pa();
+//  });
+//  $(window).resize(refresh_pa());
+//  function refresh_pa(){
+//    var p_width = $("#body_container").width()*0.3;
+//    var p_height = p_width*0.7;
+//    $("#project_abstraction").width(p_width).height(p_height);
+//  }
+</script>
 </block>

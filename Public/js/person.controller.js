@@ -193,7 +193,7 @@
 
 	 	//导入导出
 	 	vm.showCheckbox = false;
-	 	vm.exportParams = {name:false,gender:false,employee_no:false,college_name:false,title_name:false,postdoctor:false,birthday:false,email:false,phone:false,first_class:false,second_class:false,credit:false,honor_records:false};
+	 	vm.exportParams = {name:false,gender:false,employee_no:false,college_name:false,title_name:false,postdoctor:false,birthday:false,email:false,phone:false,first_class:false,second_class:false,credit:false,honor_records:false,party:false};
 
 	 	vm.exportExcel = exportExcel;
 	 	function exportExcel(type){
@@ -247,6 +247,7 @@
 				makeMyChart();
 			}
 		},true);
+
 		vm.showChart = function () {
 			vm.chartFlag = true;
 			// angular.element("#pi").style('cursor','default');

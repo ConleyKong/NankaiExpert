@@ -1,7 +1,7 @@
 <extend name="EXPERT/Templates/nav.html" xmlns="http://www.w3.org/1999/html"/>
 <block name="content">
   <div class="container" ng-app="project" ng-controller="projectController as vm">
-    <div class="panel panel-default">
+    <div id="pannel_frame" class="panel panel-default">
       <div class="panel-heading">
         <span>筛选条件：</span>
       </div>
@@ -232,5 +232,14 @@
     <script type="text/javascript" src="__PUBLIC__/js/project.controller.js"></script>
     <script type="text/javascript">
       selectMenu('project', 2, 0);
+      $(document).ready(function(){
+        refresh_mychart();
+      });
+      $(window).resize(refresh_mychart());
+      function refresh_mychart(){
+        var p1_width = $("#pannel_frame").width()-20;
+        var p1_height = p1_width/4;
+        $("#p1").width(p1_width).height(p1_height);
+      }
     </script>
 </block>

@@ -18,6 +18,7 @@ class PeopleViewModel extends ViewModel {
 			'second_class',
 			'honor_records',
 			'credit',
+			'party',
 			'degree_id',
 			'mentor_type_id',
 			'_type' => 'LEFT'

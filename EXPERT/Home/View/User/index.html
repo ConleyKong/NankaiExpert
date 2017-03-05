@@ -3,7 +3,7 @@
   <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   </div>
   <div id="myUserApp" class="container" ng-app="user" ng-controller="userController as vm">
-    <div class="col-sm-12 row">
+    <div  id="pannel_frame" class="col-sm-12 row">
         <div class="col-sm-9 bottom-10">
             <span class="cond-label">筛选学院：</span>
             <div class="btn-group">
@@ -92,4 +92,15 @@
 <block name="js">
 <script type="text/javascript" src="__PUBLIC__/js/user.controller.js"></script>
 <script type="text/javascript" src="__CDN__/angular-ui-bootstrap/0.14.3/ui-bootstrap.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            refresh_mychart();
+        });
+        $(window).resize(refresh_mychart());
+        function refresh_mychart(){
+            var p1_width = $("#pannel_frame").width()-20;
+            var p1_height = p1_width/4;
+            $("#p1").width(p1_width).height(p1_height);
+        }
+    </script>
 </block>

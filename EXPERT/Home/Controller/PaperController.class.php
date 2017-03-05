@@ -34,12 +34,12 @@ class PaperController extends Controller {
 
             $publish_date = array();
             if($param['start_time']){
-                $pub_start = $param['start_time'];
+                $pub_start = $param['start_time']-1;
                 $publish_date = array('gt',$pub_start);
                 unset($param['startTime']);
             }
             if($param['end_time']){
-                $pub_end = $param['end_time'];
+                $pub_end = $param['end_time']+1;
                 $publish_date = array('lt',$pub_end);
                 unset($param['endTime']);
             }

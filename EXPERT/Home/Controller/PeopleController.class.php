@@ -342,7 +342,7 @@ class PeopleController extends Controller {
                 return '未知错误';
             }
 
-            $titleMap = array('name'=>'姓名','gender'=>'性别','employee_no'=>'职工号','college_name'=>'学院/部门','title_name'=>'职称','postdoctor'=>'博士后','honor_records'=>'荣誉称号','birthday'=>'出生日期','email'=>'邮箱','phone'=>'电话','first_class'=>'一级学科','second_class'=>'二级学科','credit'=>'诚信');
+            $titleMap = array('name'=>'姓名','gender'=>'性别','employee_no'=>'职工号','college_name'=>'学院/部门','title_name'=>'职称','postdoctor'=>'博士后','honor_records'=>'荣誉称号','birthday'=>'出生日期','email'=>'邮箱','phone'=>'电话','first_class'=>'一级学科','second_class'=>'二级学科','credit'=>'诚信','party'=>'党派');
             $field = split(',', $field);
             $excelTitle = array();
             foreach ($field as $value) {
