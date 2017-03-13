@@ -101,12 +101,12 @@
           <thead>
             <tr>
               <!--点击实验室名称后显示实验室详细信息，类似于用户详细信息-->
-              <th width="6%"><span ng-hide="vm.showCheckbox">id</span><span ng-show="vm.showCheckbox">全选<input type="checkbox" ng-click="vm.selectAll();"></span></th>
+              <th width="4%"><span ng-hide="vm.showCheckbox">id</span><span ng-show="vm.showCheckbox">全选<input type="checkbox" ng-click="vm.selectAll();"></span></th>
               <th width="20%">平台名<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.name"></th>
-              <th width="15%">类型<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.lab_type"></th>
-              <th width="14%">成员<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.members"></th>
-              <th width="15%">依托单位<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.college_name"></th>
-              <th width="24%">简介<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.description"></th>
+              <th width="14%">类型<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.lab_type"></th>
+              <th width="22%">成员<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.members"></th>
+              <th width="12%">依托单位<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.college_name"></th>
+              <th width="22%">简介<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.description"></th>
               <!--<th width="12%">研究方向<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.research_interests"></th>-->
               <!--<th width="12%">研究成果<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.research_results"></th>-->
               <!--<th width="6%">成立年份<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.formed_year"></th>-->
@@ -125,15 +125,16 @@
               <!--<td ng-bind="item.research_interests"></td>-->
               <!--<td ng-bind="item.research_results"></td>-->
               <!--<td ng-bind="item.formed_year"></td>-->
-              <td>
+              <td style="white-space: nowrap;">
                 <?php if($_SESSION['role_num']==2){ ?>
                 <a href="__URL__/delete?id={{item.id}}">删除</a>
                 <?php }else{ ?>
                 <a href="#">暂无</a>
                 <?php } ?>
               </td>
+
             </tr>
-            <tr ng-if="vm.paginationConf.totalItems==0"><td colspan="12"><h2 class="text-center text-danger">无数据</h2></td></tr>
+            <tr ng-if="vm.paginationConf.totalItems==0"><td colspan="7"><h2 class="text-center text-danger">无数据</h2></td></tr>
           </tbody>
       </table>
       <!--<form method="post" action="{:U('Lab/import')}" enctype="multipart/form-data">-->

@@ -212,7 +212,7 @@
             <!--<td ng-bind="item.comment"></td>-->
             <td ng-bind="item.start_time"></td>
             <td ng-bind="item.end_time"></td>
-            <td>
+            <td  style="white-space: nowrap;">
               <?php if($_SESSION['role_num']==2){ ?>
               <a href="__URL__/delete?id={{item.id}}">删除</a>
               <?php }else{ ?>
@@ -220,7 +220,7 @@
               <?php } ?>
             </td>
           </tr>
-          <tr ng-if="vm.paginationConf.totalItems==0"><td colspan="15"><h2 class="text-center text-danger">无数据</h2></td></tr>
+          <tr ng-if="vm.paginationConf.totalItems==0"><td colspan="12"><h2 class="text-center text-danger">无数据</h2></td></tr>
         </tbody>
       </table>
       <tm-pagination conf="vm.paginationConf"></tm-pagination>

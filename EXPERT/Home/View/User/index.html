@@ -63,18 +63,18 @@
             <td ng-bind="item.reg_date"></td>
             <td ng-bind="item.role_name"></td>
             <td ng-bind="item.status_name"></td>
-            <td ng-switch="item.status_id">
-                <div ng-switch-when="1" ng-cloak>
+            <td ng-switch="item.status_id" style="white-space: nowrap;">
+                <div ng-switch-when="1" class="operate-ele" ng-cloak>
                     <!--待审核-->
                     <a href="__URL__/set_status?id={{item.id}}&flag=2" >通过</a>
                     <a href="__URL__/del?id={{item.id}}">删除</a>
                 </div>
-                <div ng-switch-when="2"  ng-cloak>
+                <div ng-switch-when="2" class="operate-ele" ng-cloak>
                     <!--正常-->
                     <a href="__URL__/set_status?id={{item.id}}&flag=4" >锁定</a>
                     <a href="__URL__/del?id={{item.id}}">删除</a>
                 </div>
-                <div ng-switch-when="4" ng-cloak>
+                <div ng-switch-when="4" class="operate-ele" ng-cloak>
                     <!--锁定-->
                     <a href="__URL__/set_status?id={{item.id}}&flag=2" >解锁</a>
                     <a href="__URL__/del?id={{item.id}}">删除</a>

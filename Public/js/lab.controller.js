@@ -23,6 +23,9 @@
 
 		getLabList(vm.params);
 
+		// vm.role_num = {:session('role_num')};
+		// console.log(vm.role_num);
+
 		function getLabList(params){
 	 		//console.log('getLabList', vm.params);
 	 		var url = '/Lab/labList/';

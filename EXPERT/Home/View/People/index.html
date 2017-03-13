@@ -267,7 +267,7 @@
                     <td ng-bind="item.first_class" ></td>
                     <td ng-bind="item.second_class" ></td>
                     <td ng-bind="item.credit"></td>
-                    <td>
+                    <td  style="white-space: nowrap;">
                         <?php if($_SESSION['role_num']==2){ ?>
                         <a href="__URL__/delete?id={{item.id}}">删除</a>
                         <?php }else{ ?>
@@ -277,7 +277,7 @@
                     <!-- <td width="6%"><span class="glyphicon glyphicon-edit" onclick="modify(this);"></span><span class="glyphicon glyphicon-trash pull-right" onclick="del(this);"></span></td> -->
                 </tr>
                 <tr ng-if="vm.paginationConf.totalItems=='0'">
-                    <td colspan="12"><h2 class="text-center text-danger">无数据</h2></td>
+                    <td colspan="16"><h2 class="text-center text-danger">无数据</h2></td>
                 </tr>
                 </tbody>
             </table>
