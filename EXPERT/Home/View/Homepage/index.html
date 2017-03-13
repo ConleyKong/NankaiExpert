@@ -3,10 +3,10 @@
   <div id="body_container" class="container" ng-app="home" ng-controller="homeController as vm">
     <div class="col-md-8">
       <div class="panel panel-info">
-        <div class="panel-heading">
+        <div class="panel-heading" >
           <h3 class="panel-title">项目统计</h3>
         </div>
-        <div class="panel-body" style="height:260px;">
+        <div class="panel-body" style="height:260px;" id="pannel_frame">
           <div id="c1" class="col-md-12" style="height:260px;"></div>
         </div>
       </div>
@@ -77,14 +77,14 @@
   <script type="text/javascript" src="__PUBLIC__/js/home_echarts.js"></script>
   <script type="text/javascript" src="__PUBLIC__/js/home.controller.js"></script>
   <script type="text/javascript" >
-//  $(document).ready(function(){
-//    refresh_pa();
-//  });
-//  $(window).resize(refresh_pa());
-//  function refresh_pa(){
-//    var p_width = $("#body_container").width()*0.3;
-//    var p_height = p_width*0.7;
-//    $("#project_abstraction").width(p_width).height(p_height);
-//  }
+    $(document).ready(function(){
+      refresh_mychart();
+    });
+    $(window).resize(refresh_mychart());
+    function refresh_mychart(){
+      var p1_width = $("#pannel_frame").width()-10;
+      var p1_height = p1_width/4;
+      $("#c1").width(p1_width).height(p1_height);
+    }
 </script>
 </block>

@@ -4,6 +4,12 @@ function makeChart(id, option){
   window.onresize = myChart.resize;
 }
 
+function makeDoubleChart(id, option){
+    var myChart = echarts.init(document.getElementById(id), 'macarons');
+    myChart.setOption(option);
+    window.onresize = myChart.resize;
+}
+
 function createRandom(arrayLength){
   var array = [];
   for (var i = 0; i < arrayLength;i++)
@@ -260,7 +266,7 @@ var option1 = {
     ]
 };
 
-makeChart('c1', option1); 
+makeDoubleChart('c1', option1);
 //makeChart('c2', option5);
 
 var option2 = {
