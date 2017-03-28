@@ -5,6 +5,7 @@
     function personController($scope, sendRequest){
     	var vm = this;
     	vm.params = {};
+		vm.baseIndex = 1;
     	vm.paginationConf = {
 	        currentPage: 1,
 	        totalItems: 0,
@@ -14,6 +15,8 @@
 	       	onChange: function(){
 	       		vm.params.page = vm.paginationConf.currentPage;
 	       		vm.params.items = vm.paginationConf.itemsPerPage;
+				vm.baseIndex = (vm.paginationConf.currentPage-1) * vm.paginationConf.itemsPerPage;
+				console.log("baseIndex:",vm.baseIndex);
 	       		//console.log('page change', vm.params);
 	    	}
 		}

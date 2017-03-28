@@ -305,28 +305,37 @@ class PatentController extends Controller {
                         $condition["apply_no"] =$data["apply_no"];
                         $condition["name"]=$data["name"];
                         $isduplicated = $patent->where($condition)->find();
+                        $patent->startTrans();
+
                         if((int)$isduplicated['id']>0){//数据库中存在相同数据，使用更新操作
                             $num = $patent->where($condition)->save($data);
-                            $result = $isduplicated['id'];
-                            //将成功更新的数据记录到日志中
-                            $update_counter++;
-                            $updated_id[]=$result;
-                            //删除所有patent_inventors相关表，稍后重新插入（以后来数据为准）
-                            $flag["patent_id"]=(int)$result;
-                            M('patent_inventors')->where($flag)->delete();
+                            if($num){
+                                $patent->commit();
+                                $result = $isduplicated['id'];
+                                //将成功更新的数据记录到日志中
+                                $update_counter++;
+                                $updated_id[]=$result;
+                                //删除所有patent_inventors相关表，稍后重新插入（以后来数据为准）
+                                $flag["patent_id"]=(int)$result;
+                                M('patent_inventors')->where($flag)->delete();
+                            }
                         }else{
                             //插入数据
                             $result = $patent->add($data);
-                            //成功插入数据记录到日志中
-                            $insert_counter++;
-                            $inserted_id[]=$result;
-                        }
+                            if($result){
+                                $patent->commit();
+                                //成功插入数据记录到日志中
+                                $insert_counter++;
+                                $inserted_id[]=$result;
+                            }
 
+                        }
 
                         if (empty($result))
                         {
+                            $patent->rollback();
                             $error_counter++;
-                            $errored_name[]=$data["name"]."插入失败！";
+                            $errored_name[]=$data["name"]."写入失败！";
                         }else if($all_inventors!=''){
                             // 插入其他发明人职工号
                             $patent_id = (int)$result;

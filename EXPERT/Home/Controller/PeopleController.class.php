@@ -142,8 +142,7 @@ class PeopleController extends Controller {
             $this->error('数据插入失败'.$person->getError());
         }
     }
-
-
+    
     public function delete()
     {
 
@@ -549,29 +548,39 @@ class PeopleController extends Controller {
                         $condition["employee_no"] =$data["employee_no"];
                         $condition["name"]=$data["name"];
                         $isduplicated = $people->where($condition)->find();
-                        if((int)$isduplicated['id']>0){//数据库中存在相同数据，使用更新操作
-                            $num = $people->where($condition)->save($data);
-                            $result = $isduplicated['id'];
-                            //将成功更新的数据记录到日志中
-                            $update_counter++;
-                            $updated_id[]=$result;
 
-                            //删除所有person_honor相关表，稍后重新插入（以后来数据为准）
-                            $flag["person_id"]=(int)$result;
-                            M('person_honor')->where($flag)->delete();
+                        $people->startTrans();
+
+                        if((int)$isduplicated['id']>0){//数据库中存在相同数据，使用更新操作
+                            $save_result = $people->where($condition)->save($data);//update方法错误的时候返回false
+                            if($save_result){
+                                $people->commit();
+                                $result = $isduplicated['id'];
+                                //将成功更新的数据记录到日志中
+                                $update_counter++;
+                                $updated_id[]=$result;
+                                //删除所有person_honor相关表，稍后重新插入（以后来数据为准）
+                                $flag["person_id"]=(int)$result;
+                                M('person_honor')->where($flag)->delete();
+                            }
 
                         }else{
                             //插入数据
                             $result = $people->add($data);
                             //成功插入数据记录到日志中
-                            $insert_counter++;
-                            $inserted_id[]=$result;
+                            if($result){
+                                $insert_counter++;
+                                $inserted_id[]=$result;
+                                $people->commit();
+                            }
+
                         }
 
                         //若未插入数据则是更新数据，因此需要连带更新关联表
                         if (empty($result)){
                             $error_counter++;
                             $errored_name[]=$data["name"];
+                            $people->rollback();
                         }else if($person_honor_names!=''){
                             /* honor的插入需要特别注意，由于是一对多关系，因此会涉及三张表：
                              * 插入的主表为person_honor  涉及到 person中的id   和  academic_honor中的id

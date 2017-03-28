@@ -374,28 +374,37 @@ class AwardController extends Controller {
                         $condition["achievement"] =$data["achievement"];
                         $condition["name"]=$data["name"];
                         $isduplicated = $award->where($condition)->find();
+                        $award->startTrans();
                         if((int)$isduplicated['id']>0){//数据库中存在相同数据，使用更新操作
                             $num = $award->where($condition)->save($data);
-                            $result = $isduplicated['id'];
-                            //将成功更新的数据记录到日志中
-                            $update_counter++;
-                            $updated_id[]=$result;
+                            if($num){
+                                $award->commit();
+                                $result = $isduplicated['id'];
+                                //将成功更新的数据记录到日志中
+                                $update_counter++;
+                                $updated_id[]=$result;
 
-                            //删除所有award_other_person相关award职工号，稍后重新插入（以后来数据为准）
-                            $flag["award_id"]=(int)$result;
-                            M('award_other_person')->where($flag)->delete();
+                                //删除所有award_other_person相关award职工号，稍后重新插入（以后来数据为准）
+                                $flag["award_id"]=(int)$result;
+                                M('award_other_person')->where($flag)->delete();
+                            }
 
                         }else{
                             //插入数据
                             $result = $award->add($data);
-                            //成功插入数据记录到日志中
-                            $insert_counter++;
-                            $inserted_id[]=$result;
+                            if($result){
+                                $award->commit();
+                                //成功插入数据记录到日志中
+                                $insert_counter++;
+                                $inserted_id[]=$result;
+                            }
+
                         }
 
 
                         if (empty($result))
                         {
+                            $award->rollback();
                             $error_counter++;
                             $errored_name[]=$data["name"];
                         }else if($others_names!=''){

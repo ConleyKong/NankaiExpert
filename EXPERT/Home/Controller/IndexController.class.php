@@ -38,7 +38,7 @@ class IndexController extends Controller {
 						$audit['descr'] = '未审核';
 						break;
 					case 2://正常用户
-						session('logged', '1');
+						session('logged', true);
 						session('username', $condition['account']);
 						session('role_num',$user['role_id']);
 						$audit['result'] = '成功';
@@ -78,13 +78,18 @@ class IndexController extends Controller {
 
 	public function logout()
 	{
-		$audit['name'] = session('username');
-        $audit['ip'] = getIp();
-        $audit['module'] = '退出登录';
-        $audit['time'] = date('y-m-d h:i:s',time());
-        $audit['result'] = '成功';
-        M('audit')->add($audit);
-		session(null);
+		if(session('logged')){
+			$audit['name'] = session('username');
+			$audit['ip'] = getIp();
+			$audit['module'] = '退出登录';
+			$audit['time'] = date('y-m-d h:i:s',time());
+			$audit['result'] = '成功';
+			M('audit')->add($audit);
+			session(null);
+			session("logged",false);
+			header("Cache-control: no-cache, no-store");
+		}
+
 		$this->redirect('index');
 	}
 

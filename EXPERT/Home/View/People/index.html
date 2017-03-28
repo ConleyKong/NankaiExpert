@@ -135,7 +135,7 @@
                             <a class="btn btn-danger" ng-click="vm.chartFlag=false" href="#p_table" title="隐藏图表">隐藏统计图</a>
                         </div>
                     </div>
-                    <div class="col-sm-3 " ng-if="vm.collegeSelectedList.length > 0">
+                    <div class="col-sm-12 top-5" ng-if="vm.collegeSelectedList.length > 0">
                         <span class="col-sm-1">所选部门：</span>
                         <label style="margin-bottom:0" ng-repeat="item in vm.collegeSelectedList">
                             <button tyle="button" class="btn button-link" ng-bind="vm.collegeMap[item]+'   X'"
@@ -233,9 +233,9 @@
                 <thead>
                 <tr>
                     <th width="4%"><span ng-hide="vm.showCheckbox">id</span><span ng-show="vm.showCheckbox">全选<input type="checkbox"></span></th>
-                    <th width="8%">职工号<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.employee_no"></th>
-                    <th width="8%">姓名<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.name"></th>
-                    <th width="4%">性别<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.gender"></th>
+                    <th width="6%">职工号<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.employee_no"></th>
+                    <th width="6%">姓名<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.name"></th>
+                    <th width="3%">性别<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.gender"></th>
                     <th width="8%">生日<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.birthday"></th>
                     <th width="8%">职称<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.title_name"></th>
                     <th width="6%">党派<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.party"></th>
@@ -244,15 +244,15 @@
                     <th width="6%">电话<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.phone"></th>
                     <th width="6%">邮箱<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.email"></th>
                     <th width="14%">学院<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.college_name"></th>
-                    <th width="4%">一级学科<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.first_class"></th>
-                    <th width="4%">二级学科<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.second_class"></th>
-                    <th width="4%">诚信<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.credit"></th>
+                    <th width="7%">一级学科<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.first_class"></th>
+                    <th width="7%">二级学科<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.second_class"></th>
+                    <th width="3%">诚信<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.credit"></th>
                     <th width="4%">操作</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr ng-if="vm.paginationConf.totalItems>0" ng-repeat="item in vm.personList">
-                    <td ng-bind="item.id"></td>
+                    <td ng-bind="vm.baseIndex+$index+1"></td>
                     <td ng-bind="item.employee_no"></td>
                     <td><a href="__URL__/detail/?id={{item.id}}" ng-bind="item.name"></a></td>
                     <td ng-bind="item.gender"></td>

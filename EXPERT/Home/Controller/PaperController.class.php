@@ -410,13 +410,22 @@ class PaperController extends Controller {
                         }
 
 
+                        $paper->startTrans();
                         if($paper_id<0){ //不存在重名的论文，直接插入paper表、paper_type表和other——authors表
                             //paper中插入数据
                             $data['paper_type']=$paper_type;
                             $result = $paper->add($data);
-                            $paper_id =  $result;
-                            $insert_counter++;//成功插入数据记录到日志中
-                            $inserted_id[]=$result;
+                            if($result){
+                                $paper->commit();
+                                $paper_id =  $result;
+                                $insert_counter++;//成功插入数据记录到日志中
+                                $inserted_id[]=$result;
+                            }else{
+                                $paper->rollback();
+                                $error_counter+=1;
+                                $errored_name[]=$data['name'];
+                            }
+
                         }else{//存在重名的paper
                             //只更新paper数据
                             $condition = array();
@@ -426,9 +435,17 @@ class PaperController extends Controller {
                                 $o_paper['paper_type'] = $o_paper['paper_type'].','.$paper_type;
                             }
                             $num = $paper->where($condition)->save($o_paper);
-                            //将成功更新的数据记录到日志中
-                            $update_counter++;
-                            $updated_id[]=$paper_id;
+                            if($num){
+                                $paper->commit();
+                                //将成功更新的数据记录到日志中
+                                $update_counter++;
+                                $updated_id[]=$paper_id;
+                            }else{
+                                $paper->rollback();
+                                $error_counter+=1;
+                                $errored_name[]=$data['name'];
+                            }
+
                         }
                         //paper_type中插入数据
                         $type_data = array();

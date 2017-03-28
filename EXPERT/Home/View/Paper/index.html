@@ -151,10 +151,18 @@
                 </thead>
                 <tbody>
                 <tr ng-if="vm.paginationConf.totalItems>0" ng-repeat="item in vm.paperList | filter:filter">
-                    <td ng-bind="item.id"></td>
+                    <td ng-bind="vm.baseIndex+$index+1"></td>
                     <td ng-bind="item.name"></td>
-                    <td><a ng-bind="item.first_author" href="__APP__/People/detail/?id={{item.author_id}}"></a></td>
-                    <td ng-bind="item.contacter_name"></td>
+                    <td style="white-space: nowrap;" ng-switch="item.firstauthor_id">
+                        <div ng-switch-when="88888" ng-cloak>
+                            <!--非专家-->
+                            <span ng-bind="item.first_author" title="不存在该专家"></span>
+                        </div>
+                        <div ng-switch-default>
+                            <a ng-bind="item.first_author" href="__APP__/People/detail/?id={{item.firstauthor_id}}"></a>
+                        </div>
+                    </td>
+                    <td ng-bind="item.contact_author"></td>
                     <td ng-bind="item.other_authors_name"></td>
                     <td ng-bind="item.col_name"></td>
                     <td ng-bind="item.conference_name"></td>

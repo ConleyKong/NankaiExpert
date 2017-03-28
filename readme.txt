@@ -8,6 +8,27 @@
 日期选择插件引入回滚，需后期解决
 科技事件的导入导出以及科技事件的图片保存
 用户的导入（可以用python）
+增加项目类型的统计
+
+增加限制：只有管理员可以导入数据
+人员信息缩小职工号和姓名的比例，添加一级学科和二级学科所占比例，添加团队名称字段
+将id等于88888的用户的超练级去掉
+paper检索的时候增加扩选项，允许同时检索其他作者列
+
+
+version2.4.1
+修复用户退出时不检查用户状态的bug
+增加限制：项目统计图只有在选择多个学院的时候才显示
+修复界面bug：人员信息所选学院中错误限制col为3，已修改为12
+事务同步管理：为People,Project,Paper，Patent,Award,Lab的import增加事务过程
+修复bug：paper列表里通讯作者直接显示姓名，不通过id
+修复bug：一作的id为88888时不显示链接
+增加限制：列表显示的项目序号不直接使用id而是使用ng-repeat的$index+1来显示当前状态下的项目真实序列号
+    vm.baseIndex = (vm.paginationConf.currentPage-1) * vm.paginationConf.itemsPerPage;
+    id = vm.baseIndex+$index+1
+调整people表中各列比例，增加一级学科和二级学科宽度
+
+
 version2.4
 完善科研平台列表列的比例
 修复未知人员错误显示的情况

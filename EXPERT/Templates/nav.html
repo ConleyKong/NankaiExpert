@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta http-equiv="Pragma" content="no-cache"> 
-<meta http-equiv="Cache-Control" content="no-cache"> 
+<meta http-equiv="Cache-Control" content="no-cache, no-store">
 <meta http-equiv="Expires" content="0">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -504,6 +504,8 @@ function selectMenu(first, second, third){
 	$('#'+first).find('dl').eq(second).find('a').eq(third).addClass('third-menu-selected');
 }
 
+//阻止后退按钮
+//javascript:window.history.forward(1);
 </script>
 <block name="js"></block>
 </html>

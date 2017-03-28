@@ -150,9 +150,17 @@
         </thead>
         <tbody>
           <tr ng-if="vm.paginationConf.totalItems>0" ng-repeat="item in vm.patentList | filter:filter">
-              <td ng-bind="item.id"></td>
+              <td ng-bind="vm.baseIndex+$index+1"></td>
               <td ng-bind="item.name"></td>
-              <td><a ng-bind="item.first_inventor" href="__APP__/People/detail/?id={{item.first_inventor_id}}"></a></td>
+              <td style="white-space: nowrap;" ng-switch="item.first_inventor_id">
+                  <div ng-switch-when="88888" ng-cloak>
+                      <!--非专家-->
+                      <span ng-bind="item.first_inventor" title="不存在该专家"></span>
+                  </div>
+                  <div ng-switch-default>
+                      <a ng-bind="item.first_inventor" href="__APP__/People/detail/?id={{item.first_inventor_id}}"></a>
+                  </div>
+              </td>
               <td ng-bind="item.all_inventors"></td>
               <td ng-bind="item.owner_college_name"></td>
               <td ng-bind="item.apply_date"></td>

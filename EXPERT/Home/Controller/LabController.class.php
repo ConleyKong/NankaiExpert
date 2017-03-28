@@ -288,22 +288,32 @@ class LabController extends Controller {
 
                         $condition["name"]=$data["name"];
                         $isduplicated = $lab->where($condition)->find();
+                        $lab->startTrans();
                         if((int)$isduplicated['id']>0){//数据库中存在相同数据，使用更新操作
                             $num = $lab->where($condition)->save($data);
-                            $result = $isduplicated['id'];
-                            //将成功更新的数据记录到日志中
-                            $update_counter++;
-                            $updated_id[]=$result;
+                            if($num){
+                                $lab->commit();
+                                $result = $isduplicated['id'];
+                                //将成功更新的数据记录到日志中
+                                $update_counter++;
+                                $updated_id[]=$result;
+                            }
+
                         }else{
                             //插入数据
                             $result = $lab->add($data);
-                            //成功插入数据记录到日志中
-                            $insert_counter++;
-                            $inserted_id[]=$result;
+                            if($result){
+                                $lab->commit();
+                                //成功插入数据记录到日志中
+                                $insert_counter++;
+                                $inserted_id[]=$result;
+                            }
+
                         }
 
                         if (empty($result))
                         {
+                            $lab->rollback();
                             $error_counter++;
                             $errored_name[]=$data["name"];
                         }
