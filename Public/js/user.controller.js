@@ -5,7 +5,9 @@
     function userController($scope, sendRequest){
     	var vm = this;
     	vm.params = {};
-		vm.baseIndex = 0;
+		vm.baseIndex;
+		vm.showImportbox=false;
+		vm.isUploading=false;
     	vm.paginationConf = {
 	        currentPage: 1,
 	        totalItems: 0,

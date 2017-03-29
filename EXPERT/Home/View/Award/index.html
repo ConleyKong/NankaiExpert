@@ -191,10 +191,12 @@
             </div>
             <div class="col-md-8 pull-right" ng-hide="vm.showCheckbox||vm.showImportbox">
                 <!-- <button type="button" class="btn btn-info pull-right" data-toggle="modal" data-target="#modal">新增&nbsp;&nbsp;<span class="glyphicon glyphicon-plus"></span></button> -->
-                <button type="button" class="btn btn-info pull-right right-10" ng-click="vm.showImportbox=true">
-                    导入Excel&nbsp;&nbsp;
-                    <span class="glyphicon glyphicon-import"></span>
-                </button>
+                <?php if($_SESSION['role_num']==2){ ?>
+                    <button type="button" class="btn btn-info pull-right right-10" ng-click="vm.showImportbox=true">
+                        导入Excel&nbsp;&nbsp;
+                        <span class="glyphicon glyphicon-import"></span>
+                    </button>
+                <?php } ?>
                 <button type="button" class="btn btn-info pull-right right-10" ng-click="vm.showCheckbox=true">导出Excel&nbsp;&nbsp;<span class="glyphicon glyphicon-export"></span></button>
 
                 <div class="input-group col-md-4 pull-right right-10 has-feedback">
@@ -206,13 +208,13 @@
                     <!--<a class="btn input-group-addon" ng-click="vm.search()">搜索</a>-->
                 </div>
             </div>
-            <div class="col-md-8" ng-show="vm.showCheckbox">
+            <div class="col-md-8" ng-show="vm.showCheckbox" ng-cloak>
                 <button type="button" class="btn btn-default pull-right" ng-click="vm.showCheckbox=false">取消导出</span></button>
                 <button type="button" class="btn btn-primary pull-right right-10" ng-click="vm.exportExcel('all')">导出所有<span class="glyphicon glyphicon-export"></span></button>
                 <button type="button" class="btn btn-success pull-right right-10" ng-click="vm.exportExcel('current')">导出当前页<span class="glyphicon glyphicon-export"></span></button>
                 <h3 class="table-title warning-text pull-left">请选择要导出的字段</h3>
             </div>
-              <div class="col-md-8" ng-show="vm.showImportbox">
+              <div class="col-md-8" ng-show="vm.showImportbox" ng-cloak>
                   <form method="post" action="{:U('Award/import')}" enctype="multipart/form-data">
                       <!--<div class="col-sm-6">-->
                       <!--<label class="pull-right right-10">浏览要导入的Excel文件：</label>-->
@@ -224,12 +226,15 @@
                           <button class="btn btn-default pull-right right-10" type="button"
                                   ng-click="vm.showImportbox=false">取消导入
                           </button>
-                          <input type="submit" class="btn btn-primary pull-right right-10" value="导入所选文件"/>
+                          <input type="submit" ng-click="vm.isUploading=true" class="btn btn-primary pull-right right-10" value="导入所选文件"/>
                       </div>
                   </form>
               </div>
           </div>
         </div>
+          <div class="alert alert-danger col-md-12 top-5" style="margin-bottom: 2px;margin-top: 2px;text-align:center" ng-show="vm.isUploading && vm.showImportbox" ng-cloak>
+              我们的服务器正在奋力导入您选择的数据，请您不妨喝杯咖啡耐心等待一下
+          </div>
       </div>
   		<table class="table table-bordered table-striped table-hover">
         <thead>

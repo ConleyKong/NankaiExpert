@@ -123,18 +123,18 @@ class IndexController extends Controller {
 
 				$count = M('user')->where(array('account'=>$username))->count();
 				if($count==0){
-						M('user')->add($data);
-						session('username', $username);
-						session('logged','0');
-						/*将操作结果写入日志*/
-						$audit['descr'] = '新用户注册成功';
-						$audit['name'] = session('username');
-						$audit['ip'] = getIp();
-						$audit['module'] = '用户信息';
-						$audit['time'] = date('y-m-d h:i:s', time());
-						$audit['descr'] = "$username 成功注册成为新用户，待审核";
-						M('audit')->add($audit);
-						$this->success('注册成功，请等待管理员审核通过！');
+					M('user')->add($data);
+					session('username', $username);
+					session('logged','0');
+					/*将操作结果写入日志*/
+					$audit['descr'] = '新用户注册成功';
+					$audit['name'] = session('username');
+					$audit['ip'] = getIp();
+					$audit['module'] = '用户信息';
+					$audit['time'] = date('y-m-d h:i:s', time());
+					$audit['descr'] = "$username 成功注册成为新用户，待审核";
+					M('audit')->add($audit);
+					$this->success('注册成功，请等待管理员审核通过！');
 				}else{
 					$this->error('存在同名用户，请另选登录名');
 				}

@@ -18,7 +18,7 @@ class UserViewModel extends ViewModel {
 		),
 		'role_type' => array(
 			'id'=>'roleTypeId',
-			'role_name',
+			'name'=>'role_name',
 			'_on' => 'role_type.id = role_id',
 			'_type' => 'LEFT'
 		),
@@ -30,7 +30,7 @@ class UserViewModel extends ViewModel {
 		),
 		'user_status'=>array(
 			'id' =>'userstatuseid',
-			'status_name',
+			'name'=>'status_name',
 			'_on'=>'user.status_id = user_status.id',
 			'_type'=>'LEFT',
 		),

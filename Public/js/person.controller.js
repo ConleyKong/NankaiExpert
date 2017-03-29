@@ -6,6 +6,7 @@
     	var vm = this;
     	vm.params = {};
 		vm.baseIndex = 1;
+		vm.isUploading = false;
     	vm.paginationConf = {
 	        currentPage: 1,
 	        totalItems: 0,

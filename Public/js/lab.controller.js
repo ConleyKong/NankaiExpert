@@ -5,7 +5,8 @@
     function labController($scope, sendRequest){
     	var vm = this;
     	vm.params = {};
-		vm.baseIndex = 0;
+		vm.baseIndex;
+		vm.isUploading=false;
     	vm.paginationConf = {
 	        currentPage: 1,
 	        totalItems: 0,

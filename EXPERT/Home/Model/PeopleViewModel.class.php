@@ -17,6 +17,8 @@ class PeopleViewModel extends ViewModel {
 			'first_class',
 			'second_class',
 			'honor_records',
+			'group_name',
+			'group_id',
 			'credit',
 			'party',
 			'degree_id',

@@ -34,13 +34,13 @@ class PaperController extends Controller {
 
             $publish_date = array();
             if($param['start_time']){
-                $pub_start = $param['start_time']-1;
+                $pub_start = $param['start_time'];
                 $publish_date = array('gt',$pub_start);
                 unset($param['startTime']);
             }
             if($param['end_time']){
-                $pub_end = $param['end_time']+1;
-                $publish_date = array('lt',$pub_end);
+                $pub_end = $param['end_time'];
+                $publish_date = $publish_date==null?array('lt',$pub_end):array($publish_date,array('lt',$pub_end),'and');
                 unset($param['endTime']);
             }
             if($publish_date){
@@ -54,7 +54,8 @@ class PaperController extends Controller {
             }
             if($param['keyword']){
                 $keyword = $param['keyword'];
-                $ts = "( paper.name like '%$keyword%' OR paper.conference_name like '%$keyword%' OR person.name like '%$keyword%')";
+//                $ts = "( paper.name like '%$keyword%' OR paper.conference_name like '%$keyword%' OR paper.first_author like '%$keyword%' OR paper.contact_author like '%$keyword%'  OR paper.other_authors_name like '%$keyword%')";
+                $ts = $keyword;
                 $string .= $string?' AND '.$ts:$ts;
                 unset($param['keyword']);
             }
@@ -169,15 +170,12 @@ class PaperController extends Controller {
             if($publish_date)
                 $query['publish_date'] = $publish_date;
 
-
-            $conference_name = I('get.conference_name');
-            $person_name = I('get.person_name');
-            if ($person_name)
-                $query['person_name'] = array('like','%'.$person_name.'%');
-            if ($conference_name)
-                $query['conference_name'] = array('like','%'.$conference_name.'%');
-
-
+//            $conference_name = I('get.conference_name');
+//            $person_name = I('get.person_name');
+//            if ($person_name)
+//                $query['person_name'] = array('like','%'.$person_name.'%');
+//            if ($conference_name)
+//                $query['conference_name'] = array('like','%'.$conference_name.'%');
 
             $college_id = I('get.college_id');
             $string = '';
@@ -185,7 +183,9 @@ class PaperController extends Controller {
                 $string .= $string ? ' AND ('.$college_id.')' : '('.$college_id.')';
             $keyword = I('get.keyword');
             if($keyword){
-                $ts = " (paper.name like '%$keyword%' OR paper.conference_name like '%$keyword%' OR person.name like '%$keyword%')";
+//                $ts = " (paper.name like '%$keyword%' OR paper.conference_name like '%$keyword%' OR person.name like '%$keyword%')";
+//                $ts = " (paper.name like '%$keyword%' OR paper.conference_name like '%$keyword%' OR paper.first_author like '%$keyword%' OR paper.contact_author like '%$keyword%'  OR paper.other_authors_name like '%$keyword%')";
+                $ts = $keyword;
                 $string .= $string?' AND '.$ts:$ts;
             }
             $paper_type = I('get.paper_type');
@@ -202,12 +202,18 @@ class PaperController extends Controller {
             if ($type == 'all'){
                 $audit['descr'] = '导出所有。';
                 $result = $paper->field($field)->where($query)->order('paper.id')->select();
-            }
-            else if ($type == 'current'){
+            }else if ($type == 'current'){
                 $audit['descr'] = '导出当前。';
                 $result = $paper->field($field)->where($query)->page($pageNum,$itemsNum)->order('paper.id')->select();
-            }
-            else{
+            }else{
+                //操作记录日志
+                $audit['name'] = session('username');
+                $audit['ip'] = getIp();
+                $audit['module'] = '论文信息';
+                $audit['time'] = date('y-m-d h:i:s',time());
+                $audit['result'] = '成功';
+                $audit['descr'] .= '导出论文信息出现错误';
+                M('audit')->add($audit);
                 return '未知错误';
             }
 

@@ -177,10 +177,12 @@
                             <button type="button" class="btn btn-info pull-right" data-toggle="modal"
                                     data-target="#modal">新增&nbsp;&nbsp;<span class="glyphicon glyphicon-plus"></span>
                             </button>
-                            <button type="button" class="btn btn-info pull-right right-10" ng-click="vm.showImportbox=true">
-                                导入Excel&nbsp;&nbsp;
-                                <span class="glyphicon glyphicon-import"></span>
-                            </button>
+                            <?php if($_SESSION['role_num']==2){ ?>
+                                <button type="button" class="btn btn-info pull-right right-10" ng-click="vm.showImportbox=true">
+                                    导入Excel&nbsp;&nbsp;
+                                    <span class="glyphicon glyphicon-import"></span>
+                                </button>
+                            <?php } ?>
                             <button type="button" class="btn btn-info pull-right right-10" ng-click="vm.showCheckbox=true">
                                 导出Excel&nbsp;&nbsp;
                                 <span class="glyphicon glyphicon-export"></span>
@@ -198,7 +200,7 @@
                                 <!--<a class="btn input-group-addon" ng-click="vm.search()">搜索</a>-->
                             </div>
                         </div>
-                        <div class="col-md-8" ng-show="vm.showCheckbox">
+                        <div class="col-md-8" ng-show="vm.showCheckbox" ng-cloak>
                             <button type="button" class="btn btn-default pull-right" ng-click="vm.showCheckbox=false">
                                 取消导出</button>
                             <button type="button" class="btn btn-primary pull-right right-10"
@@ -209,7 +211,7 @@
                                     class="glyphicon glyphicon-export"></span></button>
                             <h3 class="table-title warning-text pull-left">请选择要导出的字段</h3>
                         </div>
-                        <div class="col-md-8" ng-show="vm.showImportbox">
+                        <div class="col-md-8" ng-show="vm.showImportbox" ng-cloak>
                             <form method="post" action="{:U('People/import')}" enctype="multipart/form-data">
                                 <!--<div class="col-sm-6">-->
                                     <!--<label class="pull-right right-10">浏览要导入的Excel文件：</label>-->
@@ -222,30 +224,34 @@
                                     <button class="btn btn-default pull-right right-10" type="button"
                                             ng-click="vm.showImportbox=false">取消导入
                                     </button>
-                                    <input type="submit" class="btn btn-primary pull-right right-10" value="导入所选文件"/>
+                                    <input type="submit" ng-click="vm.isUploading=true" class="btn btn-primary pull-right right-10" value="导入所选文件"/>
                                 </div>
                             </form>
                         </div>
                     </div>
+                </div>
+                <div class="alert alert-danger col-md-12 top-5" style="margin-bottom: 2px;margin-top: 2px;text-align:center" ng-show="vm.isUploading && vm.showImportbox" ng-cloak>
+                    我们的服务器正在奋力导入您选择的数据，请您不妨喝杯咖啡耐心等待一下
                 </div>
             </div>
             <table class="table table-bordered table-striped table-hover">
                 <thead>
                 <tr>
                     <th width="4%"><span ng-hide="vm.showCheckbox">id</span><span ng-show="vm.showCheckbox">全选<input type="checkbox"></span></th>
-                    <th width="6%">职工号<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.employee_no"></th>
+                    <th width="5%">职工号<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.employee_no"></th>
                     <th width="6%">姓名<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.name"></th>
                     <th width="3%">性别<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.gender"></th>
                     <th width="8%">生日<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.birthday"></th>
                     <th width="8%">职称<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.title_name"></th>
                     <th width="6%">党派<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.party"></th>
-                    <th width="4%">博士后<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.postdoctor"></th>
+                    <th width="3%">博士后<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.postdoctor"></th>
                     <th width="8%">学术荣誉<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.honor_records"></th>
                     <th width="6%">电话<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.phone"></th>
                     <th width="6%">邮箱<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.email"></th>
-                    <th width="14%">学院<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.college_name"></th>
+                    <th width="12%">学院<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.college_name"></th>
                     <th width="7%">一级学科<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.first_class"></th>
                     <th width="7%">二级学科<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.second_class"></th>
+                    <th width="4%">所属团队<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.group_name"></th>
                     <th width="3%">诚信<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.credit"></th>
                     <th width="4%">操作</th>
                 </tr>
@@ -266,6 +272,7 @@
                     <td ng-bind="item.college_name"></td>
                     <td ng-bind="item.first_class" ></td>
                     <td ng-bind="item.second_class" ></td>
+                    <td ng-bind="item.group_name" ></td>
                     <td ng-bind="item.credit"></td>
                     <td  style="white-space: nowrap;">
                         <?php if($_SESSION['role_num']==2){ ?>

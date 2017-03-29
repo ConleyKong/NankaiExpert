@@ -5,7 +5,8 @@
     function paperController($scope, sendRequest){
     	var vm = this;
     	vm.params = {};
-		vm.baseIndex = 0;
+		vm.baseIndex;
+		vm.isUploading=false;
     	vm.paginationConf = {
 	        currentPage: 1,
 	        totalItems: 0,
@@ -283,7 +284,6 @@
 	 		//console.log('vm.collegeSelectedList', vm.collegeSelectedList)
 	 	};
 
-	 	//条件查询
 		vm.params.conference_name = '';
 		vm.params.person_name = '';
 		vm.params.start_time = '';
@@ -291,6 +291,64 @@
 		vm.params.college_id = '';
 		vm.params.keyword='';
 
+		//个性化条件搜索
+		vm.showOptions = false;
+		vm.search_option={
+			name	      : true,
+			first_author  : true,
+			contact_author: true,
+			other_authors_name : true,
+			conference_name   : true
+		}
+		vm.hideSearchOption = function () {
+			vm.showOptions=false;
+		}
+		vm.resetSearchOption = function(){
+			vm.showOptions=false;
+			vm.search_option.name=true;
+			vm.search_option.first_author=true;
+			vm.search_option.contact_author=true;
+			vm.search_option.other_authors_name=true;
+			vm.search_option.conference_name=true;
+			// console.log("清空后的论文类型："+JSON.stringify(vm.paper_type));
+		}
+		vm.showSearchOptions = function () {
+			vm.showOptions = true;
+			console.log("显示个性化搜索选项");
+		}
+		vm.search = function () {
+			console.log("关键词"+vm.keyword);
+			if(vm.keyword.trim()!=""){
+				var temp=[];
+				angular.forEach(vm.search_option,function (value,key) {
+					if(value){
+						temp.push(" (paper."+key+" like '%"+vm.keyword+"%') ");
+					}
+				});
+
+				if(temp.length>0){
+					vm.params.keyword=temp.join(' or ');
+				}else{
+					vm.params.keyword='';
+				}
+				console.log("生成的keyword语句："+vm.params.keyword);
+			}
+
+		};
+		$scope.searchKeyupEvent = function(e){
+			var keycode = window.event?e.keyCode:e.which;
+			if(keycode==13){
+				vm.search();
+				// console.log("按下的按键："+keycode);
+			}
+		};
+		vm.resetKeyword=function () {
+			vm.keyword="";
+			vm.params.keyword="";
+		};
+
+
+		//时间过滤条件
 		vm.setStart = function () {
 			vm.params.start_time = vm.start_time;
 		};
@@ -312,22 +370,6 @@
 				vm.setEnd();
 				// console.log("按下的按键："+keycode);
 			}
-		};
-
-		vm.search = function () {
-			console.log("关键词"+vm.keyword)
-			vm.params.keyword = vm.keyword;
-		};
-		$scope.searchKeyupEvent = function(e){
-			var keycode = window.event?e.keyCode:e.which;
-			if(keycode==13){
-				vm.search();
-				// console.log("按下的按键："+keycode);
-			}
-		};
-		vm.resetKeyword=function () {
-			vm.keyword="";
-			vm.params.keyword="";
 		};
 
 	 	vm.submit = function(){
