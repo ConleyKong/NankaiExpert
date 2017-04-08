@@ -1,11 +1,74 @@
 需解决问题：
-
-
 日期选择插件引入回滚，需后期解决
 科技事件的导入导出以及科技事件的图片保存
 为项目列表增加项目类型的统计
 日期选择的时候无法实现指定区间搜索
+project真实导入时需要添加参与人和多个合作单位的写入
 
+人员表：人员类型（教学，管理，双肩挑）筛选？
+project只能有年不能有月和日子
+后期的sql还可以添加索引以更快提升效率
+存在难点：用户不同学院但是同名时论文的导入出现缺失
+
+version2.4.3
+增加功能：为User添加用户名搜索功能
+增加模块：添加学术交流模块，相应的在数据库添加interchanges表，完善搜索，导出，学院筛选，类型筛选和时间筛选功能
+修复bug： 修复各模块间日期范围选择不能选择区间的bug
+增加功能：为项目表增加教师成员和合作单位
+修复bug：用户导入增加职称判断，将博导教授和院士教授并入了教授，将博导研究员并入了研究员，增加空值判断，默认设置为其他
+增加功能：为person表添加college_names字段，应对一人多学院的情况，该字段仅用于显示，同时增加person_colleges表，记录person和college的多对多关系，用于统计和检索，同时增加相应导入导出功能
+增加功能：更新职称列表，id<5的是正高，id<12的是副高，id<21的是中级，id<28的是初级，id=29是其他
+增加功能：科研队伍中添加职称筛选功能，并修改相应的导出功能
+增加功能：论文列表中添加职称筛选功能，并修改相应的导出功能
+修复bug： 人员一对多学院后修改导入人员信息的方式，导入时将一作的信息也加入到paper_authors表中，该表记录是所有论文的用户id和paper的id
+增加功能：为lab添加编辑功能，可以添加或者删除实验室的成员或名称等
+实现功能：手工实现论文信息统计功能：
+            $paper->startTrans();
+            $create_person_paper_table_sql = "create temporary table if not exists pp (
+                                                select
+                                                person.id as person_id,
+                                                paper.paper_type as paper_type,
+                                                paper.publish_year as stat_year,
+                                                count(paper.id) as paper_num
+                                                from
+                                                person
+                                                left join paper_authors on person.id=paper_authors.person_id
+                                                left join paper on paper_authors.paper_id=paper.id
+                                                where person.valid=1 and paper.valid=1
+                                                group by person.id,paper.paper_type)";
+
+            $create_ei_table_sql = "create temporary table if not exists ei_table (select person_id,paper_num ei_sum from pp where pp.paper_type='ei')";
+            $create_sci_table_sql = "create temporary table if not exists sci_table (select person_id,paper_num sci_sum from pp where pp.paper_type='sci')";
+            $create_cpci_table_sql = "create temporary table if not exists cpci_table (select person_id,paper_num cpci_sum from pp where pp.paper_type='cpci-s')";
+            $create_total_table_sql = "create temporary table if not exists total_table (select person_id,sum(paper_num) total_sum from pp group by person_id)";
+
+            $query_result_sql = "select
+                                    p.id person_id,p.employee_no,p.name person_name,p.gender,p.college_names,title.name title_name,ei_sum,sci_sum,cpci_sum,total_sum
+                                    from person p
+                                    left join person_title title on p.title_id = title.id
+                                    left join ei_table on p.id = ei_table.person_id
+                                    left join sci_table on p.id = sci_table.person_id
+                                    left join cpci_table on p.id=cpci_table.person_id
+                                    left join total_table on p.id=total_table.person_id
+                                    where total_sum>0
+                                    order by person_id
+                                    limit $offset,$itemsNum";
+            $query_totalNum_sql="select count(person.id) total_num from person;";
+
+            $paper->execute($create_person_paper_table_sql);
+            $paper->execute($create_ei_table_sql);
+            $paper->execute($create_sci_table_sql);
+            $paper->execute($create_cpci_table_sql);
+            $paper->execute($create_total_table_sql);
+            $result = $paper->query($query_result_sql);
+            $totalNum = $paper->query($query_totalNum_sql);
+            $paper->commit();
+性能提升：使用engine=memory提升查询性能，由原来的2.18s的响应时间提升到0.8秒
+增加功能：为论文统计表增加关键词搜索功能，增加职称筛选功能，增加单位筛选功能，增加年份筛选功能
+增加功能：为Project模块增加报表：职工号、姓名、职称、学院、纵向直接(dd_sum<-depth direct)、纵向间接(di_sum)、纵向总经费(dt_sum)、横向总经费(ct_sum)、到账总经费(total_sum)。
+修改lab导入功能，让lab的成员的单位信息多个该重点实验室，对于成员的编辑也应该修改成员对应的单位
+
+-------------------------------------------------------------------------------------------------------
 
 version2.4.2
 增加限制：论文的模糊搜索关键词匹配增加其他作者和通讯作者
@@ -18,7 +81,6 @@ version2.4.2
 修复bug：修复页面载入过程中的隐藏按钮的闪现
 增加功能：为User,People,Project,Paper,Patent,Event,Lab模块添加导入警示标示
 
--------------------------------------------------------------------------------------------------------
 version2.4.1
 修复用户退出时不检查用户状态的bug
 增加限制：项目统计图只有在选择多个学院的时候才显示

@@ -84,11 +84,11 @@
             </div>
             <div class="panel-body">
                 <div class="col-sm-12">
-                    <div class="col-sm-12 bottom-10">
-                        <div class="col-sm-1">
-                            <span>学术称号：</span>
-                        </div>
-                        <div class="btn-group col-sm-11">
+                    <div class="col-sm-12 top-5 bottom-10">
+                        <!--<div class="col-sm-1">-->
+                            <span class="cond-label">学&nbsp;术&nbsp;称&nbsp;号：</span>
+                        <!--</div>-->
+                        <div class="btn-group">
                             <label class="btn btn-default active" ng-click="vm.resetCheckbox(vm.academichonor_id)"
                                    ng-model="vm.params.academichonor_id" uib-btn-radio="''">全部</label>
                             <label class="btn btn-default" ng-repeat="item in vm.academichonorList"
@@ -98,9 +98,39 @@
                             </label>
                         </div>
                     </div>
+                    <div class="col-sm-5">
+                        <span class="cond-label">职&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;称：&nbsp;</span>
+                        <div class="btn-group">
+                            <label class="btn btn-default active" ng-click="vm.resetTitleType()"
+                                   ng-model="vm.params.title_type" uib-btn-radio="''">全部</label>
+                            <label class="btn btn-default" ng-model="vm.title_type.senior" uib-btn-checkbox data-toggle="tooltip" data-placement="top">正高</label>
+                            <label class="btn btn-default" ng-model="vm.title_type.vice_senior" uib-btn-checkbox data-toggle="tooltip" data-placement="top">副高</label>
+                            <label class="btn btn-default" ng-model="vm.title_type.middle" uib-btn-checkbox data-toggle="tooltip" data-placement="top">中级</label>
+                            <label class="btn btn-default" ng-model="vm.title_type.junior" uib-btn-checkbox data-toggle="tooltip" data-placement="top">初级</label>
+                            <label class="btn btn-default" ng-model="vm.title_type.other" uib-btn-checkbox data-toggle="tooltip" data-placement="top">其他</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <span class="cond-label">性别：</span>
+                        <div class="btn-group">
+                            <label class="btn btn-default active" ng-model="vm.params.gender"
+                                   uib-btn-radio="''">全部</label>
+                            <label class="btn btn-default" ng-model="vm.params.gender" uib-btn-radio="'男'">男</label>
+                            <label class="btn btn-default" ng-model="vm.params.gender" uib-btn-radio="'女'">女</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <span class="cond-label">博士后：</span>
+                        <div class="btn-group">
+                            <label class="btn btn-default active" ng-model="vm.params.postdoctor"
+                                   uib-btn-radio="''">全部</label>
+                            <label class="btn btn-default" ng-model="vm.params.postdoctor" uib-btn-radio="'1'">是</label>
+                            <label class="btn btn-default" ng-model="vm.params.postdoctor" uib-btn-radio="'0'">否</label>
+                        </div>
+                    </div>
                     <div class="col-sm-12 top-10">
                         <div class="col-sm-4">
-                            <span class="cond-label">学&nbsp;&nbsp;&nbsp;&nbsp;院：&nbsp;</span>
+                            <span class="cond-label">学&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;院：&nbsp;</span>
                             <div class="btn-group">
                                 <label style="margin-bottom:0;color:#eee">
                                     <select class="box-width form-control" ng-model="vm.collegeSelected"
@@ -110,24 +140,7 @@
                                 </label>
                             </div>
                         </div>
-                        <div class="col-sm-3">
-                            <span class="cond-label">性别：</span>
-                            <div class="btn-group">
-                                <label class="btn btn-default active" ng-model="vm.params.gender"
-                                       uib-btn-radio="''">全部</label>
-                                <label class="btn btn-default" ng-model="vm.params.gender" uib-btn-radio="'男'">男</label>
-                                <label class="btn btn-default" ng-model="vm.params.gender" uib-btn-radio="'女'">女</label>
-                            </div>
-                        </div>
-                        <div class="col-sm-3">
-                            <span class="cond-label">博士后：</span>
-                            <div class="btn-group">
-                                <label class="btn btn-default active" ng-model="vm.params.postdoctor"
-                                       uib-btn-radio="''">全部</label>
-                                <label class="btn btn-default" ng-model="vm.params.postdoctor" uib-btn-radio="'1'">是</label>
-                                <label class="btn btn-default" ng-model="vm.params.postdoctor" uib-btn-radio="'0'">否</label>
-                            </div>
-                        </div>
+
                         <div class="col-sm-1" align="center" ng-hide="vm.chartFlag">
                             <a class="btn btn-success" ng-click="vm.chartFlag=true" href="" title="显示统计图">显示统计图</a>
                         </div>
@@ -248,7 +261,7 @@
                     <th width="8%">学术荣誉<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.honor_records"></th>
                     <th width="6%">电话<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.phone"></th>
                     <th width="6%">邮箱<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.email"></th>
-                    <th width="12%">学院<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.college_name"></th>
+                    <th width="12%">所属单位<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.college_names"></th>
                     <th width="7%">一级学科<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.first_class"></th>
                     <th width="7%">二级学科<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.second_class"></th>
                     <th width="4%">所属团队<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.group_name"></th>
@@ -269,7 +282,7 @@
                     <td ng-bind="item.honor_records" title="{{item.honor_records}}"></td>
                     <td ng-bind="item.phone"></td>
                     <td ng-bind="item.email" ></td>
-                    <td ng-bind="item.college_name"></td>
+                    <td ng-bind="item.college_names"></td>
                     <td ng-bind="item.first_class" ></td>
                     <td ng-bind="item.second_class" ></td>
                     <td ng-bind="item.group_name" ></td>

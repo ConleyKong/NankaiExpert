@@ -33,6 +33,12 @@ class UserController extends Controller {
                 $string .= $string ? ' AND ('.$param['college_id'].')' : '('.$param['college_id'].')';
                 unset($param['college_id']);
             }
+            if($param['keyword']){
+                $keyword = $param['keyword'];
+                $ts = " (user.account like '%$keyword%' OR user.real_name like '%$keyword%') ";
+                $string .= $string?' AND '.$ts:$ts;
+                unset($param['keyword']);
+            }
             if ($string)
                 $param['_string'] = $string;
 

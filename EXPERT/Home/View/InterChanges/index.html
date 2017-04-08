@@ -1,0 +1,220 @@
+<extend name="EXPERT/Templates/nav.html" xmlns="http://www.w3.org/1999/html"/>
+<block name="content">
+  <div class="container" ng-app="inter_changes" ng-controller="interChangesController as vm">
+    <div id="pannel_frame" class="panel panel-default">
+      <div class="panel-heading">
+        <span>筛选条件：</span>
+      </div>
+      <div class="panel-body">
+        <div class="col-sm-12">
+            <!--<div class="col-sm-6">-->
+              <!--<span class="cond-label">项目类型：</span>-->
+              <!--<div class="btn-group">-->
+                <!--<label style="margin-bottom:0;color:#eee">-->
+                  <!--<select class="box-width form-control" ng-model="vm.typeSelected" ng-options="item.id as item.name for item in vm.typeList">-->
+                    <!--<option value="">全部</option>-->
+                  <!--</select>-->
+                <!--</label>-->
+              <!--</div>-->
+            <!--</div>-->
+            <div class="col-sm-4 top-10">
+              <span class="cond-label">学院：</span>
+              <div class="btn-group">
+                <label style="margin-bottom:0;color:#eee">
+                  <select class="box-width form-control" ng-model="vm.collegeSelected" ng-options="item.id as item.name for item in vm.collegeList">
+                    <option value="">全部</option>
+                  </select>
+                </label>
+              </div>
+            </div>
+            <div class="col-sm-4 top-10">
+              <span class="cond-label">交流类型：</span>
+              <div class="btn-group">
+                <label class="btn btn-default active" ng-model="vm.params.type_id" uib-btn-radio="''">全部</label>
+                <label class="btn btn-default" ng-model="vm.params.type_id" uib-btn-radio="'1'">讲课讲座</label>
+                <label class="btn btn-default" ng-model="vm.params.type_id" uib-btn-radio="'2'">论坛会议</label>
+              </div>
+            </div>
+            <div class="col-sm-4 top-10">
+              <span class="cond-label">发生时间：</span>
+              <div class="btn-group">
+                <form class="form-inline">
+                  <div class="form-group">
+                    <input type="text" class="form-control" style="width:110px" ng-model="vm.start_time" ng-blur="vm.setStart()" ng-keyup="setStartKeyupEvent($event)"
+                           placeholder="2010-10-10"/>
+                    至
+                  </div>
+                  <div class="form-group">
+                    <input type="text" class="form-control" style="width:110px" ng-model="vm.end_time" ng-blur="vm.setEnd()" ng-keyup="setEndKeyupEvent($event)"
+                           placeholder="2010-10-10"/>
+                  </div>
+                </form>
+              </div>
+            </div>
+            <div class="col-sm-10">
+              <span class="col-sm-1 top-10">所选学院：</span>
+              <div class="col-sm-9 top-10" ng-show="vm.collegeSelectedList.length > 0||vm.typeSelectedList.length > 0" ng-cloak>
+                <label style="margin-bottom:0" ng-repeat="item in vm.collegeSelectedList">
+                  <button tyle="button" class="btn button-link" ng-bind="vm.collegeMap[item]+'   X'"
+                          ng-click="vm.removeCollege(item)"><b></b></button>
+                  &nbsp;
+                </label>
+                <!--<label style="margin-bottom:0" ng-repeat="item in vm.typeSelectedList">-->
+                  <!--<button tyle="button" class="btn button-link" ng-bind="vm.typeMap[item]+'   X'" ng-click="vm.removeType(item)"><b></b>-->
+                  <!--</button>&nbsp;-->
+                <!--</label>-->
+              </div>
+              <div  class="col-sm-11 top-10" ng-hide="vm.collegeSelectedList.length > 0" ng-cloak>
+                <label style="margin-bottom:0">
+                  <button tyle="button" class="btn button-link">所有学院</button>
+                </label>
+              </div>
+            </div>
+          <!--<div class="col-sm-1 top-10 " ng-hide="vm.chartFlag||vm.collegeSelectedList.length == 1">-->
+            <!--<a class="btn btn-success" ng-click="vm.chartFlag=true" href="" title="显示统计图">显示统计图</a>-->
+          <!--</div>-->
+          <!--<div class="col-sm-1 top-10 " ng-hide="!vm.chartFlag" ng-cloak>-->
+            <!--<a class="btn btn-danger" ng-click="vm.chartFlag=false" href="" title="隐藏图表">隐藏统计图</a>-->
+          <!--</div>-->
+
+          <div  class="col-sm-12" ng-show="vm.chartFlag" ng-cloak>
+            <hr/>
+            <span class="cond-label col-sm-1">统计类型：</span>
+            <div class="col-sm-11">
+              <div class="btn-group">
+                <label class="btn btn-default active" ng-model="vm.count_type" uib-btn-radio="'college'">科研单位</label>
+                <!--<label class="btn btn-default" ng-model="vm.count_type" uib-btn-radio="'title'">职称类型</label>-->
+                <!--<label class="btn btn-default" ng-model="vm.count_type" uib-btn-radio="'honor'">学术称号</label>-->
+              </div>
+            </div>
+            <div id="p1" style="height: 300px;width:1126px;" class="bottom-20"></div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-12">
+      <div class="panel panel-default table-header">
+        <div class="panel-heading table-heading">
+          <div class="row">
+            <div class="col-md-4 pull-left">
+              <h3 class="panel-title table-title">学术交流列表</h3>
+            </div>
+
+            <div class="col-md-8 pull-right" ng-hide="vm.showCheckbox||vm.showImportbox">
+              <?php if($_SESSION['role_num']==2){ ?>
+                <button type="button" class="btn btn-info pull-right right-10" ng-click="vm.showImportbox=true">
+                  导入Excel&nbsp;&nbsp;
+                  <span class="glyphicon glyphicon-import"></span>
+                </button>
+              <?php } ?>
+              <button type="button" class="btn btn-info pull-right right-10" ng-click="vm.showCheckbox=true">导出Excel&nbsp;&nbsp;
+                <span class="glyphicon glyphicon-export"></span>
+              </button>
+              <div class="input-group col-md-4 pull-right right-10 has-feedback">
+                <a class="btn input-group-addon" ng-click="vm.search()">搜索</a>
+                <input type="text" class="form-control " ng-model="vm.keyword" ng-blur="vm.search()" ng-keyup="searchKeyupEvent($event)" placeholder="参与人或活动名">
+                <span class="glyphicon glyphicon-remove form-control-feedback"></span>
+                <span style="width:30px;height:30px;position:absolute;right:2px;z-index:100;cursor: pointer;"  ng-click="vm.resetKeyword()"></span>
+              </div>
+            </div>
+
+            <div class="col-md-8" ng-show="vm.showCheckbox" ng-cloak>
+                <button type="button" class="btn btn-default pull-right" ng-click="vm.showCheckbox=false">取消导出</span></button>
+                <button type="button" class="btn btn-primary pull-right right-10" ng-click="vm.exportExcel('all')">导出所有<span class="glyphicon glyphicon-export"></span></button>
+                <button type="button" class="btn btn-success pull-right right-10" ng-click="vm.exportExcel('current')">导出当前页<span class="glyphicon glyphicon-export"></span></button>
+                <h3 class="table-title warning-text pull-left">请选择要导出的字段</h3>
+            </div>
+
+            <div class="col-md-8" ng-show="vm.showImportbox" ng-cloak>
+              <form method="post" action="{:U('InterChanges/import')}" enctype="multipart/form-data">
+                <!--<div class="col-sm-6">-->
+                <!--<label class="pull-right right-10">浏览要导入的Excel文件：</label>-->
+                <!--</div>-->
+                <div class="col-sm-8">
+                  <input type="file" class="pull-right bottom-10" name="file_import"/>
+                </div>
+                <div class="col-sm-4" class="pull-right right-10">
+                  <button class="btn btn-default pull-right right-10" type="button"
+                          ng-click="vm.showImportbox=false">取消导入
+                  </button>
+                  <input type="submit" ng-click="vm.isUploading=true" class="btn btn-primary pull-right right-10" value="导入所选文件"/>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="alert alert-danger col-md-12 top-5" style="margin-bottom: 2px;margin-top: 2px;text-align:center" ng-show="vm.isUploading && vm.showImportbox" ng-cloak>
+          我们的服务器正在奋力导入您选择的数据，请您不妨喝杯咖啡耐心等待一下
+        </div>
+      </div>
+      <table class="table table-bordered table-striped table-hover">
+        <thead>
+          <tr>
+            <th width="4%"><span ng-hide="vm.showCheckbox">#</span><span ng-show="vm.showCheckbox">全选<input type="checkbox" ng-click="vm.selectAll();"></span></th>
+            <th width="5%">职工号<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.employ_num"></th>
+            <th width="5%">姓名<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.person_name"></th>
+            <th width="3%">性别<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.gender"></th>
+            <th width="6%">职称<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.technical_title"></th>
+            <th width="14%">学院<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.college_name"></th>
+            <th width="9%">时间<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.record_date"></th>
+            <th width="20%">活动名称<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.name"></th>
+            <th width="8%">活动类型<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.type_name"></th>
+            <th width="16%">活动地点<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.location"></th>
+
+            <!--<th>备注<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.comment"></th>-->
+            <th width="5%">操作</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-if="vm.paginationConf.totalItems>0" ng-repeat="item in vm.icList | filter:filter">
+            <td ng-bind="vm.baseIndex+$index+1"></td>
+            <td ng-bind="item.employee_no"></td>
+            <td style="white-space: nowrap;" ng-switch="item.person_id">
+              <div ng-switch-when="88888" ng-cloak>
+                <!--非专家-->
+                <span ng-bind="item.person_name" title="不存在该专家"></span>
+              </div>
+              <div ng-switch-default>
+                <a ng-bind="item.person_name" href="__APP__/People/detail/?id={{item.person_id}}"></a>
+              </div>
+            </td>
+            <td ng-bind="item.gender"></td>
+            <td ng-bind="item.title_name"></td>
+            <td ng-bind="item.college_name"></td>
+            <td ng-bind="item.record_date"></td>
+            <td ng-bind="item.name"></td>
+            <td ng-bind="item.type_name"></td>
+            <td ng-bind="item.location"></td>
+            <td  style="white-space: nowrap;">
+              <?php if($_SESSION['role_num']==2){ ?>
+              <a href="__URL__/delete?id={{item.id}}">删除</a>
+              <?php }else{ ?>
+              <a href="#">暂无</a>
+              <?php } ?>
+            </td>
+          </tr>
+          <tr ng-if="vm.paginationConf.totalItems==0"><td colspan="10"><h2 class="text-center text-danger">无数据</h2></td></tr>
+        </tbody>
+      </table>
+      <tm-pagination conf="vm.paginationConf"></tm-pagination>
+    </div>
+  </div>
+</block>
+<block name="js">
+    <script type="text/javascript" src="__CDN__/angular-ui-bootstrap/0.14.3/ui-bootstrap.min.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/js/inter_changes.controller.js"></script>
+    <script type="text/javascript">
+      selectMenu('interChanges', 2, 0);
+      $(document).ready(function(){
+        refresh_mychart();
+      });
+      $(window).resize(refresh_mychart());
+      function refresh_mychart(){
+        var p1_width = $("#pannel_frame").width()-20;
+        var p1_height = p1_width/4;
+        $("#p1").width(p1_width).height(p1_height);
+      }
+    </script>
+</block>

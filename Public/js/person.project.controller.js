@@ -1,11 +1,12 @@
 (function(){
     'use strict';
-    angular.module('paper').controller('paperController', paperController);
-    paperController.$inject = ['$scope', 'sendRequest'];
-    function paperController($scope, sendRequest){
+    angular.module('project').controller('personProjectController', personProjectController);
+	personProjectController.$inject = ['$scope', 'sendRequest'];
+    function personProjectController($scope, sendRequest){
     	var vm = this;
     	vm.params = {};
 		vm.baseIndex;
+		vm.stat_year="至今";
 		vm.isUploading=false;
     	vm.paginationConf = {
 	        currentPage: 1,
@@ -29,25 +30,26 @@
 		function getPaperList(params){
 	 		//console.log('getPaperList', vm.params);
 	 		// var url = '/paper/PaperList/';
-			var url = '/paper/paperList/';
+			var url = '/PersonProject/pplist/';
 			console.log("访问的url为："+url);
-			vm.paperList={};
+			vm.projectList={};
 			vm.paginationConf.totalItems=0;
 	 		sendRequest.post(url, {}, jQuery.param(params)).then(
 	 			function(resp){
 					//获取统计信息
-					vm.college_data = resp[0]['itemCollegeCount'];
-					vm.type_data = resp[0]['itemTypeCount'];
+					// vm.college_data = resp[0]['itemCollegeCount'];
+					// vm.type_data = resp[0]['itemTypeCount'];
 					// console.log("返回的参数："+vm.college_data);
-					if(vm.chartFlag){
-						makeMyChart();
-					}
+					// if(vm.chartFlag){
+					// 	makeMyChart();
+					// }
 					var num = resp[0]['totalNum'];
-	 				vm.paperList = resp;
+	 				vm.projectList = resp;
 					vm.paginationConf.totalItems = num;
 					console.log("返回的结果数量为："+num);
 					if(num>0){
-						vm.paperList = resp;
+						vm.projectList = resp;
+						vm.stat_year = resp[0]['stat_year'];
 					}
 	 			},
 	 			function(resp){
@@ -261,7 +263,8 @@
 	 			vm.collegeSelectedList.push(vm.collegeSelected);
 	 			var temp = [];
 	 			for (var i = 0;i < vm.collegeSelectedList.length;i++)
-	 				temp.push("college.id = " + vm.collegeSelectedList[i]);
+	 				// temp.push("college.id = " + vm.collegeSelectedList[i]);
+					temp.push(" college_names like '%" + vm.collegeMap[vm.collegeSelectedList[i]]+"%' ");
 	 			if (temp.length){
 	 			 	vm.params.college_id = temp.join(' or ');
 	 			}else vm.params.college_id = '';
@@ -318,22 +321,7 @@
 		}
 		vm.search = function () {
 			console.log("关键词"+vm.keyword);
-			if(vm.keyword.trim()!=""){
-				var temp=[];
-				angular.forEach(vm.search_option,function (value,key) {
-					if(value){
-						temp.push(" (paper."+key+" like '%"+vm.keyword+"%') ");
-					}
-				});
-
-				if(temp.length>0){
-					vm.params.keyword=temp.join(' or ');
-				}else{
-					vm.params.keyword='';
-				}
-				console.log("生成的keyword语句："+vm.params.keyword);
-			}
-
+			vm.params.keyword=vm.keyword;
 		};
 		$scope.searchKeyupEvent = function(e){
 			var keycode = window.event?e.keyCode:e.which;
@@ -457,7 +445,7 @@
 		/////////////////////////////////////////////////////////////////////////////////////////
 	 	//导入导出
 	 	vm.showCheckbox = false;
-	 	vm.exportParams = {first_author:false,contacter_name:false,col_name:false,name:false,paper_type:false,conference_name:false,other_authors_name:false,publish_year:false,comment:false};
+	 	vm.exportParams = {employee_no:false,person_name:false,title_name:false,college_names:false,stat_year:false,project_num:false,dd_sum:false,di_sum:false,dt_sum:false,ct_sum:false,total_sum:false};
 
 	 	vm.exportExcel = exportExcel;
 	 	function exportExcel(type){
@@ -481,7 +469,7 @@
 				}
 			);
 
-	 		var url = '/paper/export/?type=' + type +'&'+jQuery.param(parameters)  + '&field=' + field;
+	 		var url = '/PersonProject/export/?type=' + type +'&'+jQuery.param(parameters)  + '&field=' + field;
 			location.href = url;
 	 		vm.showCheckbox = false;
 	 	};

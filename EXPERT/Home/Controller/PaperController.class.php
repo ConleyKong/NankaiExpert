@@ -35,12 +35,12 @@ class PaperController extends Controller {
             $publish_date = array();
             if($param['start_time']){
                 $pub_start = $param['start_time'];
-                $publish_date = array('gt',$pub_start);
+                $publish_date = array('egt',$pub_start);
                 unset($param['startTime']);
             }
             if($param['end_time']){
                 $pub_end = $param['end_time'];
-                $publish_date = $publish_date==null?array('lt',$pub_end):array($publish_date,array('lt',$pub_end),'and');
+                $publish_date = $publish_date?array($publish_date,array('lt',$pub_end)):array('lt',$pub_end);
                 unset($param['endTime']);
             }
             if($publish_date){
@@ -51,6 +51,11 @@ class PaperController extends Controller {
             if ($param['college_id']){
                 $string .= $string ? ' AND ('.$param['college_id'].')' : '('.$param['college_id'].')';
                 unset($param['college_id']);
+            }
+            if($param['title_type']){
+                $ts = htmlspecialchars_decode($param['title_type']);
+                $string .= $string ? ' AND ('.$ts.')' : '('.$ts.')';
+                unset($param['title_type']);
             }
             if($param['keyword']){
                 $keyword = $param['keyword'];
@@ -164,23 +169,21 @@ class PaperController extends Controller {
             $pub_end = I('get.end_time');
             $publish_date = array();
             if ($pub_start)
-                $publish_date = array('gt',$pub_start);
+                $publish_date = array('egt',$pub_start);
             if($pub_end)
-                $publish_date = array('lt',$pub_end);
+                $publish_date = $publish_date?array($publish_date,array('lt',$pub_end)):array('lt',$pub_end);
             if($publish_date)
                 $query['publish_date'] = $publish_date;
-
-//            $conference_name = I('get.conference_name');
-//            $person_name = I('get.person_name');
-//            if ($person_name)
-//                $query['person_name'] = array('like','%'.$person_name.'%');
-//            if ($conference_name)
-//                $query['conference_name'] = array('like','%'.$conference_name.'%');
 
             $college_id = I('get.college_id');
             $string = '';
             if ($college_id)
                 $string .= $string ? ' AND ('.$college_id.')' : '('.$college_id.')';
+            $title_type = I('get.title_type');
+            if ($title_type){
+                $ts = htmlspecialchars_decode($title_type);
+                $string .= $string ? ' AND ('.$ts.')' : '('.$ts.')';
+            }
             $keyword = I('get.keyword');
             if($keyword){
 //                $ts = " (paper.name like '%$keyword%' OR paper.conference_name like '%$keyword%' OR person.name like '%$keyword%')";
@@ -363,7 +366,7 @@ class PaperController extends Controller {
                         }
 
                         // 1.第一作者id
-                        $first_author_id = getPidByNameAndCollege($first_author,$college_id);
+                        $first_author_id = getPidByNameAndCollege($first_author,$college_name);
                         if($first_author_id>0){
                             $data["first_author_id"] = $first_author_id;
                         }else{
@@ -376,11 +379,20 @@ class PaperController extends Controller {
 //                        }
 
                         // 2.联系作者id
-                        $contact_author_id = getPidByNameAndCollege($contact_author,$college_id);
+                        $contacts = explode(',',$contact_author);
+                        $contact_author_id = getPidByNameAndCollege($contacts[0],$college_name);
                         if($contact_author_id>0){
                             $data["contact_author_id"] = $contact_author_id;
                         }else{
                             $data["contact_author_id"] = 88888;
+                        }
+                        if(sizeof($contacts)>1){
+                            $contact_author_id = getPidByNameAndCollege($contacts[1],$college_name);
+                            if($contact_author_id>0){
+                                $data["second_contact_id"] = $contact_author_id;
+                            }else{
+                                $data["second_contact_id"] = 88888;
+                            }
                         }
 //                        else{
 //                            $error_counter++;
@@ -417,13 +429,19 @@ class PaperController extends Controller {
 
 
                         $paper->startTrans();
-                        if($paper_id<0){ //不存在重名的论文，直接插入paper表、paper_type表和other——authors表
+                        if($paper_id<0){ //不存在重名的论文，直接插入paper表、paper_type表和paper_authors表
                             //paper中插入数据
                             $data['paper_type']=$paper_type;
                             $result = $paper->add($data);
                             if($result){
                                 $paper->commit();
                                 $paper_id =  $result;
+                                //构建paper_authors数据
+                                $pfa = array();
+                                $pfa['paper_id']=$paper_id;
+                                $pfa['person_id']=$first_author_id;
+                                $pfa['person_name']=$first_author;
+                                M('paper_authors')->add($pfa);
                                 $insert_counter++;//成功插入数据记录到日志中
                                 $inserted_id[]=$result;
                             }else{
@@ -443,6 +461,15 @@ class PaperController extends Controller {
                             $num = $paper->where($condition)->save($o_paper);
                             if($num){
                                 $paper->commit();
+                                //构建paper_authors数据
+                                $pcondition=array();
+                                $pcondition['paper_id']=$paper_id;
+                                $pfa = array();
+                                $pfa['paper_id']=$paper_id;
+                                $pfa['person_id']=$first_author_id;
+                                $pfa['person_name']=$first_author;
+                                M('paper_authors')->where($pcondition)->delete();
+                                M('paper_authors')->save($pfa);
                                 //将成功更新的数据记录到日志中
                                 $update_counter++;
                                 $updated_id[]=$paper_id;
@@ -463,17 +490,17 @@ class PaperController extends Controller {
                         $type_data['factor'] = $factor;
                         M('paper_type')->add($type_data);
 
-                        //paper_other_authors中插入数据
+                        //paper_authors中插入数据
                         $authors = explode(',',$other_authors_name);
                         foreach ($authors as $a){
                             if($a!=''){
                                 $oa = array();
-                                $oa_id = getPidByNameAndCollege($a,$college_id);
+                                $oa_id = getPidByNameAndCollege($a,$college_name);
                                 if($oa_id>0){
                                     $oa['paper_id']=$paper_id;
                                     $oa['person_name']=$a;
                                     $oa["person_id"] = $oa_id;
-                                    M('paper_other_authors')->add($oa);
+                                    M('paper_authors')->add($oa);
                                 }
                             }
                         }

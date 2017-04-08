@@ -293,7 +293,7 @@ class PatentController extends Controller {
 
 
                         // 处理第一发明人id
-                            $first_inventor_id = getPidByNameAndCollege($first_inventor,$college_id);
+                            $first_inventor_id = getPidByNameAndCollege($first_inventor,$college_name);
                             if($first_inventor_id>0){
                                 $data["first_inventor_id"] = $first_inventor_id;
                             }else{
@@ -341,7 +341,7 @@ class PatentController extends Controller {
                             $patent_id = (int)$result;
                             $inventors = explode(',',$all_inventors);//此处分隔符需要选用全角分号，因为Excel中输入的可能是用的中文输入法
                             foreach($inventors as $ivtor){
-                                $person_id = getPidByNameAndCollege($ivtor,$college_id);
+                                $person_id = getPidByNameAndCollege($ivtor,$college_name);
 
                                 if($person_id>0){
                                     $token["patent_id"] = $patent_id ;

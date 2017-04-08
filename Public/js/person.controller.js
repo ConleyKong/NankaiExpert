@@ -126,7 +126,8 @@
 	 			vm.collegeSelectedList.push(vm.collegeSelected);
 	 			var temp = [];
 	 			for (var i = 0;i < vm.collegeSelectedList.length;i++){
-					temp.push("college.id = " + vm.collegeSelectedList[i]);
+					// temp.push("college.id = " + vm.collegeSelectedList[i]);//college_ids
+					temp.push(" college_names like '%" + vm.collegeMap[vm.collegeSelectedList[i]]+"%' ");
 					// vm.pieCollegeLegend.push(vm.collegeMap[vm.collegeSelectedList[i]]);
 				}
 	 			if (temp.length){
@@ -236,6 +237,63 @@
 	 	}
 
 
+		//职称选择按钮控制
+		vm.title_type={
+			senior:false,
+			vice_senior:false,
+			middle:false,
+			junior:false,
+			other:false
+		}
+
+		$scope.$watch('vm.title_type',function () {
+			var temp=[];
+			angular.forEach(vm.title_type,function (value,key) {
+				if(value){
+					switch (key){
+						case 'senior':
+							temp.push(" (title_id > 0 and title_id < 5) ");
+							// temp.push(" (person.title_id between 1 and 4)");
+							break;
+						case 'vice_senior':
+							// temp.push(" (person.title_id between 5 and 11)");
+							temp.push(" (title_id >4 and title_id <12) ");
+							break
+						case 'middle':
+							// temp.push(" (person.title_id between 12 and 20)");
+							temp.push(" (title_id>11 and title_id<21) " );
+							break;
+						case 'junior':
+							// temp.push(" (person.title_id between 21 and 28)");
+							temp.push("(title_id>20 and title_id<29) ");
+							break;
+						case 'other':
+							temp.push(" (person.title_id=29) ");
+							break;
+						default:
+							break;
+					}
+				}
+			});
+
+			if(temp.length>0){
+				vm.params.title_type=temp.join(' or ');
+			}else{
+				vm.params.title_type='';
+			}
+			console.log("选中的职称类型为："+vm.params.title_type);
+		},true);
+
+		vm.resetTitleType = function(){
+			vm.title_type.senior=false;
+			vm.title_type.vice_senior=false;
+			vm.title_type.middle=false;
+			vm.title_type.junior=false;
+			vm.title_type.other=false;
+			// console.log("清空后的论文类型："+JSON.stringify(vm.title_type));
+		}
+
+
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//画图模块
 
@@ -341,10 +399,10 @@
 				}
 			);
 			angular.forEach(vm.college_data,function (item,index) {
-				if(item.college_name!=null){
+				if(item.college_names!=null){
 					// console.log(item.college_name);
-					vm.option.legend.data.push(item.college_name);
-					vm.option.series[0].data.push({value:item.enum, name:item.college_name});
+					vm.option.legend.data.push(item.college_names);
+					vm.option.series[0].data.push({value:item.enum, name:item.college_names});
 				}
 			});
 			if(vm.chartFlag){

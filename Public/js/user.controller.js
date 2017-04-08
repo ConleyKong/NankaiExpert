@@ -116,6 +116,23 @@
 	 	}
 
 
+		vm.params.keyword='';
+		vm.search = function () {
+			console.log("关键词"+vm.keyword)
+			vm.params.keyword = vm.keyword;
+		}
+		$scope.searchKeyupEvent = function(e){
+			var keycode = window.event?e.keyCode:e.which;
+			if(keycode==13){
+				vm.search();
+				// console.log("按下的按键："+keycode);
+			}
+		};
+		vm.resetKeyword=function () {
+			vm.keyword="";
+			vm.params.keyword="";
+		}
+		
 	
     }
 })()

@@ -38,11 +38,11 @@ th input[type="checkbox"]{
 }
 
 .left-10{
-	margin-left: 20px;
+	margin-left: 10px;
 }
 
 .cond-label{
-	min-width: 35px;
+	min-width: 15px;
 }
 .cond-selected{color: #333!important}
 .page-color>.active>span{background-color:#31b0d5!important;border-color: #31b0d5!important;}

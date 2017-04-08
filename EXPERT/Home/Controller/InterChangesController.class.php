@@ -1,7 +1,7 @@
 <?php
 namespace Home\Controller;
 use Think\Controller;
-class ProjectController extends Controller {
+class InterChangesController extends Controller {
 
     public function index()
     {
@@ -13,7 +13,7 @@ class ProjectController extends Controller {
         }
     }
 
-    public function ProjectList()
+    public function ICList()
     {
         if (! session('logged')){
             $this->redirect('Index/index');
@@ -34,38 +34,25 @@ class ProjectController extends Controller {
                 unset($param['start_time']);
             }
             if ($endTime){
-                $startPoint = $startPoint?array($startPoint,array('lt',$endTime)):array('lt',$endTime);
+                $startPoint = $startPoint?array($startPoint,array('lt',$endTime)):array('lt',$endTime) ;
                 unset($param['end_time']);
             }
             if ($startPoint)
-                $query['start_time'] = $startPoint;
+                $query['record_date'] = $startPoint;
 
-            if($param['depth_flag']){
-                $query['depth_flag'] = $param['depth_flag'];
-                unset($param['depth_flag']);
+            if($param['type_id']){
+                $query['type_id'] = $param['type_id'];
+                unset($param['type_id']);
             }
 
             $string='';
-//            if ($param['projecttype_id']){
-//                $string .= $string ? ' AND ('.$param['projecttype_id'].')' : '('.$param['projecttype_id'].')';
-//                unset($param['projecttype_id']);
-//            }
-            if ($param['type_id']){
-                $string .= $string ? ' AND ('.$param['type_id'].')' : '('.$param['type_id'].')';
-                unset($param['type_id']);
-            }
             if ($param['college_id']){
                 $string .= $string ? ' AND ('.$param['college_id'].')' : '('.$param['college_id'].')';
                 unset($param['college_id']);
             }
-            if($param['title_type']){
-                $ts = htmlspecialchars_decode($param['title_type']);
-                $string .= $string ? ' AND ('.$ts.')' : '('.$ts.')';
-                unset($param['title_type']);
-            }
             if($param['keyword']){
                 $keyword = $param['keyword'];
-                $ts = " (project.name like '%$keyword%' OR person.name like '%$keyword%') ";
+                $ts = " (ic.name like '%$keyword%' OR ic.person_name like '%$keyword%') ";
                 $string .= $string?' AND '.$ts:$ts;
                 unset($param['keyword']);
             }
@@ -74,15 +61,15 @@ class ProjectController extends Controller {
 
             $query["valid"]=true;
 
-            $Project = D('ProjectView');
-            $result = $Project->where($query)->page($pageNum,$itemsNum)->order('project.id')->select();
-            $prepData = $Project->where($query)->getField('fund',true);
-//            $Project->getLastSql();
-            //根据学院统计
-            $itemCollegeCount = $Project->field('join_unit,count(*) enum')->where($query)->group('join_unit')->select();
-            $result[0]['itemCollegeCount']=$itemCollegeCount;
-            $result[0]['totalNum'] = sizeof($prepData);
-            $result[0]['totalFund'] = number_format(array_sum($prepData),3);
+            $InterChanges = D('InterChangesView');
+            $result = $InterChanges->where($query)->page($pageNum,$itemsNum)->order('ic.id')->select();
+//            $prepData = $InterChanges->where($query)->getField('fund',true);
+////            $Project->getLastSql();
+//            //根据学院统计
+//            $itemCollegeCount = $InterChanges->field('join_unit,count(*) enum')->where($query)->group('join_unit')->select();
+//            $result[0]['itemCollegeCount']=$itemCollegeCount;
+            $result[0]['totalNum'] = sizeof($result);
+//            $result[0]['totalFund'] = number_format(array_sum($prepData),3);
 
 
 //            $result[0]['totalFund'] = $prepData[1];
@@ -166,10 +153,10 @@ class ProjectController extends Controller {
             $id = $_GET['id'];
             $condition['id'] = $id;
 //            $condition['valid']=true;
-            $project = M('project');
-            $p = $project->where($condition)->find();
+            $interchanges = M('interchanges');
+            $p = $interchanges->where($condition)->find();
             $p['valid']=false;
-            $state = $project->where($condition)->save($p);
+            $state = $interchanges->where($condition)->save($p);
             $name = $p["name"];
             //操作记录日志
             $audit['name'] = session('username');
@@ -223,13 +210,13 @@ class ProjectController extends Controller {
             if ($startTime)
                 $startPoint = array('egt',$startTime);
             if ($endTime)
-                $startPoint = $startPoint?array($startPoint,array('lt',$endTime)):array('lt',$endTime);
+                $startPoint = $startPoint?array($startPoint,array('lt',$endTime)):array('lt',$endTime) ;
             if ($startPoint)
                 $query['start_time'] = $startPoint;
 
-            $depth_flag = I('get.depth_flag');
-            if($depth_flag){
-                $query['depth_flag']=$depth_flag;
+            $type_id = I('get.type_id');
+            if($type_id){
+                $query['type_id']=$type_id;
             }
 
             $name = I('get.name');
@@ -241,23 +228,12 @@ class ProjectController extends Controller {
 
 
             $string = '';
-//            $projecttype_id = I('get.projecttype_id');
-//            if ($projecttype_id)
-//                $string .= $string ? ' AND ('.$projecttype_id.')' : '('.$projecttype_id.')';
-            $type_id = I('get.type_id');
-            if ($type_id)
-                $string .= $string ? ' AND ('.$type_id.')' : '('.$type_id.')';
-            $title_type = I('get.title_type');
-            if ($title_type){
-                $ts = htmlspecialchars_decode($title_type);
-                $string .= $string ? ' AND ('.$ts.')' : '('.$ts.')';
-            }
             $college_id = I('get.college_id');
             if ($college_id)
                 $string .= $string ? ' AND ('.$college_id.')' : '('.$college_id.')';
             $keyword = I('get.keyword');
             if($keyword){
-                $ts = " (project.name like '%$keyword%' OR person.name like '%$keyword%') ";
+                $ts = " (ic.name like '%$keyword%' OR ic.person_name like '%$keyword%') ";
                 $string .= $string?' AND '.$ts:$ts;
             }
             if ($string)
@@ -265,19 +241,19 @@ class ProjectController extends Controller {
 
             $query['valid']=true;
 
-            $project = D('ProjectView');
+            $ic = D('InterChangesView');
 
             if ($type == 'all'){
                 $audit['descr'] = '导出所有。';
-                $result = $project->field($field)->where($query)->order('project.id')->select();
+                $result = $ic->field($field)->where($query)->order('ic.id')->select();
             }else if ($type == 'current'){
                 $audit['descr'] = '导出当前。';
-                $result = $project->field($field)->where($query)->page($pageNum,$itemsNum)->order('project.id')->select();
+                $result = $ic->field($field)->where($query)->page($pageNum,$itemsNum)->order('ic.id')->select();
             }else{
                 return '未知错误';
             }
-
-            $titleMap = array('person_name'=>'拥有者','name'=>'项目名称','participators'=>'其他参与人','co_units'=>'合作单位','type_name'=>'类型','depth_flag'=>'是否纵向','support_no'=>'支助编号','join_unit'=>'参与单位','source'=>'项目来源','source_department'=>'来源单位','subtype'=>'子类','start_time'=>'开始时间','end_time'=>'结束时间','fund'=>'经费','direct_fund'=>'直接经费','indirect_fund'=>'间接经费','financial_account'=>'金融账户','comment'=>'备注');
+//          vm.exportParams = {employee_no:false,person_name:false,gender:false,title_name:false,college_name:false,record_date:false,name:false,type_name:false,location:false,comment:false};
+            $titleMap = array('employee_no'=>'职工号','person_name'=>'姓名','gender'=>'性别','title_name'=>'职称','college_name'=>'学院','record_date'=>'日期','name'=>'名称','type_name'=>'类型名','location'=>'地点','comment'=>'备注');
             $field = split(',', $field);
             $excelTitle = array();
             foreach ($field as $value) {

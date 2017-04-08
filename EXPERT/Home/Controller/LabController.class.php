@@ -32,11 +32,11 @@ class LabController extends Controller {
             $formed_end = $param['end_time'];
             $formed_date = array();
             if($formed_start){
-                $formed_date = array('gt',$formed_start);
+                $formed_date = array('egt',$formed_start);
                 unset($param['start_time']);
             }
             if($formed_end){
-                $formed_date = array('lt',$formed_end);
+                $formed_date = $formed_date?array($formed_date,array('lt',$formed_end)):array('lt',$formed_end);
                 unset($param['end_time']);
             }
             if($formed_date)
@@ -113,6 +113,92 @@ class LabController extends Controller {
         }
     }
 
+    //修改平台信息
+    public function update()
+    {
+        if (!session('logged')){
+            $this->redirect('Index/index');
+        }
+        $token['id'] = I('post.lab_id',0,'int');
+        if($token['id']==0){
+            //操作记录日志
+            $audit['name'] = session('username');
+            $audit['ip'] = getIp();
+            $audit['module'] = '科研平台';
+            $audit['time'] = date('y-m-d h:i:s',time());
+            $audit['descr'] .= "修改科研平台信息失败，失败原因：无id传入";
+            M('audit')->add($audit);
+            $this->error('修改科研平台信息失败，失败原因：无id传入','/Lab/index',2);
+        }
+        else {
+            $lab_name = I('post.name','暂无','string');
+            $data['name'] = $lab_name;
+            $data['lab_type'] = I('post.lab_type','暂无','string');
+            $data['members'] = I('post.members','暂无','string');
+            $data['college_name'] = I('post.college_name','暂无','string');
+
+            if($lab_name!='暂无'){
+                $t_id = getForeignKeyFromDB($lab_name,"college");
+                if($t_id<0){
+                    $tc['name']=$lab_name;
+                    $t_id = M('college')->add($tc);
+                }
+                if ($data['members']!='暂无'){
+                    $tt['college_id']=$t_id;
+                    M('person_colleges')->where($tt)->delete();
+                    $mbr = explode('；',$data['members']);
+                    foreach ($mbr as $m){
+                        if($m!=''){
+                            $m_id = getPidByNameAndCollege($m,$data['college_name']);
+                            if($m_id!=88888){
+                                $token['id']=$m_id;
+                                $op = D('person')->where($token)->find();
+                                $oc = $op['college_names'];
+                                if(strpos($oc,$data['name']) === false){//若先前不属于这个实验室
+                                    $oc.=",".$data['name'];
+                                    $op['college_names']=$oc;
+                                    M('person')->where($token)->save($op);
+                                    $pc['person_id']=$m_id;
+                                    $pc['college_id']=$t_id;
+                                    M('person_colleges')->add($pc);//同时在person_colleges表中加入信息
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+
+
+//            $data['postdoctor'] = I('post.postdoctor',0,'int');
+
+//            $data['email'] = I('post.email','暂无','email');
+            $data['description'] = I('post.description','暂无','string');
+
+            $lab = M('lab');
+            $result  = $lab->where($token)->save($data);
+            //操作记录日志
+            $audit['name'] = session('username');
+            $audit['ip'] = getIp();
+            $audit['module'] = '科研平台';
+            $audit['time'] = date('y-m-d h:i:s',time());
+            $audit['descr'] = "修改".$lab_name."的信息";
+            if ($result)
+            {
+                $audit['result'] = '成功';
+                M('audit')->add($audit);
+                $this->success('修改成功', '/Lab/index');
+            }
+            else
+            {
+                $audit['result'] = '失败';
+                M('audit')->add($audit);
+                $this->error('数据更新失败'.$lab->getError(), '/Lab/index');
+            }
+
+        }
+    }
+
 
     /*
      * 导入导出
@@ -140,10 +226,10 @@ class LabController extends Controller {
             $formed_end = I('get.end_time');
             $formed_date = array();
             if($formed_start){
-                $formed_date = array('gt',$formed_start);
+                $formed_date = array('egt',$formed_start);
             }
             if($formed_end){
-                $formed_date = array('lt',$formed_end);
+                $formed_date = $formed_date?array($formed_date,array('lt',$formed_end)):array('lt',$formed_end);
             }
             if($formed_date)
                 $query['formed_date']=$formed_date;
@@ -263,11 +349,18 @@ class LabController extends Controller {
                          */
                         $lab = M("lab");
                         $data = array();
-                        $data["name"]= trim($v[0]);//实验室名称
+                        $name = trim($v[0]);//实验室名称
+                        if(empty($name)){
+                            //实验室名字为空则跳过
+                            continue;
+                        }
+                        $data["name"]= $name;
                         $data["location"]= trim($v[1]);//地址
                         $data["formed_year"]=trim($v[2]);//成立时间
                         $college_name = trim($v[3]);//所属部门或学院名
-                        $data["members"]=trim($v[4]);//成员（中文分号分隔）
+                        $memebers =trim($v[4]);//成员（中文分号分隔）
+                        $data["members"] = $memebers;
+
                         $data["description"]=trim($v[5]);//实验室介绍（500字内）
                         $data['research_interests']=trim($v[6]);//研究方向
                         $data['research_results']=trim($v[7]);//研究方向
@@ -285,6 +378,32 @@ class LabController extends Controller {
                                 $errored_name[]=$data["name"]."（学院 $college_name 不存在）";
 //                                continue;
                             }
+
+                        $t_id = getForeignKeyFromDB($name,"college");
+                        if($t_id<0){
+                            $tc['name']=$name;
+                            $t_id = M('college')->add($tc);
+                        }
+
+                        $mbr = explode('；',$memebers);
+                        foreach ($mbr as $m){
+                            if($m!=''){
+                                $m_id = getPidByNameAndCollege($m,$college_name);
+                                if($m_id!=88888){
+                                    $token['id']=$m_id;
+                                    $op = D('person')->where($token)->find();
+                                    $oc = $op['college_names'];
+                                    if(strpos($oc,$data['name']) === false){//若先前不属于这个实验室
+                                        $oc.=",".$data['name'];
+                                        $op['college_names']=$oc;
+                                        M('person')->where($token)->save($op);
+                                        $pc['person_id']=$m_id;
+                                        $pc['college_id']=$t_id;
+                                        M('person_colleges')->add($pc);//同时在person_colleges表中加入信息
+                                    }
+                                }
+                            }
+                        }
 
                         $condition["name"]=$data["name"];
                         $isduplicated = $lab->where($condition)->find();

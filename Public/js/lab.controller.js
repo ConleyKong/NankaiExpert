@@ -24,6 +24,22 @@
 			getLabList(vm.params);
 		}, true);
 
+		//编辑详细信息
+		vm.edit_detail={
+			id:0,
+			name:"啦啦啦",
+			lab_type:"国重",
+			members:"adfs;bsdfs;dcsa",
+			college_name:"化学学院",
+			description:"fkjsalfjkldsjf"
+		};
+
+		vm.editDetail = function (id) {
+			vm.edit_detail=vm.labList[id];
+			// console.log(vm.labList[id]);
+			// alert("参数的id为"+vm.edit_detail.id);
+		}
+
 		getLabList(vm.params);
 
 		// vm.role_num = {:session('role_num')};

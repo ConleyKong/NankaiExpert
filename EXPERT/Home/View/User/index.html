@@ -41,6 +41,12 @@
                     </button>
                     <a href="/Audit/index" class="btn btn-primary pull-right right-10">查看系统日志</a>
                     <a href="/Index/logout" class="btn btn-primary pull-right right-10">退出当前账户</a>
+                    <div class="input-group col-md-4 pull-right right-10 has-feedback">
+                        <a class="btn input-group-addon" ng-click="vm.search()">搜索</a>
+                        <input type="text" class="form-control " ng-model="vm.keyword" ng-blur="vm.search()" ng-keyup="searchKeyupEvent($event)" placeholder="账户名或者真实姓名">
+                        <span class="glyphicon glyphicon-remove form-control-feedback"></span>
+                        <span style="width:30px;height:30px;position:absolute;right:2px;z-index:100;cursor: pointer;"  ng-click="vm.resetKeyword()"></span>
+                    </div>
                 </div>
 
                 <div class="col-md-8" ng-show="vm.showImportbox" ng-cloak>

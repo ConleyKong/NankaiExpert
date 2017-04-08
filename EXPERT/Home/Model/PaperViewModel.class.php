@@ -27,6 +27,7 @@ class PaperViewModel extends ViewModel {
 		),
 		'person' => array(
 			'id' => 'author_id',
+			'title_id',
 			'name' => 'person_name',
 			'_on' => 'paper.first_author_id=person.id',
             '_type' => 'LEFT'

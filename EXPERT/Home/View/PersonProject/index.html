@@ -1,0 +1,192 @@
+<extend name="EXPERT/Templates/nav.html"/>
+<block name="content">
+    <div class="container" ng-app="project" ng-controller="personProjectController as vm">
+        <div id="pannel_frame" class="panel panel-default">
+            <div class="panel-heading">
+                <span>筛选条件：</span>
+            </div>
+            <div class="panel-body">
+                <!--筛选条件-->
+                <div class="col-sm-12">
+                    <div class="col-sm-12 top-5 bottom-10">
+                        <div class="col-sm-5">
+                            <span class="cond-label">负责人职称：</span>
+                            <div class="btn-group">
+                                <label class="btn btn-default active" ng-click="vm.resetTitleType()"
+                                       ng-model="vm.params.title_type" uib-btn-radio="''">全部</label>
+                                <label class="btn btn-default" ng-model="vm.title_type.senior" uib-btn-checkbox data-toggle="tooltip" data-placement="top">正高</label>
+                                <label class="btn btn-default" ng-model="vm.title_type.vice_senior" uib-btn-checkbox data-toggle="tooltip" data-placement="top">副高</label>
+                                <label class="btn btn-default" ng-model="vm.title_type.middle" uib-btn-checkbox data-toggle="tooltip" data-placement="top">中级</label>
+                                <label class="btn btn-default" ng-model="vm.title_type.junior" uib-btn-checkbox data-toggle="tooltip" data-placement="top">初级</label>
+                                <label class="btn btn-default" ng-model="vm.title_type.other" uib-btn-checkbox data-toggle="tooltip" data-placement="top">其他</label>
+                            </div>
+                        </div>
+                        <!--<div class="col-sm-4">-->
+                            <!--<span class="cond-label">论文类型：</span>-->
+                            <!--<div class="btn-group">-->
+                                <!--<label class="btn btn-default active" ng-click="vm.resetPaperType()"-->
+                                       <!--ng-model="vm.params.paper_type" uib-btn-radio="''">全部</label>-->
+                                <!--<label class="btn btn-default" ng-model="vm.paper_type.ei" uib-btn-checkbox data-toggle="tooltip" data-placement="top">EI</label>-->
+                                <!--<label class="btn btn-default" ng-model="vm.paper_type.sci" uib-btn-checkbox data-toggle="tooltip" data-placement="top">SCI</label>-->
+                                <!--<label class="btn btn-default" ng-model="vm.paper_type.cpci" uib-btn-checkbox data-toggle="tooltip" data-placement="top">CPCI-S</label>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <div class="col-sm-3 form-inline">
+                            <span class="cond-label">项目年份：</span>
+                            <div class="btn-group">
+                                <form class="form-inline">
+                                    <div class="form-group">
+                                        <input type="text" style="width: 70px" class="form-control" ng-model="vm.start_time" ng-blur="vm.setStart()" ng-keyup="setStartKeyupEvent($event)" placeholder="1919"/>
+                                        至
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="text" style="width: 70px" class="form-control" ng-model="vm.end_time" ng-blur="vm.setEnd()" ng-keyup="setEndKeyupEvent($event)" placeholder="2017"/>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <!--<div class="col-sm-2 bottom-10">-->
+                            <!--<a class="btn btn-success" ng-hide="vm.chartFlag" ng-click="vm.chartFlag=true" align="center" href="" title="显示统计图">显示统计图表</a>-->
+                            <!--<a class="btn btn-danger"  ng-hide="!vm.chartFlag" ng-click="vm.chartFlag=false" href="" title="隐藏图表"  ng-cloak>隐藏统计图表</a>-->
+                        <!--</div>-->
+                        <div class="col-sm-1 bottom-10">
+                            <a class="btn btn-primary" align="center" href="/Project/index" title="返回项目列表">返回项目列表</a>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 top-5">
+                        <div class="col-sm-8">
+                            <span class="cond-label">负责人单位：</span>
+                            <div class="btn-group">
+                                <label style="margin-bottom:0;color:#eee">
+                                    <select class="box-width form-control" ng-model="vm.collegeSelected"
+                                            ng-options="item.id as item.name for item in vm.collegeList">
+                                        <option value="">全部</option>
+                                    </select>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!--<div class="col-sm-1 bottom-10" style="right: 10px" ng-hide="vm.chartFlag">-->
+                            <!--<a class="btn btn-success" ng-hide="vm.chartFlag" ng-click="vm.chartFlag=true" align="center" href="" title="显示统计图">显示统计图表</a>-->
+                        <!--</div>-->
+                        <!--<div class="col-sm-1 bottom-10" style="right: 10px" ng-hide="!vm.chartFlag" ng-cloak>-->
+                            <!--<a class="btn btn-danger"  ng-hide="!vm.chartFlag" ng-click="vm.chartFlag=false" href="" title="隐藏图表"  ng-cloak>隐藏统计图表</a>-->
+                        <!--</div>-->
+                    </div>
+
+                </div>
+                <!--所选筛选单位-->
+                <div class="col-sm-12 top-10" ng-if="vm.collegeSelectedList.length > 0" ng-cloak>
+                    <span >所选单位：</span>
+                    <label style="margin-bottom:0" ng-repeat="item in vm.collegeSelectedList">
+                        <button tyle="button" class="btn button-link" ng-bind="vm.collegeMap[item]+'   X'"
+                                ng-click="vm.removeCollege(item)"><b></b></button>
+                        &nbsp;
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="panel panel-default table-header">
+                <div class="panel-heading table-heading">
+                    <div class="row">
+                        <div class="col-md-4 pull-left">
+                            <h3 class="panel-title table-title">项目情况报表</h3>
+                        </div>
+                        <div class="col-md-8 pull-right" ng-hide="vm.showCheckbox">
+                            <button type="button" class="btn btn-info pull-right right-10"
+                                    ng-click="vm.showCheckbox=true">导出Excel&nbsp;&nbsp;<span
+                                    class="glyphicon glyphicon-export"></span></button>
+                            <div class="input-group col-md-4 pull-right right-10 has-feedback">
+                                <a class="btn input-group-addon" ng-click="vm.search()">搜索</a>
+                                <input type="text" class="form-control " ng-model="vm.keyword"
+                                       ng-blur="vm.search()" ng-keyup="searchKeyupEvent($event)"
+                                       placeholder="负责人名">
+                                <span class="glyphicon glyphicon-remove form-control-feedback"></span>
+                                <span style="width:30px;height:30px;position:absolute;right:2px;z-index:100;cursor: pointer;"  ng-click="vm.resetKeyword()"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-8" ng-show="vm.showCheckbox" ng-cloak>
+                            <button type="button" class="btn btn-default pull-right" ng-click="vm.showCheckbox=false">
+                                取消导出</span></button>
+                            <button type="button" class="btn btn-primary pull-right right-10"
+                                    ng-click="vm.exportExcel('all')">导出所有<span
+                                    class="glyphicon glyphicon-export"></span></button>
+                            <button type="button" class="btn btn-success pull-right right-10"
+                                    ng-click="vm.exportExcel('current')">导出当前页<span
+                                    class="glyphicon glyphicon-export"></span></button>
+                            <h3 class="table-title warning-text pull-left">请选择要导出的字段</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <table class="table table-bordered table-striped table-hover">
+                <thead>
+                <tr>
+                    <th width="4%"><span ng-hide="vm.showCheckbox">#</span><span ng-show="vm.showCheckbox">全选<input type="checkbox" ng-click="vm.selectAll();"></span></th>
+                    <th width="6%">职工号<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.employee_no"></th>
+                    <th width="10%">姓名<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.person_name"></th>
+                    <th width="10%">职称<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.title_name"></th>
+                    <th width="14%">学院<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.college_names"></th>
+                    <th width="10%">年度<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.stat_year"></th>
+                    <th width="6%">项目总数<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.project_num"></th>
+                    <th width="6%">纵向直接经费<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.dd_sum"></th>
+                    <th width="6%">纵向间接经费<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.di_sum"></th>
+                    <th width="6%">纵向总经费<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.dt_sum"></th>
+                    <th width="6%">横向总经费<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.ct_sum"></th>
+                    <th width="8%">项目总经费<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.total_sum"></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-if="vm.paginationConf.totalItems>0" ng-repeat="item in vm.projectList | filter:filter">
+                    <td ng-bind="vm.baseIndex+$index+1"></td>
+                    <td ng-bind="item.employee_no"></td>
+                    <td>
+                        <a ng-bind="item.person_name" href="__APP__/People/detail/?id={{item.person_id}}"></a>
+                    </td>
+                    <td ng-bind="item.title_name"></td>
+                    <td ng-bind="item.college_names"></td>
+                    <td ng-bind="vm.stat_year"></td>
+                    <td ng-bind="item.project_num==null?0:item.project_num"></td>
+                    <td ng-bind="item.dd_sum==null?0:item.dd_sum | number:2"></td>
+                    <td ng-bind="item.di_sum==null?0:item.di_sum | number:2"></td>
+                    <td ng-bind="item.dt_sum==null?0:item.dt_sum | number:2"></td>
+                    <td ng-bind="item.ct_sum==null?0:item.ct_sum | number:2"></td>
+                    <td ng-bind="item.total_sum==null?0:item.total_sum | number:2"></td>
+                </tr>
+                <tr ng-if="vm.paginationConf.totalItems==0">
+                    <td colspan="12"><h2 class="text-center text-danger">无数据</h2></td>
+                </tr>
+                </tbody>
+            </table>
+            <tm-pagination conf="vm.paginationConf"></tm-pagination>
+        </div>
+    </div>
+</block>
+<block name="js">
+    <script type="text/javascript" src="__PUBLIC__/js/person.project.controller.js"></script>
+    <script type="text/javascript" src="__CDN__/angular-ui-bootstrap/0.14.3/ui-bootstrap.min.js"></script>
+    <script>
+        selectMenu('project', 3, 0);
+        $('.form_date').datetimepicker({
+            language:  'zh-CN',
+            weekStart: 1,
+            todayBtn:  1,
+            autoclose: 1,
+            todayHighlight: 1,
+            startView: 2,
+            minView: 2,
+            forceParse: 0
+        });
+
+        $(document).ready(function(){
+            refresh_mychart();
+        });
+        $(window).resize(refresh_mychart());
+        function refresh_mychart(){
+            var p1_width = $("#pannel_frame").width()-20;
+            var p1_height = p1_width/4;
+            $("#p1").width(p1_width).height(p1_height);
+        }
+    </script>
+</block>

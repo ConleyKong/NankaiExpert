@@ -8,7 +8,8 @@ class PeopleViewModel extends ViewModel {
 			'name',
 			'gender',
 			'employee_no',
-			'college_id',
+//			'college_id',
+			'college_names',
 			'postdoctor',
 			'title_id',
 			'birthday',
@@ -25,12 +26,17 @@ class PeopleViewModel extends ViewModel {
 			'mentor_type_id',
 			'_type' => 'LEFT'
 		),
-		'college' => array(
-//			'id' => 'college_id',
-			'name' => 'college_name',
-			'_on' => 'person.college_id=college.id',
-			'_type' => 'LEFT'
-		),
+//		'person_colleges'=>array(
+//			'college_id' => 'college_ids',
+//			'_on'=>'person.id=person_colleges.person_id',
+//			'_type' =>'LEFT'
+//		),
+//		'college' => array(
+////			'id' => 'college_id',
+//			'name' => 'college_name',
+//			'_on' => 'person_colleges.college_id=college.id',
+//			'_type' => 'LEFT'
+//		),
 		'person_mentor_type' => array(
 			'id' => 'men_id',
 			'name' => 'mentor_name',

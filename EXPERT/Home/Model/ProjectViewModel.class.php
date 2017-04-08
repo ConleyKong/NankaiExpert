@@ -9,6 +9,8 @@ class ProjectViewModel extends ViewModel {
 			'type_id',
 			'support_no',
 			'manager_id',
+			'participators',
+			'co_units',
 			'source',
 			'start_time',
 			'end_time',
@@ -24,6 +26,7 @@ class ProjectViewModel extends ViewModel {
 			'depth_flag',
 		),
 		'person' => array(
+			'title_id',
 			'name' => 'person_name',
 			'_on' => 'person.id=project.manager_id',
 			'_type' => 'LEFT'

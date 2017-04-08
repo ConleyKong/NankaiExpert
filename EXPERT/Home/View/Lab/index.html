@@ -1,6 +1,62 @@
 <extend name="EXPERT/Templates/nav.html"/>
 <block name="content">
+
   <div class="container" ng-app="lab" ng-controller="labController as vm">
+
+    <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                    aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">添加人员信息</h4>
+          </div>
+          <div class="modal-body">
+            <form class="form-horizontal" action="__URL__/update" method="post">
+              <input type="text" name="lab_id" ng-model="vm.edit_detail.id" ng-hide="true">
+              <div class="form-group">
+                <label class="col-sm-2 control-label">平台名</label>
+                <div class="col-sm-9">
+                  <input type="text" name="name" class="form-control" ng-model="vm.edit_detail.name" required>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label">类型</label>
+                <div class="col-sm-9">
+                  <input type="text" name="type" class="form-control" ng-model="vm.edit_detail.lab_type" required>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label">成员</label>
+                <div class="col-sm-9">
+                  <input type="text" name="members" class="form-control" ng-model="vm.edit_detail.members">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label">依托单位</label>
+                <div class="col-sm-9">
+                  <input type="text" name="college_name" class="form-control" ng-model="vm.edit_detail.college_name" required>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label">简介</label>
+                <div class="col-sm-9">
+                  <input type="text" name="description" class="form-control" ng-model="vm.edit_detail.description" >
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-5">
+                  <button type="submit" class="btn btn-info">保存</button>
+                  <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
     <div id="pannel_frame" class="panel panel-default">
       <div class="panel-heading">
         <span>筛选条件：</span>
@@ -68,8 +124,7 @@
                        ng-blur="vm.search()" ng-keyup="searchKeyupEvent($event)"
                        placeholder="实验平台名">
                 <span class="glyphicon glyphicon-remove form-control-feedback"></span>
-                <span style="width:30px;height:30px;position:absolute;right:2px;z-index:100;cursor: pointer;"
-                      ng-click="vm.resetKeyword()"></span>
+                <span style="width:30px;height:30px;position:absolute;right:2px;z-index:100;cursor: pointer;" ng-click="vm.resetKeyword()"></span>
                 <!--覆盖在小图标上面的元素-->
                 <!--<a class="btn input-group-addon" ng-click="vm.search()">搜索</a>-->
               </div>
@@ -108,7 +163,7 @@
               <!--点击实验室名称后显示实验室详细信息，类似于用户详细信息-->
               <th width="4%"><span ng-hide="vm.showCheckbox">id</span><span ng-show="vm.showCheckbox">全选<input type="checkbox" ng-click="vm.selectAll();"></span></th>
               <th width="20%">平台名<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.name"></th>
-              <th width="14%">类型<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.lab_type"></th>
+              <th width="12%">类型<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.lab_type"></th>
               <th width="22%">成员<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.members"></th>
               <th width="12%">依托单位<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.college_name"></th>
               <th width="22%">简介<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.description"></th>
@@ -116,7 +171,7 @@
               <!--<th width="12%">研究成果<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.research_results"></th>-->
               <!--<th width="6%">成立年份<input type="checkbox" ng-show="vm.showCheckbox" ng-model="vm.exportParams.formed_year"></th>-->
 
-              <th width="6%">操作</th>
+              <th width="8%">操作</th>
             </tr>
           </thead>
           <tbody>
@@ -133,6 +188,8 @@
               <td style="white-space: nowrap;">
                 <?php if($_SESSION['role_num']==2){ ?>
                 <a href="__URL__/delete?id={{item.id}}">删除</a>
+                <!--<a href="" ng-click="vm.edit_detail(vm.baseIndex+$index+1)" data-toggle="modal" data-target="#modal">编辑</a>-->
+                <a href="" ng-click="vm.editDetail($index)" data-toggle="modal" data-target="#modal">编辑</a>
                 <?php }else{ ?>
                 <a href="#">暂无</a>
                 <?php } ?>

@@ -24,12 +24,20 @@ class PeopleController extends Controller {
             deleteEmptyValue($param);
             $pageNum = $param['page'] ? $param['page'] : 1;  //当前页
             $itemsNum =  $param['items'] ? $param['items'] : 10; //每页个数
-            
-            if ($param['startTime']){
-                $param['birthday'] = array(array('gt',$param['startTime']),array('lt',$param['endTime']));
+
+            $startTime=$param['startTime'];
+            $birthday = array();
+            if ($startTime){
+                $birthday = array('egt',$startTime);
                 unset($param['startTime']);
+            }
+            $endTime=$param['endTime'];
+            if($endTime){
+                $birthday = $birthday?array($birthday,array('lt',$endTime)):array('lt',$endTime);
                 unset($param['endTime']);
             }
+            if($birthday)
+                $query['birthday'] = $birthday;
 
             $string = '';
             if ($param['academichonor_id']){
@@ -39,6 +47,11 @@ class PeopleController extends Controller {
             if ($param['college_id']){
                 $string .= $string ? ' AND ('.$param['college_id'].')' : '('.$param['college_id'].')';
                 unset($param['college_id']);
+            }
+            if($param['title_type']){
+                $ts = htmlspecialchars_decode($param['title_type']);
+                $string .= $string ? ' AND ('.$ts.')' : '('.$ts.')';
+                unset($param['title_type']);
             }
             if ($string)
                 $param['_string'] = $string;
@@ -69,7 +82,7 @@ class PeopleController extends Controller {
              * 添加统计结果
              */
             //根据学院统计
-            $itemCollegeCount = $person->field('college_name,count(*) enum')->where($query)->group('college_name')->select();
+            $itemCollegeCount = $person->field('college_names,count(*) enum')->where($query)->group('college_names')->select();
             //根据学术称号统计,复杂，需要多表联合查询
             //            $itemHonorCount = $person->field('honor_records,count(*) enum')->where($query)->group('honor_records')->select();
             //根据职称统计
@@ -135,10 +148,22 @@ class PeopleController extends Controller {
         $result  = $person->add($data);
         if ($result)
         {
+            //操作记录日志
+            $audit['name'] = session('username');
+            $audit['ip'] = getIp();
+            $audit['module'] = '科研队伍';
+            $audit['time'] = date('y-m-d h:i:s',time());
+            $audit['descr'] .= "增加专家".$data['name'].",索引为: $result";
             $this->success('新增成功', 'index');
         }
         else
         {
+            //操作记录日志
+            $audit['name'] = session('username');
+            $audit['ip'] = getIp();
+            $audit['module'] = '科研队伍';
+            $audit['time'] = date('y-m-d h:i:s',time());
+            $audit['descr'] .= "增加专家".$data['name']."失败";
             $this->error('数据插入失败'.$person->getError());
         }
     }
@@ -298,9 +323,9 @@ class PeopleController extends Controller {
             $endTime = I('get.endTime');
             $birthday = array();
             if ($startTime)
-                $birthday = array('gt',$startTime);
+                $birthday = array('egt',$startTime);
             if($endTime)
-                $birthday = array('lt',$endTime);
+                $birthday = $birthday?array($birthday,array('lt',$endTime)):array('lt',$endTime);
             if($birthday)
                 $query['birthday'] = $birthday;
 
@@ -320,11 +345,16 @@ class PeopleController extends Controller {
 
             $academichonor_id = I('get.academichonor_id');
             $college_id = I('get.college_id');
+            $title_type = I('get.title_type');
             $string = '';
             if ($academichonor_id)
                 $string .= $string ? ' AND ('.$academichonor_id.')' : '('.$academichonor_id.')';
             if ($college_id)
                 $string .= $string ? ' AND ('.$college_id.')' : '('.$college_id.')';
+            if ($title_type){
+                $ts = htmlspecialchars_decode($title_type);
+                $string .= $string ? ' AND ('.$ts.')' : '('.$ts.')';
+            }
 
             if ($string)
                 $query['_string'] = $string;
@@ -341,7 +371,7 @@ class PeopleController extends Controller {
                 return '未知错误';
             }
 
-            $titleMap = array('name'=>'姓名','gender'=>'性别','employee_no'=>'职工号','college_name'=>'学院/部门','title_name'=>'职称','postdoctor'=>'博士后','honor_records'=>'荣誉称号','birthday'=>'出生日期','email'=>'邮箱','phone'=>'电话','first_class'=>'一级学科','second_class'=>'二级学科','credit'=>'诚信','party'=>'党派');
+            $titleMap = array('name'=>'姓名','gender'=>'性别','employee_no'=>'职工号','college_names'=>'所属单位','title_name'=>'职称','postdoctor'=>'博士后','honor_records'=>'荣誉称号','birthday'=>'出生日期','email'=>'邮箱','phone'=>'电话','first_class'=>'一级学科','second_class'=>'二级学科','credit'=>'诚信','party'=>'党派');
             $field = split(',', $field);
             $excelTitle = array();
             foreach ($field as $value) {
@@ -418,6 +448,8 @@ class PeopleController extends Controller {
                 $updated_id=array();//记录成功更新的数据的id
                 $error_counter=0;//插入失败的数据数
                 $errored_name=array();//记录插入失败的专家的姓名
+
+                $person_colleges = M('person_colleges');
 
                 /*对生成的数组进行数据库的写入*/
                 foreach ( $res as $k => $v )
@@ -505,35 +537,42 @@ class PeopleController extends Controller {
                             }
                             if($type_id==-1){
                                 $error_counter++;
-                                $errored_name[]=$data["name"]."（用户人员类型不存在）";
+                                $errored_name[]=$data["name"]."（用户人员类型".$type_name."不存在）";
                                 continue;
                             }
 
 
                         //处理人员职称信息 person_title
+                        //version2.4.3修改person_title表数据，合并了博导教授和院士教授为教授
+                            if($title_name=='博导教授' || $title_name=='院士教授'){
+                                $title_name='教授';
+                            }elseif($title_name==''){//若不存在title名称则默认为其他
+                                $title_name='其他';
+                            }elseif ($title_name=='博导研究员'){
+                                $title_name='研究员';
+                            }
                             $title_id = getForeignKey($title_name,"person_title",$title_buffer);
                             if($title_id>0){
                                 $data["title_id"] = $title_id;
                             }
                             if($title_id==-1){
                                 $error_counter++;
-                                $errored_name[]=$data["name"]."（职称信息不存在）";
+                                $errored_name[]=$data["name"]."（职称信息".$title_name."不存在）";
                                 continue;
                             }
-
 
                         //处理学院信息 college_id
                         $college_name = $college_name==''?'其他':$college_name;
-                            $college_id = getForeignKey($college_name,"college",$college_buffer);
-                            if($college_id>0){
-                                $data["college_id"] = $college_id;
-                            }
-                            if($college_id==-1){
-                                $error_counter++;
-                                $errored_name[]=$data["name"]."（".$college_name."不存在）";
-                                continue;
-                            }
-
+                        $college_id = getForeignKey($college_name,"college",$college_buffer);
+                        if($college_id==-1){//若不存在该学院信息则直接跳过该记录，不进行插入并写入报错日志
+                            $error_counter++;
+                            $errored_name[]=$data["name"]."（".$college_name."不存在）";
+                            continue;
+                        }
+                        //能越过这个if的college一定存在
+//                        if($college_id>0){
+//                            $data["college_id"] = $college_id;
+//                        }
 
                         /*
                          * 处理博士后信息
@@ -545,13 +584,24 @@ class PeopleController extends Controller {
                         }
                         $data["postdoctor"] = $ispostdoctor;
 
-                        $condition["employee_no"] =$data["employee_no"];
+                        $condition["gender"] =$data["gender"];
                         $condition["name"]=$data["name"];
+                        $condition['birthday']=$data['birthday'];
                         $isduplicated = $people->where($condition)->find();
+                        $dp_id = (int)$isduplicated['id'];
 
                         $people->startTrans();
 
-                        if((int)$isduplicated['id']>0){//数据库中存在相同数据，使用更新操作
+                        if($dp_id>0){//数据库中存在相同数据，使用更新操作
+                            //version2.4.3修改学院与人的关系为多对多关系，导入时需要同时在college_names字段和person_colleges表中进行写入操作
+                            $pc_condition['person_id']=$dp_id;
+                            $pc_condition['college_id']=$college_id;
+                            $pc_dup_result = $person_colleges->where($pc_condition)->find();
+                            if(empty($pc_dup_result['id'])){//若不存在则插入
+                                $person_colleges->add($pc_condition);
+                            }
+
+                            $data['college_names']=$isduplicated['college_names'].','.$college_name;
                             $save_result = $people->where($condition)->save($data);//update方法错误的时候返回false
                             if($save_result){
                                 $people->commit();
@@ -566,9 +616,15 @@ class PeopleController extends Controller {
 
                         }else{
                             //插入数据
+                            $data['college_names']=$college_name;
                             $result = $people->add($data);
                             //成功插入数据记录到日志中
                             if($result){
+                                //同时向person_colleges表添加专家与学院的对应关系
+                                $pc_condition['person_id']=$result;
+                                $pc_condition['college_id']=$college_id;
+                                $person_colleges->add($pc_condition);
+
                                 $insert_counter++;
                                 $inserted_id[]=$result;
                                 $people->commit();

@@ -8,57 +8,84 @@
             <div class="panel-body">
                 <!--筛选条件-->
                 <div class="col-sm-12">
-                    <div class="col-sm-4">
-                        <span class="cond-label">作者单位：</span>
-                        <div class="btn-group">
-                            <label style="margin-bottom:0;color:#eee">
-                                <select class="box-width form-control" ng-model="vm.collegeSelected"
-                                        ng-options="item.id as item.name for item in vm.collegeList">
-                                    <option value="">全部</option>
-                                </select>
+                    <div class="col-sm-12 top-5 bottom-10">
+                        <!--<div class="col-sm-5">-->
+                            <!--<span class="cond-label">作者职称：</span>-->
+                            <!--<div class="btn-group">-->
+                                <!--<label class="btn btn-default active" ng-click="vm.resetTitleType()"-->
+                                       <!--ng-model="vm.params.title_type" uib-btn-radio="''">全部</label>-->
+                                <!--<label class="btn btn-default" ng-model="vm.title_type.senior" uib-btn-checkbox data-toggle="tooltip" data-placement="top">正高</label>-->
+                                <!--<label class="btn btn-default" ng-model="vm.title_type.vice_senior" uib-btn-checkbox data-toggle="tooltip" data-placement="top">副高</label>-->
+                                <!--<label class="btn btn-default" ng-model="vm.title_type.middle" uib-btn-checkbox data-toggle="tooltip" data-placement="top">中级</label>-->
+                                <!--<label class="btn btn-default" ng-model="vm.title_type.junior" uib-btn-checkbox data-toggle="tooltip" data-placement="top">初级</label>-->
+                                <!--<label class="btn btn-default" ng-model="vm.title_type.other" uib-btn-checkbox data-toggle="tooltip" data-placement="top">其他</label>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <div class="col-sm-5">
+                            <span class="cond-label">认领单位：</span>
+                            <div class="btn-group">
+                                <label style="margin-bottom:0;color:#eee">
+                                    <select class="box-width form-control" ng-model="vm.collegeSelected"
+                                            ng-options="item.id as item.name for item in vm.collegeList">
+                                        <option value="">全部</option>
+                                    </select>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <span class="cond-label">论文类型：</span>
+                            <div class="btn-group">
+                                <label class="btn btn-default active" ng-click="vm.resetPaperType()"
+                                       ng-model="vm.params.paper_type" uib-btn-radio="''">全部</label>
+                                <label class="btn btn-default" ng-model="vm.paper_type.ei" uib-btn-checkbox data-toggle="tooltip" data-placement="top">EI</label>
+                                <label class="btn btn-default" ng-model="vm.paper_type.sci" uib-btn-checkbox data-toggle="tooltip" data-placement="top">SCI</label>
+                                <label class="btn btn-default" ng-model="vm.paper_type.cpci" uib-btn-checkbox data-toggle="tooltip" data-placement="top">CPCI-S</label>
+                            </div>
+                        </div>
+                        <div class="col-sm-3 form-inline">
+                            <span class="cond-label">出版年份：</span>
+                            <div class="btn-group">
+                                <form class="form-inline">
+                                    <div class="form-group">
+                                        <input type="text" style="width: 70px" class="form-control" ng-model="vm.start_time" ng-blur="vm.setStart()" ng-keyup="setStartKeyupEvent($event)" placeholder="1919"/>
+                                        至
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="text" style="width: 70px" class="form-control" ng-model="vm.end_time" ng-blur="vm.setEnd()" ng-keyup="setEndKeyupEvent($event)" placeholder="2017"/>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 top-5">
+                        <!--所选筛选单位-->
+                        <div class="col-sm-8" ng-if="vm.collegeSelectedList.length > 0" ng-cloak>
+                            <span >所选单位：</span>
+                            <label style="margin-bottom:0" ng-repeat="item in vm.collegeSelectedList">
+                                <button tyle="button" class="btn button-link" ng-bind="vm.collegeMap[item]+'   X'"
+                                        ng-click="vm.removeCollege(item)"><b></b></button>
+                                &nbsp;
                             </label>
                         </div>
-                    </div>
-                    <div class="col-sm-4">
-                        <span class="cond-label">论文类型：</span>
-                        <div class="btn-group">
-                            <label class="btn btn-default active" ng-click="vm.resetPaperType()"
-                                   ng-model="vm.params.paper_type" uib-btn-radio="''">全部</label>
-                            <label class="btn btn-default" ng-model="vm.paper_type.ei" uib-btn-checkbox data-toggle="tooltip" data-placement="top">EI</label>
-                            <label class="btn btn-default" ng-model="vm.paper_type.sci" uib-btn-checkbox data-toggle="tooltip" data-placement="top">SCI</label>
-                            <label class="btn btn-default" ng-model="vm.paper_type.cpci" uib-btn-checkbox data-toggle="tooltip" data-placement="top">CPCI-S</label>
+
+                        <div class="col-sm-2 bottom-10">
+                            <a class="btn btn-success" ng-hide="vm.chartFlag" ng-click="vm.chartFlag=true" align="center" href="" title="显示统计图">显示统计图表</a>
+                            <a class="btn btn-danger"  ng-hide="!vm.chartFlag" ng-click="vm.chartFlag=false" href="" title="隐藏图表"  ng-cloak>隐藏统计图表</a>
                         </div>
-                    </div>
-                    <div class="col-sm-3 form-inline">
-                        <span class="cond-label">出版年份：</span>
-                        <div class="btn-group">
-                            <form class="form-inline">
-                                <div class="form-group">
-                                    <input type="text" style="width: 70px" class="form-control" ng-model="vm.start_time" ng-blur="vm.setStart()" ng-keyup="setStartKeyupEvent($event)" placeholder="1919"/>
-                                    至
-                                </div>
-                                <div class="form-group">
-                                    <input type="text" style="width: 70px" class="form-control" ng-model="vm.end_time" ng-blur="vm.setEnd()" ng-keyup="setEndKeyupEvent($event)" placeholder="2017"/>
-                                </div>
-                            </form>
+                        <div class="col-sm-1 bottom-10">
+                            <a class="btn btn-success" ng-hide="vm.pviewFlag" ng-click="vm.pviewFlag=true" align="center" href="/PersonPaper/index" title="查看论文报表">显示论文报表</a>
+                            <a class="btn btn-danger"  ng-hide="!vm.pviewFlag" ng-click="vm.pviewFlag=false" href="" title="隐藏论文报表"  ng-cloak>隐藏论文报表</a>
                         </div>
+                        <!--<div class="col-sm-1 bottom-10" style="right: 10px" ng-hide="vm.chartFlag">-->
+                            <!--<a class="btn btn-success" ng-hide="vm.chartFlag" ng-click="vm.chartFlag=true" align="center" href="" title="显示统计图">显示统计图表</a>-->
+                        <!--</div>-->
+                        <!--<div class="col-sm-1 bottom-10" style="right: 10px" ng-hide="!vm.chartFlag" ng-cloak>-->
+                            <!--<a class="btn btn-danger"  ng-hide="!vm.chartFlag" ng-click="vm.chartFlag=false" href="" title="隐藏图表"  ng-cloak>隐藏统计图表</a>-->
+                        <!--</div>-->
                     </div>
-                    <div class="col-sm-1 bottom-10" style="right: 10px" ng-hide="vm.chartFlag">
-                        <a class="btn btn-success" ng-click="vm.chartFlag=true" align="center" href="" title="显示统计图">显示统计图表</a>
-                    </div>
-                    <div class="col-sm-1 bottom-10" style="right: 10px" ng-hide="!vm.chartFlag" ng-cloak>
-                        <a class="btn btn-danger" ng-click="vm.chartFlag=false" href="" title="隐藏图表">隐藏统计图表</a>
-                    </div>
+
                 </div>
-                <!--所选筛选单位-->
-                <div class="col-sm-12 bottom-10" ng-if="vm.collegeSelectedList.length > 0" ng-cloak>
-                    <span class="col-sm-1">所选单位：</span>
-                    <label style="margin-bottom:0" ng-repeat="item in vm.collegeSelectedList">
-                        <button tyle="button" class="btn button-link" ng-bind="vm.collegeMap[item]+'   X'"
-                                ng-click="vm.removeCollege(item)"><b></b></button>
-                        &nbsp;
-                    </label>
-                </div>
+
                 <div  class="col-sm-12" ng-show="vm.chartFlag" ng-cloak>
                     <hr/>
                     <span class="cond-label col-sm-1">统计类型：</span>

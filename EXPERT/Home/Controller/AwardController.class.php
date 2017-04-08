@@ -361,7 +361,7 @@ class AwardController extends Controller {
                         }
 
                         // 处理第一获奖人职工号
-                        $first_id = getPidByNameAndCollege($first_name,$college_id);
+                        $first_id = getPidByNameAndCollege($first_name,$college_name);
                         if($first_id>0){
                             $data["first_id"] = $first_id;
                         }
@@ -417,7 +417,7 @@ class AwardController extends Controller {
                                     continue;
                                 }
                                 $other_experts .= "$person_name".'.';
-                                $person_id = getPidByNameAndCollege($person_name,$college_id);
+                                $person_id = getPidByNameAndCollege($person_name,$college_name);
 
                                 if($person_id>0){
                                     $token["award_id"] = $award_id ;

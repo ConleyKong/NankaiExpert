@@ -236,59 +236,81 @@ function getPersonIdByEmployeeNo($employee_no)
 
 /*
  * 输入：教职工姓名,学院名
+ * 2.4.3改进person表为一人对多学院，使用college_names代替college_id因此进行了方法的更新
  * 处理：首先搜索名字，若只有一条数据则返回id，
  * 		否则存在重名现象，此时，根据学院信息进行二次筛选
- * 隐含：学院曾用名记录
  * 输出：
  * 		成功：返回人员的id
  * 		失败：返回-1
  * 		用户名为空：返回0
  * 		修改为出现异常就返回88888
  */
-function getPidByNameAndCollege($employee_name,$college_id)
+function getPidByNameAndCollege($employee_name,$college_name)
 {
-	$equ_colleges = array(array('13','12'));//  (计控=软件学院)
 	if ($employee_name != null) {
 		$id = null;
-		$p = D("person")->where("name='%s' ", $employee_name)->select();
+//		$p = D("person")->where("name='%s' and college_names like '%s' and valid='%d' ", $employee_name,'%'.$college_name."%",1)->select();
+		$p = D("person")->where("name='%s' and valid=1 ", $employee_name)->select();
 		$dupNum = count($p);
-		if($dupNum<=0){
-			return 88888;//默认为“未知用户”
-		}
-		if($dupNum==1){//单例情况，直接返回id值
+		if($dupNum==1){//存在该人员，直接返回id值
 			$id = (int)$p[0]['id'];
-		}else{
-			if($dupNum>1 && $college_id>0){
-				//存在重名，可以使用学院名进行区分
-				foreach($p as $item){
-					if($item['college_id']==$college_id){
-						$id = (int)$item['id'];
-					}else{//寻找等价学院
-						foreach ($equ_colleges as $ecollege){
-							if(in_array($college_id,$ecollege)){
-								foreach ($ecollege as $cid){
-									if($item['college_id']==$cid){
-										$id = (int)$item['id'];
-										break 2;//结束等价学院的搜索
-									}
-								}
-							}
-						}
-					}
-				}
+			return $id;
+		}elseif ($dupNum>1 && (!empty($college_name))){
+			$p = D("person")->where("name='%s' and college_names like '%s' and valid=1 ", $employee_name,'%'.$college_name."%")->find();
+			if(!empty($p)){
+				$id = (int)$p['id'];
+				return $id;
 			}
 		}
-		if ($id != null) {
-			return $id;
-		}else{
-			return 88888;
-		}
-	}else{
-		return 88888;
 	}
-
+		return 88888;
 
 }
+
+//function getPidByNameAndCollege($employee_name,$college_name)
+//{
+//	$equ_colleges = array(array('13','12'));//  (计控=软件学院)
+//	if ($employee_name != null) {
+//		$id = null;
+//		$p = D("person")->where("name='%s' ", $employee_name)->select();
+//		$dupNum = count($p);
+//		if($dupNum<=0){
+//			return 88888;//默认为“未知用户”
+//		}
+//		if($dupNum==1){//单例情况，直接返回id值
+//			$id = (int)$p[0]['id'];
+//		}else{
+//			if($dupNum>1 && $college_name>0){
+//				//存在重名，可以使用学院名进行区分
+//				foreach($p as $item){
+//					if($item['college_id']==$college_name){
+//						$id = (int)$item['id'];
+//					}else{//寻找等价学院
+//						foreach ($equ_colleges as $ecollege){
+//							if(in_array($college_name,$ecollege)){
+//								foreach ($ecollege as $cid){
+//									if($item['college_id']==$cid){
+//										$id = (int)$item['id'];
+//										break 2;//结束等价学院的搜索
+//									}
+//								}
+//							}
+//						}
+//					}
+//				}
+//			}
+//		}
+//		if ($id != null) {
+//			return $id;
+//		}else{
+//			return 88888;
+//		}
+//	}else{
+//		return 88888;
+//	}
+//
+//
+//}
 
 
 /**
